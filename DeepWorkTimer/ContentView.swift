@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  DeepWorkTimer
-//
-//  Created by Andrey Tarantsov on 2022-05-09.
-//
-
 import SwiftUI
 
 struct ContentView: View {
