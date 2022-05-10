@@ -11,15 +11,17 @@
 		43C98F5D2828804C007D45DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F5C2828804C007D45DF /* ContentView.swift */; };
 		43C98F5F2828804E007D45DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C98F5E2828804E007D45DF /* Assets.xcassets */; };
 		43C98F622828804E007D45DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C98F612828804E007D45DF /* Preview Assets.xcassets */; };
+		43C98F6A2829085E007D45DF /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F692829085E007D45DF /* Util.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		43C98F572828804C007D45DF /* DeepWorkTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeepWorkTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		43C98F572828804C007D45DF /* Deep Work Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepWorkTimerApp.swift; sourceTree = "<group>"; };
 		43C98F5C2828804C007D45DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		43C98F5E2828804E007D45DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43C98F612828804E007D45DF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		43C98F632828804F007D45DF /* DeepWorkTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DeepWorkTimer.entitlements; sourceTree = "<group>"; };
+		43C98F692829085E007D45DF /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,7 +46,7 @@
 		43C98F582828804C007D45DF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43C98F572828804C007D45DF /* DeepWorkTimer.app */,
+				43C98F572828804C007D45DF /* Deep Work Timer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */,
+				43C98F692829085E007D45DF /* Util.swift */,
 				43C98F5C2828804C007D45DF /* ContentView.swift */,
 				43C98F5E2828804E007D45DF /* Assets.xcassets */,
 				43C98F632828804F007D45DF /* DeepWorkTimer.entitlements */,
@@ -72,9 +75,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		43C98F562828804C007D45DF /* DeepWorkTimer */ = {
+		43C98F562828804C007D45DF /* Deep Work Timer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 43C98F662828804F007D45DF /* Build configuration list for PBXNativeTarget "DeepWorkTimer" */;
+			buildConfigurationList = 43C98F662828804F007D45DF /* Build configuration list for PBXNativeTarget "Deep Work Timer" */;
 			buildPhases = (
 				43C98F532828804C007D45DF /* Sources */,
 				43C98F542828804C007D45DF /* Frameworks */,
@@ -84,9 +87,9 @@
 			);
 			dependencies = (
 			);
-			name = DeepWorkTimer;
+			name = "Deep Work Timer";
 			productName = DeepWorkTimer;
-			productReference = 43C98F572828804C007D45DF /* DeepWorkTimer.app */;
+			productReference = 43C98F572828804C007D45DF /* Deep Work Timer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -117,7 +120,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				43C98F562828804C007D45DF /* DeepWorkTimer */,
+				43C98F562828804C007D45DF /* Deep Work Timer */,
 			);
 		};
 /* End PBXProject section */
@@ -140,6 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43C98F5D2828804C007D45DF /* ContentView.swift in Sources */,
+				43C98F6A2829085E007D45DF /* Util.swift in Sources */,
 				43C98F5B2828804C007D45DF /* DeepWorkTimerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -326,7 +330,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		43C98F662828804F007D45DF /* Build configuration list for PBXNativeTarget "DeepWorkTimer" */ = {
+		43C98F662828804F007D45DF /* Build configuration list for PBXNativeTarget "Deep Work Timer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				43C98F672828804F007D45DF /* Debug */,
