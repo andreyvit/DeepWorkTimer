@@ -21,7 +21,7 @@ class Preferences {
 @main
 struct DeepWorkTimerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject var state = AppState.shared
+    @StateObject var state = AppModel.shared
 
     var body: some Scene {
 //        WindowGroup {
@@ -33,58 +33,118 @@ struct DeepWorkTimerApp: App {
     }
 }
 
-class AppState: ObservableObject {
-    static let shared = AppState.load()
-
-    @Published private(set) var lastConfiguration: IntervalConfiguration = .all.first!
-    @Published private(set) var running: RunningState?
-    private var now: Date = .distantPast
+struct AppState {
+    let preferences: Preferences
+    private(set) var lastConfiguration: IntervalConfiguration = .all.first!
+    private(set) var running: RunningState?
+    var isRunning: Bool { running != nil }
     private var idleStartTime: Date?
     private var activityStartTime: Date?
     private(set) var idleDuration: TimeInterval = 0
     private(set) var activityDuration: TimeInterval = 0
     private var isIdle: Bool { idleStartTime != nil }
     private var missingTimerWarningTime: Date = .distantPast
+    
+    var pendingIntervalCompletionNotification: IntervalConfiguration?
+    var pendingMissingTimerWarning = false
 
-    let preferences = Preferences()
-    
-    init() {
-        startIdleTimer()
-        handleIdleTimer()
-    }
-    
-    init(memento: Memento) {
+    init(memento: Memento, preferences: Preferences) {
+        self.preferences = preferences
         lastConfiguration = memento.configuration
         if let startTime = memento.startTime {
             running = RunningState(startTime: startTime, configuration: memento.configuration)
-            startUpdateTimer()
         }
-        startIdleTimer()
-        handleIdleTimer()
     }
     
     var memento: Memento {
         Memento(startTime: running?.startTime, configuration: lastConfiguration)
     }
-
-    func start(configuration: IntervalConfiguration) {
+    
+    mutating func start(configuration: IntervalConfiguration, now: Date) {
         lastConfiguration = configuration
         if running != nil && !running!.isDone && running!.configuration.kind.isCompatible(with: configuration.kind) {
             running!.configuration = configuration
-            update()
+            update(now: now)
             if !running!.isDone {
                 return
             }
         }
         running = RunningState(startTime: Date.now, configuration: configuration)
-        startUpdateTimer()
-        update()
+    }
+
+    mutating func stop() {
+        running = nil
+    }
+
+    mutating func update(now: Date) {
+        if let idleStartTime = idleStartTime {
+            idleDuration = now.timeIntervalSince(idleStartTime)
+        }
+        if let activityStartTime = activityStartTime {
+            activityDuration = now.timeIntervalSince(activityStartTime)
+        } else {
+            activityDuration = 0
+        }
+        
+        if running != nil {
+            running!.update(now: now)
+            if running!.isDone {
+                if running!.completionNotificationTime == nil || (now.timeIntervalSince(running!.completionNotificationTime!) > preferences.finishedTimerReminderInterval && !isIdle) {
+                    running!.completionNotificationTime = now
+                    pendingIntervalCompletionNotification = running!.configuration
+                }
+            }
+        }
+    }
+    
+    mutating func setIdleDuration(_ idleDuration: TimeInterval, now: Date) {
+        self.idleDuration = idleDuration
+        let isIdle = (idleDuration > preferences.idleThreshold)
+        if idleStartTime == nil && isIdle {
+            idleStartTime = now.addingTimeInterval(-idleDuration)
+            activityStartTime = nil
+        } else if activityStartTime == nil && !isIdle {
+            idleStartTime = nil
+            activityStartTime = now
+        }
+
+        if running != nil && idleDuration > preferences.idleTimerPausingThreshold {
+            // TODO: pause
+        } else if running == nil && activityDuration > preferences.missingTimerReminderThreshold {
+            if now.timeIntervalSince(missingTimerWarningTime) > preferences.missingTimerReminderRepeatInterval {
+                missingTimerWarningTime = now
+                pendingMissingTimerWarning = true
+            }
+        }
+    }
+}
+
+class AppModel: ObservableObject {
+    static let shared = AppModel()
+
+    private var now: Date = .distantPast
+    private(set) var state: AppState
+
+    let preferences = Preferences()
+    
+    private init() {
+        let memento = AppModel.loadMemento() ?? Memento(startTime: nil, configuration: .deep.first!)
+        state = AppState(memento: memento, preferences: preferences)
+        startIdleTimer()
+        handleIdleTimer()
+        mutate {}
+    }
+    
+    func start(configuration: IntervalConfiguration) {
+        mutate {
+            state.start(configuration: configuration, now: .now)
+        }
     }
     
     func stop() {
-        running = nil
-        cancelUpdateTimer()
-        update()
+        mutate {
+            state.stop()
+        }
     }
         
     deinit {
@@ -98,38 +158,43 @@ class AppState: ObservableObject {
         updateTimer?.invalidate()
         updateTimer = nil
     }
-    private func startUpdateTimer() {
+    private func reconsiderUpdateTimer() {
+        let wantTimer = state.isRunning
+        let haveTimer = (updateTimer != nil)
+        guard wantTimer != haveTimer else { return }
         cancelUpdateTimer()
-        updateTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(update), userInfo: nil, repeats: true)
-        updateTimer!.tolerance = 0.1
-        RunLoop.main.add(updateTimer!, forMode: .common)
+        if wantTimer {
+            updateTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+            updateTimer!.tolerance = 0.1
+            RunLoop.main.add(updateTimer!, forMode: .common)
+        }
+    }
+    
+    private func mutate(_ block: () -> Void) {
+        objectWillChange.send()
+        now = Date.now
+        block()
+        state.update(now: now)
+        save()
+        reconsiderUpdateTimer()
+        if let configuration = state.pendingIntervalCompletionNotification {
+            state.pendingIntervalCompletionNotification = nil
+            signalIntervalCompletion(configuration: configuration)
+        }
+        if state.pendingMissingTimerWarning {
+            state.pendingMissingTimerWarning = false
+            let content = UNMutableNotificationContent()
+            content.title = "Want to start a timer?"
+            content.interruptionLevel = .timeSensitive
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
+            UNUserNotificationCenter.current().add(request)
+        }
     }
 
     @objc private func update() {
-        objectWillChange.send()
-        now = Date.now
-
-        if let idleStartTime = idleStartTime {
-            idleDuration = now.timeIntervalSince(idleStartTime)
-        }
-        if let activityStartTime = activityStartTime {
-            activityDuration = now.timeIntervalSince(activityStartTime)
-        } else {
-            activityDuration = 0
-        }
-
-        if running != nil {
-            running!.update(now: now)
-            if running!.isDone {
-                if running!.completionNotificationTime == nil || (now.timeIntervalSince(running!.completionNotificationTime!) > preferences.finishedTimerReminderInterval && !isIdle) {
-                    running!.completionNotificationTime = now
-                    signalIntervalCompletion(configuration: running!.configuration)
-                }
-            }
-        }
-        save()
+        mutate {}
     }
-    
+
     private func signalIntervalCompletion(configuration: IntervalConfiguration) {
         let content = UNMutableNotificationContent()
         content.title = "End \(configuration.kind.localizedDescription)?"
@@ -143,20 +208,19 @@ class AppState: ObservableObject {
         }
     }
 
-    private static func load() -> AppState {
+    private static func loadMemento() -> Memento? {
         if let string = UserDefaults.standard.string(forKey: "state") {
             do {
-                let memento = try JSONDecoder().decode(Memento.self, from: string.data(using: .utf8)!)
-                return AppState(memento: memento)
+                return try JSONDecoder().decode(Memento.self, from: string.data(using: .utf8)!)
             } catch {
                 NSLog("%@", "ERROR: failed to decode memento: \(String(describing: error))")
             }
         }
-        return AppState()
+        return nil
     }
     
     private func save() {
-        let string = String(data: try! JSONEncoder().encode(memento), encoding: .utf8)!
+        let string = String(data: try! JSONEncoder().encode(state.memento), encoding: .utf8)!
         UserDefaults.standard.set(string, forKey: "state")
     }
 
@@ -172,30 +236,10 @@ class AppState: ObservableObject {
         RunLoop.main.add(idleTimer!, forMode: .common)
     }
     @objc private func handleIdleTimer() {
-        idleDuration = computeIdleTime()
-        let isIdle = (idleDuration > preferences.idleThreshold)
-        if idleStartTime == nil && isIdle {
-            idleStartTime = Date.now.addingTimeInterval(-idleDuration)
-            activityStartTime = nil
-        } else if activityStartTime == nil && !isIdle {
-            idleStartTime = nil
-            activityStartTime = Date.now
-        }
-        update()
-
-        os_log("idle=%.0lf, activity=%.0lf, isIdle=%{public}@", log: idleLog, type: .debug, idleDuration, activityDuration, isIdle ? "Y" : "N")
-
-        if running != nil && idleDuration > preferences.idleTimerPausingThreshold {
-            // TODO: pause
-        } else if running == nil && activityDuration > preferences.missingTimerReminderThreshold {
-            if now.timeIntervalSince(missingTimerWarningTime) > preferences.missingTimerReminderRepeatInterval {
-                missingTimerWarningTime = now
-                let content = UNMutableNotificationContent()
-                content.title = "Want to start a timer?"
-                content.interruptionLevel = .timeSensitive
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
-                UNUserNotificationCenter.current().add(request)
-            }
+        let idleDuration = computeIdleTime()
+        let now = Date.now
+        mutate {
+            state.setIdleDuration(idleDuration, now: now)
         }
     }
 }
@@ -338,7 +382,7 @@ struct IntervalConfiguration: Equatable, Codable {
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
-    let state = AppState.shared
+    let model = AppModel.shared
 
     var popover: NSPopover!
     
@@ -389,7 +433,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusBarItem.button!.font = statusBarItem.button!.font!.monospaceDigitsVariant
         statusBarItem.menu = menu
     
-        state.objectWillChange.sink { [weak self] _ in self?.updateSoon() }.store(in: &subscriptions)
+        model.objectWillChange.sink { [weak self] _ in self?.updateSoon() }.store(in: &subscriptions)
         update()
     }
         
@@ -397,7 +441,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         guard let pair = startItems.first(where: { $0.0 == sender }) else {
             fatalError("Unknown start item")
         }
-        state.start(configuration: pair.1)
+        model.start(configuration: pair.1)
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             DispatchQueue.main.async {
@@ -407,7 +451,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     @objc func stopTimer(_ sender: NSMenuItem) {
-        state.stop()
+        model.stop()
     }
     
     private var isUpdateScheduled = false
@@ -423,17 +467,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func update() {
         var suffix = ""
         if debugDisplayIdleTime {
-            suffix += " i\(state.idleDuration, precision: 0) a\(state.activityDuration, precision: 0)"
+            suffix += " i\(model.state.idleDuration, precision: 0) a\(model.state.activityDuration, precision: 0)"
         }
-        if let running = state.running {
+        if let running = model.state.running {
             statusBarItem.button!.title = running.derived.remaining.minutesColonSeconds + suffix
         } else {
             statusBarItem.button!.title = suffix.trimmingCharacters(in: .whitespaces)
         }
         
-        let isRunning = (state.running != nil)
+        let isRunning = model.state.isRunning
         for (item, configuration) in startItems {
-            item.state = (isRunning && state.running!.configuration == configuration ? .on : .off)
+            item.state = (isRunning && model.state.running!.configuration == configuration ? .on : .off)
 //            item.isEnabled = !isRunning
         }
         
