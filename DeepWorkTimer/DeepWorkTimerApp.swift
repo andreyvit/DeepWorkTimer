@@ -86,6 +86,7 @@ struct AppState {
         case .restart:
             running = RunningState(startTime: now, configuration: configuration)
         }
+        untimedWorkStart = nil
     }
 
     mutating func stop(now: Date) {
