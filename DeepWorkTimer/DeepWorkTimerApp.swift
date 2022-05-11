@@ -46,6 +46,7 @@ struct AppState {
     private(set) var activityDuration: TimeInterval = 0
     private var isIdle: Bool { idleStartTime != nil }
     private var missingTimerWarningTime: Date = .distantPast
+    private var lastStopTime: Date
     private var untimedWorkStart: Date?
     private(set) var untimedWorkDuration: TimeInterval = 0
 
@@ -54,6 +55,7 @@ struct AppState {
 
     init(memento: Memento, preferences: Preferences, now: Date) {
         self.preferences = preferences
+        self.lastStopTime = now
         lastConfiguration = memento.configuration
         if let startTime = memento.startTime {
             running = RunningState(startTime: startTime, configuration: memento.configuration)
@@ -89,6 +91,7 @@ struct AppState {
     mutating func stop(now: Date) {
         running = nil
         untimedWorkStart = now
+        lastStopTime = now
     }
 
     mutating func update(now: Date) {
@@ -137,7 +140,7 @@ struct AppState {
 
         if running != nil && idleDuration > preferences.idleTimerPausingThreshold {
             // TODO: pause
-        } else if running == nil && activityDuration > preferences.missingTimerReminderThreshold {
+        } else if running == nil && min(activityDuration, now.timeIntervalSince(lastStopTime)) > preferences.missingTimerReminderThreshold {
             if now.timeIntervalSince(missingTimerWarningTime) > preferences.missingTimerReminderRepeatInterval {
                 missingTimerWarningTime = now
                 pendingMissingTimerWarning = true
