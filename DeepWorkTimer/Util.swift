@@ -34,11 +34,10 @@ internal extension TimeInterval {
         }
         let totalSeconds = Int(exactly: self.rounded())!
         let minutes = totalSeconds / 60
-        if totalSeconds > 60 {
+        if minutes > 0 {
             return "\(minutes)m"
         } else {
-            let seconds = totalSeconds % 60
-            return String(format: "%d:%02d", minutes, seconds)
+            return "\(totalSeconds)s"
         }
     }
 

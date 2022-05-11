@@ -14,6 +14,8 @@ class Preferences {
     let idleThreshold: TimeInterval = (debugFastIdleTimer ? 10 : 60)
     let finishedTimerReminderInterval: TimeInterval = 60
     let idleTimerPausingThreshold: TimeInterval = (debugFastIdleTimer ? 15 : 3 * 60)
+    let untimedWorkRelevanceThreshold: TimeInterval = (debugFastIdleTimer ? 5 : 2 * 60)
+    let untimedWorkEndThreshold: TimeInterval = (debugFastIdleTimer ? 15 : 3 * 60)
     let missingTimerReminderThreshold: TimeInterval = (debugFastIdleTimer ? 15 : 2 * 60)
     let missingTimerReminderRepeatInterval: TimeInterval = (debugFastIdleTimer ? 20 : 5 * 60)
 }
@@ -44,36 +46,49 @@ struct AppState {
     private(set) var activityDuration: TimeInterval = 0
     private var isIdle: Bool { idleStartTime != nil }
     private var missingTimerWarningTime: Date = .distantPast
-    
+    private var untimedWorkStart: Date?
+    private(set) var untimedWorkDuration: TimeInterval = 0
+
     var pendingIntervalCompletionNotification: IntervalConfiguration?
     var pendingMissingTimerWarning = false
 
-    init(memento: Memento, preferences: Preferences) {
+    init(memento: Memento, preferences: Preferences, now: Date) {
         self.preferences = preferences
         lastConfiguration = memento.configuration
         if let startTime = memento.startTime {
             running = RunningState(startTime: startTime, configuration: memento.configuration)
+        }
+        if running == nil {
+            untimedWorkStart = now
         }
     }
     
     var memento: Memento {
         Memento(startTime: running?.startTime, configuration: lastConfiguration)
     }
-    
-    mutating func start(configuration: IntervalConfiguration, now: Date) {
+        
+    mutating func start(configuration: IntervalConfiguration, mode: IntervalStartMode, now: Date) {
         lastConfiguration = configuration
-        if running != nil && !running!.isDone && running!.configuration.kind.isCompatible(with: configuration.kind) {
-            running!.configuration = configuration
-            update(now: now)
-            if !running!.isDone {
-                return
+        switch mode {
+        case .continuation:
+            if let running = running {
+                if running.derived.remaining >= 0 {
+                    self.running!.configuration = configuration
+                } else {
+                    let extraWorked = -running.derived.remaining
+                    self.running = RunningState(startTime: now.addingTimeInterval(-extraWorked), configuration: configuration)
+                }
+            } else if let untimedWorkStart = untimedWorkStart {
+                running = RunningState(startTime: untimedWorkStart, configuration: configuration)
             }
+        case .restart:
+            running = RunningState(startTime: now, configuration: configuration)
         }
-        running = RunningState(startTime: Date.now, configuration: configuration)
     }
 
-    mutating func stop() {
+    mutating func stop(now: Date) {
         running = nil
+        untimedWorkStart = now
     }
 
     mutating func update(now: Date) {
@@ -100,12 +115,24 @@ struct AppState {
     mutating func setIdleDuration(_ idleDuration: TimeInterval, now: Date) {
         self.idleDuration = idleDuration
         let isIdle = (idleDuration > preferences.idleThreshold)
+        // TODO: better hysteresis
         if idleStartTime == nil && isIdle {
             idleStartTime = now.addingTimeInterval(-idleDuration)
             activityStartTime = nil
         } else if activityStartTime == nil && !isIdle {
             idleStartTime = nil
             activityStartTime = now
+        }
+        
+        if untimedWorkStart == nil, let activityStartTime = activityStartTime {
+            untimedWorkStart = activityStartTime
+        } else if untimedWorkStart != nil, let idleStartTime = idleStartTime, now.timeIntervalSince(idleStartTime) > preferences.untimedWorkEndThreshold {
+            untimedWorkStart = nil
+        }
+        if let untimedWorkStart = untimedWorkStart {
+            untimedWorkDuration = now.timeIntervalSince(untimedWorkStart)
+        } else {
+            untimedWorkDuration = 0
         }
 
         if running != nil && idleDuration > preferences.idleTimerPausingThreshold {
@@ -129,21 +156,21 @@ class AppModel: ObservableObject {
     
     private init() {
         let memento = AppModel.loadMemento() ?? Memento(startTime: nil, configuration: .deep.first!)
-        state = AppState(memento: memento, preferences: preferences)
+        state = AppState(memento: memento, preferences: preferences, now: .now)
         startIdleTimer()
         handleIdleTimer()
         mutate {}
     }
     
-    func start(configuration: IntervalConfiguration) {
+    func start(configuration: IntervalConfiguration, mode: IntervalStartMode) {
         mutate {
-            state.start(configuration: configuration, now: .now)
+            state.start(configuration: configuration, mode: mode, now: .now)
         }
     }
     
     func stop() {
         mutate {
-            state.stop()
+            state.stop(now: Date.now)
         }
     }
         
@@ -307,10 +334,6 @@ enum IntervalKind: RawRepresentable, Equatable, Codable {
     }
     
     var isRest: Bool { self == .rest }
-    
-    func isCompatible(with another: IntervalKind) -> Bool {
-        self.isRest == another.isRest
-    }
 
     var rawValue: String {
         switch self {
@@ -346,23 +369,30 @@ enum IntervalKind: RawRepresentable, Equatable, Codable {
     }
 }
 
+enum IntervalStartMode {
+    case restart
+    case continuation
+}
+
 struct IntervalConfiguration: Equatable, Codable {
     var kind: IntervalKind
     var duration: TimeInterval
     
     static let deep: [IntervalConfiguration] = [
-        IntervalConfiguration(kind: .work(.deep), duration: 15 * 60),
-        IntervalConfiguration(kind: .work(.deep), duration: 25 * 60),
         IntervalConfiguration(kind: .work(.deep), duration: 50 * 60),
+        IntervalConfiguration(kind: .work(.deep), duration: 25 * 60),
+        IntervalConfiguration(kind: .work(.deep), duration: 15 * 60),
     ] + (debugIncludeTinyIntervals ? [
         IntervalConfiguration(kind: .work(.deep), duration: 15),
     ] : [])
     
     static let shallow: [IntervalConfiguration] = [
-        IntervalConfiguration(kind: .work(.shallow), duration: 5 * 60),
-        IntervalConfiguration(kind: .work(.shallow), duration: 15 * 60),
-        IntervalConfiguration(kind: .work(.shallow), duration: 25 * 60),
         IntervalConfiguration(kind: .work(.shallow), duration: 50 * 60),
+        IntervalConfiguration(kind: .work(.shallow), duration: 25 * 60),
+        IntervalConfiguration(kind: .work(.shallow), duration: 15 * 60),
+        IntervalConfiguration(kind: .work(.shallow), duration: 10 * 60),
+        IntervalConfiguration(kind: .work(.shallow), duration: 5 * 60),
+        IntervalConfiguration(kind: .work(.shallow), duration: 2 * 60),
     ] + (debugIncludeTinyIntervals ? [
         IntervalConfiguration(kind: .work(.shallow), duration: 15),
     ] : [])
@@ -380,6 +410,13 @@ struct IntervalConfiguration: Equatable, Codable {
     static let all: [IntervalConfiguration] = deep + shallow + rest
 }
 
+//enum TimePresentation {
+//    case countdown(TimeInterval)
+//    case bell
+//    case untimedWork(TimeInterval)
+//    case none
+//}
+
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     let model = AppModel.shared
@@ -388,7 +425,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     var statusBarItem: NSStatusItem!
     
-    var startItems: [(NSMenuItem, IntervalConfiguration)] = []
+    var startItems: [(NSMenuItem, IntervalConfiguration, IntervalStartMode)] = []
 
     let stopItem = NSMenuItem(title: "Stop", action: #selector(stopTimer), keyEquivalent: "")
     
@@ -411,7 +448,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
             let item = NSMenuItem(title: "\(configuration.kind.localizedDescription) \(configuration.duration.shortString)", action: #selector(startTimer), keyEquivalent: "")
             menu.addItem(item)
-            startItems.append((item, configuration))
+            startItems.append((item, configuration, .restart))
+
+            let continueItem = NSMenuItem(title: "Continue as \(configuration.kind.localizedDescription) \(configuration.duration.shortString)", action: #selector(startTimer), keyEquivalent: "")
+            continueItem.isAlternate = true
+            continueItem.keyEquivalentModifierMask = .option
+            menu.addItem(continueItem)
+            startItems.append((continueItem, configuration, .continuation))
         }
 
         menu.addItem(NSMenuItem.separator())
@@ -438,10 +481,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
         
     @objc func startTimer(_ sender: NSMenuItem) {
-        guard let pair = startItems.first(where: { $0.0 == sender }) else {
+        guard let item = startItems.first(where: { $0.0 == sender }) else {
             fatalError("Unknown start item")
         }
-        model.start(configuration: pair.1)
+        model.start(configuration: item.1, mode: item.2)
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
             DispatchQueue.main.async {
@@ -470,13 +513,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             suffix += " i\(model.state.idleDuration, precision: 0) a\(model.state.activityDuration, precision: 0)"
         }
         if let running = model.state.running {
-            statusBarItem.button!.title = running.derived.remaining.minutesColonSeconds + suffix
+            let remaining = running.derived.remaining
+            if remaining > 0 {
+                statusBarItem.button!.title = running.derived.remaining.minutesColonSeconds + suffix
+            } else if remaining > -60 {
+                statusBarItem.button!.title = "END" + suffix
+            } else {
+                statusBarItem.button!.title = (-remaining).shortString + "?" + suffix
+            }
+        } else if model.state.untimedWorkDuration > model.state.preferences.untimedWorkRelevanceThreshold {
+            statusBarItem.button!.title = model.state.untimedWorkDuration.shortString + "?" + suffix
         } else {
             statusBarItem.button!.title = suffix.trimmingCharacters(in: .whitespaces)
         }
         
         let isRunning = model.state.isRunning
-        for (item, configuration) in startItems {
+        for (item, configuration, _) in startItems {
             item.state = (isRunning && model.state.running!.configuration == configuration ? .on : .off)
 //            item.isEnabled = !isRunning
         }
