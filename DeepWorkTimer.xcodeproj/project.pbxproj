@@ -15,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		43564309282C4663009D071A /* Deep-Work-Timer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Deep-Work-Timer-Info.plist"; sourceTree = "<group>"; };
 		43C98F572828804C007D45DF /* Deep Work Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepWorkTimerApp.swift; sourceTree = "<group>"; };
 		43C98F5C2828804C007D45DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -38,6 +39,7 @@
 		43C98F4E2828804C007D45DF = {
 			isa = PBXGroup;
 			children = (
+				43564309282C4663009D071A /* Deep-Work-Timer-Info.plist */,
 				43C98F592828804C007D45DF /* DeepWorkTimer */,
 				43C98F582828804C007D45DF /* Products */,
 			);
@@ -278,6 +280,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Deep-Work-Timer-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -305,6 +308,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Deep-Work-Timer-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
