@@ -56,6 +56,10 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "-com.tarantsov.deepwork.debug.includeTinyIntervals YES"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-com.tarantsov.deepwork.debug.idle.fast YES"
             isEnabled = "NO">
          </CommandLineArgument>

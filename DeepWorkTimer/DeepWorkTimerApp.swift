@@ -6,6 +6,7 @@ import os.log
 
 let idleLog = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "idle")
 
+private let debugIncludeTinyIntervals = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.includeTinyIntervals")
 private let debugDisplayIdleTime = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.idle.show")
 private let debugFastIdleTimer = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.idle.fast")
 
@@ -306,28 +307,31 @@ struct IntervalConfiguration: Equatable, Codable {
     var duration: TimeInterval
     
     static let deep: [IntervalConfiguration] = [
-        .init(kind: .work(.deep), duration: 15),
-        .init(kind: .work(.deep), duration: 15 * 60),
-        .init(kind: .work(.deep), duration: 25 * 60),
-        .init(kind: .work(.deep), duration: 50 * 60),
-    ]
+        IntervalConfiguration(kind: .work(.deep), duration: 15 * 60),
+        IntervalConfiguration(kind: .work(.deep), duration: 25 * 60),
+        IntervalConfiguration(kind: .work(.deep), duration: 50 * 60),
+    ] + (debugIncludeTinyIntervals ? [
+        IntervalConfiguration(kind: .work(.deep), duration: 15),
+    ] : [])
     
     static let shallow: [IntervalConfiguration] = [
-        .init(kind: .work(.shallow), duration: 15),
-        .init(kind: .work(.shallow), duration: 5 * 60),
-        .init(kind: .work(.shallow), duration: 15 * 60),
-        .init(kind: .work(.shallow), duration: 25 * 60),
-        .init(kind: .work(.shallow), duration: 50 * 60),
-    ]
+        IntervalConfiguration(kind: .work(.shallow), duration: 5 * 60),
+        IntervalConfiguration(kind: .work(.shallow), duration: 15 * 60),
+        IntervalConfiguration(kind: .work(.shallow), duration: 25 * 60),
+        IntervalConfiguration(kind: .work(.shallow), duration: 50 * 60),
+    ] + (debugIncludeTinyIntervals ? [
+        IntervalConfiguration(kind: .work(.shallow), duration: 15),
+    ] : [])
 
     static let rest: [IntervalConfiguration] = [
-        .init(kind: .rest, duration: 15),
-        .init(kind: .rest, duration: 5 * 60),
-        .init(kind: .rest, duration: 10 * 60),
-        .init(kind: .rest, duration: 15 * 60),
-        .init(kind: .rest, duration: 20 * 60),
-        .init(kind: .rest, duration: 30 * 60),
-    ]
+        IntervalConfiguration(kind: .rest, duration: 5 * 60),
+        IntervalConfiguration(kind: .rest, duration: 10 * 60),
+        IntervalConfiguration(kind: .rest, duration: 15 * 60),
+        IntervalConfiguration(kind: .rest, duration: 20 * 60),
+        IntervalConfiguration(kind: .rest, duration: 30 * 60),
+    ] + (debugIncludeTinyIntervals ? [
+        IntervalConfiguration(kind: .rest, duration: 15),
+    ] : [])
 
     static let all: [IntervalConfiguration] = deep + shallow + rest
 }
