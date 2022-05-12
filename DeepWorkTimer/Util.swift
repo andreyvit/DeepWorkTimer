@@ -40,7 +40,19 @@ internal extension TimeInterval {
             return "\(totalSeconds)s"
         }
     }
-
+    
+    var mediumString: String {
+        if self < 0 {
+            return "-" + (-self).mediumString
+        }
+        let totalSeconds = Int(exactly: self.rounded())!
+        let minutes = totalSeconds / 60
+        if minutes > 0 {
+            return "\(minutes) min"
+        } else {
+            return "\(totalSeconds) sec"
+        }
+    }
 }
 
 extension NSFont {

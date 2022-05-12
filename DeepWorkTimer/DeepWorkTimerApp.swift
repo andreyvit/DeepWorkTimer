@@ -18,6 +18,19 @@ class Preferences {
     let untimedWorkEndThreshold: TimeInterval = (debugFastIdleTimer ? 15 : 3 * 60)
     let missingTimerReminderThreshold: TimeInterval = (debugFastIdleTimer ? 15 : 2 * 60)
     let missingTimerReminderRepeatInterval: TimeInterval = (debugFastIdleTimer ? 20 : 5 * 60)
+    
+    let timeToRestMessages = [
+        "Ready for a break?",
+        "Want to freshen up?",
+        "Ready to switch off work for a few minutes?",
+        "Wanna stand up and have a break?",
+    ]
+
+    let backToWorkMessages = [
+        "Want to get back to work?",
+        "Ready to finish break?",
+        "What do you choose to do next?",
+    ]
 }
 
 @main
@@ -228,7 +241,15 @@ class AppModel: ObservableObject {
 
     private func signalIntervalCompletion(configuration: IntervalConfiguration) {
         let content = UNMutableNotificationContent()
-        content.title = "End \(configuration.kind.localizedDescription)?"
+
+        if configuration.kind.isRest {
+            content.title = "Finished: \(configuration.duration.mediumString) of \(configuration.kind.localizedDescription)"
+            content.subtitle = preferences.backToWorkMessages.randomElement()!
+        } else {
+            content.title = "Done: \(configuration.duration.mediumString) of \(configuration.kind.localizedDescription)"
+            content.subtitle = preferences.timeToRestMessages.randomElement()!
+        }
+
         content.interruptionLevel = .timeSensitive
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
