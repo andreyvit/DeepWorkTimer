@@ -4,10 +4,13 @@ import Combine
 import UserNotifications
 import os.log
 
+let isSwiftUIPreview = (ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] != nil)
+
 let idleLog = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "idle")
 
 private let debugIncludeTinyIntervals = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.includeTinyIntervals")
 private let debugDisplayIdleTime = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.idle.show")
+private let debugDisplayStretchingTime = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.stretching.show")
 private let debugFastIdleTimer = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.idle.fast")
 
 class Preferences {
@@ -19,6 +22,9 @@ class Preferences {
     let missingTimerReminderThreshold: TimeInterval = (debugFastIdleTimer ? 15 : 2 * 60)
     let missingTimerReminderRepeatInterval: TimeInterval = (debugFastIdleTimer ? 20 : 5 * 60)
     
+    let stretchingDuration: TimeInterval = (debugFastIdleTimer ? 5 : 30)
+    let stretchingPeriod: TimeInterval = (debugFastIdleTimer ? 15 : 20 * 60)
+
     let timeToRestMessages = [
         "Ready for a break?",
         "Want to freshen up?",
@@ -37,6 +43,7 @@ class Preferences {
 struct DeepWorkTimerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject var state = AppModel.shared
+    @State var alertPresented: Bool = false
 
     var body: some Scene {
 //        WindowGroup {
@@ -44,6 +51,9 @@ struct DeepWorkTimerApp: App {
 //        }
         Settings {
             EmptyView()
+                .alert("Test", isPresented: $alertPresented) {
+                    Button("OK", role: .cancel) { }
+                }
         }
     }
 }
@@ -63,6 +73,12 @@ struct AppState {
     private var untimedWorkStart: Date?
     private(set) var untimedWorkDuration: TimeInterval = 0
 
+    private var lastStretchTime: Date
+    private var nextStretchTime: Date = .distantFuture
+    private(set) var timeTillNextStretch: TimeInterval = .greatestFiniteMagnitude
+    private var stretchingStartTime: Date? = nil
+    private(set) var stretchingRemainingTime: TimeInterval? = nil
+
     var pendingIntervalCompletionNotification: IntervalConfiguration?
     var pendingMissingTimerWarning = false
 
@@ -70,6 +86,7 @@ struct AppState {
         self.preferences = preferences
         self.lastStopTime = now
         lastConfiguration = memento.configuration
+        lastStretchTime = memento.lastStretchTime
         if let startTime = memento.startTime {
             running = RunningState(startTime: startTime, configuration: memento.configuration)
         }
@@ -79,7 +96,11 @@ struct AppState {
     }
     
     var memento: Memento {
-        Memento(startTime: running?.startTime, configuration: lastConfiguration)
+        Memento(
+            startTime: running?.startTime,
+            configuration: lastConfiguration,
+            lastStretchTime: lastStretchTime
+        )
     }
         
     mutating func start(configuration: IntervalConfiguration, mode: IntervalStartMode, now: Date) {
@@ -127,6 +148,24 @@ struct AppState {
                 }
             }
         }
+        
+        updateRemainingStretchingTime(now: now)
+        if let stretchingRemainingTime = stretchingRemainingTime, stretchingRemainingTime < 0 {
+            endStretching(now: now)
+        }
+        
+        let lastStretchTime: Date
+        if let stretchingStartTime = stretchingStartTime {
+            lastStretchTime = stretchingStartTime.addingTimeInterval(preferences.stretchingDuration)
+        } else {
+            lastStretchTime = self.lastStretchTime
+        }
+        let latestStretchingBoundary = [lastStretchTime, lastStopTime, untimedWorkStart ?? .distantPast, running?.startTime ?? .distantPast].max()!
+        nextStretchTime = latestStretchingBoundary.addingTimeInterval(preferences.stretchingPeriod)
+        timeTillNextStretch = nextStretchTime.timeIntervalSince(now)
+        if timeTillNextStretch < 0 && !isStretching {
+            startStretching(now: now)
+        }
     }
     
     mutating func setIdleDuration(_ idleDuration: TimeInterval, now: Date) {
@@ -161,6 +200,29 @@ struct AppState {
             }
         }
     }
+    
+    var isStretching: Bool {
+        return stretchingStartTime != nil
+    }
+
+    mutating func startStretching(now: Date) {
+        stretchingStartTime = now
+        updateRemainingStretchingTime(now: now)
+    }
+    
+    mutating func endStretching(now: Date) {
+        lastStretchTime = now
+        stretchingStartTime = nil
+        updateRemainingStretchingTime(now: now)
+    }
+    
+    mutating func updateRemainingStretchingTime(now: Date) {
+        if let stretchingStartTime = stretchingStartTime {
+            stretchingRemainingTime = preferences.stretchingDuration - now.timeIntervalSince(stretchingStartTime)
+        } else {
+            stretchingRemainingTime = nil
+        }
+    }
 }
 
 class AppModel: ObservableObject {
@@ -172,7 +234,7 @@ class AppModel: ObservableObject {
     let preferences = Preferences()
     
     private init() {
-        let memento = AppModel.loadMemento() ?? Memento(startTime: nil, configuration: .deep.first!)
+        let memento = AppModel.loadMemento() ?? Memento(startTime: nil, configuration: .deep.first!, lastStretchTime: .distantPast)
         state = AppState(memento: memento, preferences: preferences, now: .now)
         startIdleTimer()
         handleIdleTimer()
@@ -233,6 +295,7 @@ class AppModel: ObservableObject {
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
             UNUserNotificationCenter.current().add(request)
         }
+        updateStretchingState()
     }
 
     @objc private func update() {
@@ -261,6 +324,9 @@ class AppModel: ObservableObject {
     }
 
     private static func loadMemento() -> Memento? {
+        if isSwiftUIPreview {
+            return nil
+        }
         if let string = UserDefaults.standard.string(forKey: "state") {
             do {
                 return try JSONDecoder().decode(Memento.self, from: string.data(using: .utf8)!)
@@ -272,6 +338,9 @@ class AppModel: ObservableObject {
     }
     
     private func save() {
+        if isSwiftUIPreview {
+            return
+        }
         let string = String(data: try! JSONEncoder().encode(state.memento), encoding: .utf8)!
         UserDefaults.standard.set(string, forKey: "state")
     }
@@ -293,6 +362,65 @@ class AppModel: ObservableObject {
         mutate {
             state.setIdleDuration(idleDuration, now: now)
         }
+    }
+    
+    private var stretchingWindow: NSWindow?
+
+    func startStretching() {
+        guard !state.isStretching else { return }
+        mutate {
+            state.startStretching(now: .now)
+        }
+    }
+    func endStretching() {
+        guard state.isStretching else { return }
+        mutate {
+            state.endStretching(now: .now)
+        }
+    }
+    
+    private func updateStretchingState() {
+        let isVisible = (stretchingWindow != nil)
+        if !isVisible && state.isStretching {
+            showStretchingWindow()
+        } else if isVisible && !state.isStretching {
+            hideStretchingWindow()
+        }
+    }
+    
+    private func showStretchingWindow() {
+        let window = NSWindow(
+            contentRect: .zero,
+            styleMask: [.titled, .closable],
+            backing: .buffered,
+            defer: false
+        )
+        
+        window.level = .statusBar
+        window.titlebarAppearsTransparent = true
+        //        window.title = "Manage collections"
+        window.center()
+        window.isReleasedWhenClosed = false
+        self.stretchingWindow = window
+        
+        let view = StretchingView()
+            .frame(
+                width: 400,
+                //                height: 350,
+                alignment: .topLeading
+            )
+        let hosting = NSHostingView(rootView: view)
+        window.contentView = hosting
+        hosting.autoresizingMask = [.width, .height]
+        
+//        NSApp.activate(ignoringOtherApps: true)
+        window.center()
+        window.orderFront(nil)
+    }
+    
+    private func hideStretchingWindow() {
+        stretchingWindow?.orderOut(nil)
+        stretchingWindow = nil
     }
 }
 
@@ -318,10 +446,25 @@ struct RunningState {
 struct Memento: Codable {
     var startTime: Date?
     var configuration: IntervalConfiguration
+    var lastStretchTime: Date
 
     enum CodingKeys: String, CodingKey {
         case startTime = "start_time"
         case configuration = "configuration"
+        case lastStretchTime = "last_stretch"
+    }
+    
+    init(startTime: Date?, configuration: IntervalConfiguration, lastStretchTime: Date) {
+        self.startTime = startTime
+        self.configuration = configuration
+        self.lastStretchTime = lastStretchTime
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        startTime = try container.decode(Date?.self, forKey: .startTime)
+        configuration = try container.decode(IntervalConfiguration.self, forKey: .configuration)
+        lastStretchTime = try container.decodeIfPresent(Date.self, forKey: .lastStretchTime) ?? .distantPast
     }
 }
 
@@ -392,6 +535,15 @@ enum IntervalKind: RawRepresentable, Equatable, Codable {
             return NSLocalizedString("Rest", comment: "")
         }
     }
+
+    var endLabel: String {
+        switch self {
+        case .work:
+            return NSLocalizedString("BREAK", comment: "")
+        case .rest:
+            return NSLocalizedString("WORK", comment: "")
+        }
+    }
 }
 
 enum IntervalStartMode {
@@ -453,10 +605,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var startItems: [(NSMenuItem, IntervalConfiguration, IntervalStartMode)] = []
 
     let stopItem = NSMenuItem(title: "Stop", action: #selector(stopTimer), keyEquivalent: "")
-    
+
+    let nextStretchItem = NSMenuItem(title: "Next Stretching in ...", action: nil, keyEquivalent: "")
+    let startStretchingItem = NSMenuItem(title: "Stretch Now", action: #selector(startStretching), keyEquivalent: "")
+
     var subscriptions: Set<AnyCancellable> = []
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        if isSwiftUIPreview {
+            return
+        }
+
         let menu = NSMenu()
         menu.delegate = self
         menu.autoenablesItems = false
@@ -483,7 +642,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
 
         menu.addItem(NSMenuItem.separator())
-        
+        menu.addItem(nextStretchItem)
+        nextStretchItem.isEnabled = false
+        menu.addItem(startStretchingItem)
+
+        menu.addItem(NSMenuItem.separator())
+
 //        let contentView = ContentView()
 //        let contentController = NSHostingController(rootView: contentView)
 //        contentController.view.frame.size = CGSize(width: 200, height: 50)
@@ -503,6 +667,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
         model.objectWillChange.sink { [weak self] _ in self?.updateSoon() }.store(in: &subscriptions)
         update()
+        
+        model.startStretching()
     }
         
     @objc func startTimer(_ sender: NSMenuItem) {
@@ -522,6 +688,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         model.stop()
     }
     
+    @objc func startStretching() {
+        model.startStretching()
+    }
+    
     private var isUpdateScheduled = false
     private func updateSoon() {
         guard !isUpdateScheduled else { return }
@@ -537,12 +707,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if debugDisplayIdleTime {
             suffix += " i\(model.state.idleDuration, precision: 0) a\(model.state.activityDuration, precision: 0)"
         }
+        if debugDisplayStretchingTime {
+            suffix += " s\(model.state.timeTillNextStretch, precision: 0)"
+        }
         if let running = model.state.running {
             let remaining = running.derived.remaining
             if remaining > 0 {
                 statusBarItem.button!.title = running.derived.remaining.minutesColonSeconds + suffix
             } else if remaining > -60 {
-                statusBarItem.button!.title = "END" + suffix
+                statusBarItem.button!.title = running.configuration.kind.endLabel + suffix
             } else {
                 statusBarItem.button!.title = (-remaining).shortString + "?" + suffix
             }
@@ -557,6 +730,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             item.state = (isRunning && model.state.running!.configuration == configuration ? .on : .off)
 //            item.isEnabled = !isRunning
         }
+        
+        nextStretchItem.title = "Next Stretching In \(model.state.timeTillNextStretch.shortString)"
         
         stopItem.isHidden = !isRunning
     }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4356430B282EEE9D009D071A /* Muting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356430A282EEE9D009D071A /* Muting.swift */; };
+		4356430D282EF295009D071A /* Stretching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356430C282EF295009D071A /* Stretching.swift */; };
 		43C98F5B2828804C007D45DF /* DeepWorkTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */; };
 		43C98F5D2828804C007D45DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F5C2828804C007D45DF /* ContentView.swift */; };
 		43C98F5F2828804E007D45DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C98F5E2828804E007D45DF /* Assets.xcassets */; };
@@ -16,6 +18,8 @@
 
 /* Begin PBXFileReference section */
 		43564309282C4663009D071A /* Deep-Work-Timer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Deep-Work-Timer-Info.plist"; sourceTree = "<group>"; };
+		4356430A282EEE9D009D071A /* Muting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Muting.swift; sourceTree = "<group>"; };
+		4356430C282EF295009D071A /* Stretching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stretching.swift; sourceTree = "<group>"; };
 		43C98F572828804C007D45DF /* Deep Work Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepWorkTimerApp.swift; sourceTree = "<group>"; };
 		43C98F5C2828804C007D45DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -57,7 +61,9 @@
 			isa = PBXGroup;
 			children = (
 				43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */,
+				4356430A282EEE9D009D071A /* Muting.swift */,
 				43C98F692829085E007D45DF /* Util.swift */,
+				4356430C282EF295009D071A /* Stretching.swift */,
 				43C98F5C2828804C007D45DF /* ContentView.swift */,
 				43C98F5E2828804E007D45DF /* Assets.xcassets */,
 				43C98F632828804F007D45DF /* DeepWorkTimer.entitlements */,
@@ -145,8 +151,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				43C98F5D2828804C007D45DF /* ContentView.swift in Sources */,
+				4356430D282EF295009D071A /* Stretching.swift in Sources */,
 				43C98F6A2829085E007D45DF /* Util.swift in Sources */,
 				43C98F5B2828804C007D45DF /* DeepWorkTimerApp.swift in Sources */,
+				4356430B282EEE9D009D071A /* Muting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
