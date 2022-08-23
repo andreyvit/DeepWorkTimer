@@ -14,6 +14,12 @@
 		43C98F5F2828804E007D45DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C98F5E2828804E007D45DF /* Assets.xcassets */; };
 		43C98F622828804E007D45DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C98F612828804E007D45DF /* Preview Assets.xcassets */; };
 		43C98F6A2829085E007D45DF /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F692829085E007D45DF /* Util.swift */; };
+		43F897CB28B4AA08002B3AC1 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897CA28B4AA08002B3AC1 /* State.swift */; };
+		43F897CD28B4AA1F002B3AC1 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897CC28B4AA1F002B3AC1 /* Preferences.swift */; };
+		43F897CF28B4AA4D002B3AC1 /* DebugFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897CE28B4AA4D002B3AC1 /* DebugFlags.swift */; };
+		43F897D128B4AB13002B3AC1 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897D028B4AB13002B3AC1 /* Logging.swift */; };
+		43F897D328B4AB5E002B3AC1 /* Memento.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897D228B4AB5E002B3AC1 /* Memento.swift */; };
+		43F897D528B4ABAE002B3AC1 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897D428B4ABAE002B3AC1 /* AppModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +33,12 @@
 		43C98F612828804E007D45DF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		43C98F632828804F007D45DF /* DeepWorkTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DeepWorkTimer.entitlements; sourceTree = "<group>"; };
 		43C98F692829085E007D45DF /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		43F897CA28B4AA08002B3AC1 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		43F897CC28B4AA1F002B3AC1 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		43F897CE28B4AA4D002B3AC1 /* DebugFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFlags.swift; sourceTree = "<group>"; };
+		43F897D028B4AB13002B3AC1 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		43F897D228B4AB5E002B3AC1 /* Memento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memento.swift; sourceTree = "<group>"; };
+		43F897D428B4ABAE002B3AC1 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,14 +72,13 @@
 		43C98F592828804C007D45DF /* DeepWorkTimer */ = {
 			isa = PBXGroup;
 			children = (
-				43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */,
-				4356430A282EEE9D009D071A /* Muting.swift */,
-				43C98F692829085E007D45DF /* Util.swift */,
-				4356430C282EF295009D071A /* Stretching.swift */,
-				43C98F5C2828804C007D45DF /* ContentView.swift */,
+				43F897D628B4ACAD002B3AC1 /* Application */,
+				43F897D828B4ACBA002B3AC1 /* Presentation */,
+				43F897D728B4ACB4002B3AC1 /* Model */,
+				43F897D928B4ACD2002B3AC1 /* Util */,
+				43C98F602828804E007D45DF /* Preview Content */,
 				43C98F5E2828804E007D45DF /* Assets.xcassets */,
 				43C98F632828804F007D45DF /* DeepWorkTimer.entitlements */,
-				43C98F602828804E007D45DF /* Preview Content */,
 			);
 			path = DeepWorkTimer;
 			sourceTree = "<group>";
@@ -78,6 +89,45 @@
 				43C98F612828804E007D45DF /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		43F897D628B4ACAD002B3AC1 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */,
+				43F897D028B4AB13002B3AC1 /* Logging.swift */,
+				43F897CC28B4AA1F002B3AC1 /* Preferences.swift */,
+				43F897CE28B4AA4D002B3AC1 /* DebugFlags.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		43F897D728B4ACB4002B3AC1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				43F897CA28B4AA08002B3AC1 /* State.swift */,
+				43F897D228B4AB5E002B3AC1 /* Memento.swift */,
+				4356430A282EEE9D009D071A /* Muting.swift */,
+				4356430C282EF295009D071A /* Stretching.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		43F897D828B4ACBA002B3AC1 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				43F897D428B4ABAE002B3AC1 /* AppModel.swift */,
+				43C98F5C2828804C007D45DF /* ContentView.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		43F897D928B4ACD2002B3AC1 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				43C98F692829085E007D45DF /* Util.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,10 +201,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				43C98F5D2828804C007D45DF /* ContentView.swift in Sources */,
+				43F897CD28B4AA1F002B3AC1 /* Preferences.swift in Sources */,
+				43F897D528B4ABAE002B3AC1 /* AppModel.swift in Sources */,
 				4356430D282EF295009D071A /* Stretching.swift in Sources */,
 				43C98F6A2829085E007D45DF /* Util.swift in Sources */,
 				43C98F5B2828804C007D45DF /* DeepWorkTimerApp.swift in Sources */,
 				4356430B282EEE9D009D071A /* Muting.swift in Sources */,
+				43F897CB28B4AA08002B3AC1 /* State.swift in Sources */,
+				43F897D328B4AB5E002B3AC1 /* Memento.swift in Sources */,
+				43F897D128B4AB13002B3AC1 /* Logging.swift in Sources */,
+				43F897CF28B4AA4D002B3AC1 /* DebugFlags.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
