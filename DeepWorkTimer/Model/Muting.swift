@@ -1,11 +1,11 @@
 import Foundation
 
-struct Muting {
-    var startTime: Date
-    var mode: MutingMode
+public struct Muting {
+    public var startTime: Date
+    public var mode: MutingMode
 }
 
-enum MutingMode: Hashable {
+public enum MutingMode: Hashable {
     case permanent
     case timed(TimeInterval)
     case untilTomorrow

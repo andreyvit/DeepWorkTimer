@@ -10,10 +10,10 @@ class AppModel: ObservableObject {
     private var now: Date = .distantPast
     private(set) var state: AppState
 
-    let preferences = Preferences()
+    let preferences = Preferences.initial
     
     private init() {
-        let memento = AppModel.loadMemento() ?? AppMemento(startTime: nil, configuration: .deep.first!, lastStretchTime: .distantPast)
+        let memento = AppModel.loadMemento() ?? AppMemento()
         state = AppState(memento: memento, preferences: preferences, now: .now)
         startIdleTimer()
         handleIdleTimer()
@@ -103,7 +103,7 @@ class AppModel: ObservableObject {
     }
 
     private static func loadMemento() -> AppMemento? {
-        if isSwiftUIPreview {
+        if isRunningTests {
             return nil
         }
         if let string = UserDefaults.standard.string(forKey: "state") {
@@ -117,7 +117,7 @@ class AppModel: ObservableObject {
     }
     
     private func save() {
-        if isSwiftUIPreview {
+        if isRunningTests {
             return
         }
         let string = String(data: try! JSONEncoder().encode(state.memento), encoding: .utf8)!

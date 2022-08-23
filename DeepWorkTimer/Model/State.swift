@@ -1,30 +1,32 @@
 import Foundation
 
-struct AppState {
-    let preferences: Preferences
-    private(set) var lastConfiguration: IntervalConfiguration = .all.first!
-    private(set) var running: RunningState?
-    var isRunning: Bool { running != nil }
+public struct AppState {
+    public let preferences: Preferences
+    public private(set) var lastConfiguration: IntervalConfiguration = .all.first!
+    public private(set) var running: RunningState?
+    public private(set) var idleDuration: TimeInterval = 0
+    public private(set) var activityDuration: TimeInterval = 0
+    public private(set) var untimedWorkDuration: TimeInterval = 0
+    public private(set) var timeTillNextStretch: TimeInterval = .greatestFiniteMagnitude
+    public private(set) var stretchingRemainingTime: TimeInterval? = nil
+    
+    public var pendingIntervalCompletionNotification: IntervalConfiguration?
+    public var pendingMissingTimerWarning = false
+
+    public var isRunning: Bool { running != nil }
+
     private var idleStartTime: Date?
     private var activityStartTime: Date?
-    private(set) var idleDuration: TimeInterval = 0
-    private(set) var activityDuration: TimeInterval = 0
     private var isIdle: Bool { idleStartTime != nil }
     private var missingTimerWarningTime: Date = .distantPast
     private var lastStopTime: Date
     private var untimedWorkStart: Date?
-    private(set) var untimedWorkDuration: TimeInterval = 0
 
     private var lastStretchTime: Date
     private var nextStretchTime: Date = .distantFuture
-    private(set) var timeTillNextStretch: TimeInterval = .greatestFiniteMagnitude
     private var stretchingStartTime: Date? = nil
-    private(set) var stretchingRemainingTime: TimeInterval? = nil
 
-    var pendingIntervalCompletionNotification: IntervalConfiguration?
-    var pendingMissingTimerWarning = false
-
-    init(memento: AppMemento, preferences: Preferences, now: Date) {
+    public init(memento: AppMemento, preferences: Preferences, now: Date) {
         self.preferences = preferences
         self.lastStopTime = now
         lastConfiguration = memento.configuration
@@ -37,7 +39,7 @@ struct AppState {
         }
     }
     
-    var memento: AppMemento {
+    public var memento: AppMemento {
         AppMemento(
             startTime: running?.startTime,
             configuration: lastConfiguration,
@@ -45,7 +47,7 @@ struct AppState {
         )
     }
         
-    mutating func start(configuration: IntervalConfiguration, mode: IntervalStartMode, now: Date) {
+    public mutating func start(configuration: IntervalConfiguration, mode: IntervalStartMode, now: Date) {
         lastConfiguration = configuration
         switch mode {
         case .continuation:
@@ -65,13 +67,13 @@ struct AppState {
         untimedWorkStart = nil
     }
 
-    mutating func stop(now: Date) {
+    public mutating func stop(now: Date) {
         running = nil
         untimedWorkStart = now
         lastStopTime = now
     }
 
-    mutating func update(now: Date) {
+    public mutating func update(now: Date) {
         if let idleStartTime = idleStartTime {
             idleDuration = now.timeIntervalSince(idleStartTime)
         }
@@ -110,7 +112,7 @@ struct AppState {
         }
     }
     
-    mutating func setIdleDuration(_ idleDuration: TimeInterval, now: Date) {
+    public mutating func setIdleDuration(_ idleDuration: TimeInterval, now: Date) {
         self.idleDuration = idleDuration
         let isIdle = (idleDuration > preferences.idleThreshold)
         // TODO: better hysteresis
@@ -143,22 +145,22 @@ struct AppState {
         }
     }
     
-    var isStretching: Bool {
+    public var isStretching: Bool {
         return stretchingStartTime != nil
     }
 
-    mutating func startStretching(now: Date) {
+    public mutating func startStretching(now: Date) {
         stretchingStartTime = now
         updateRemainingStretchingTime(now: now)
     }
     
-    mutating func endStretching(now: Date) {
+    public mutating func endStretching(now: Date) {
         lastStretchTime = now
         stretchingStartTime = nil
         updateRemainingStretchingTime(now: now)
     }
     
-    mutating func updateRemainingStretchingTime(now: Date) {
+    public mutating func updateRemainingStretchingTime(now: Date) {
         if let stretchingStartTime = stretchingStartTime {
             stretchingRemainingTime = preferences.stretchingDuration - now.timeIntervalSince(stretchingStartTime)
         } else {
@@ -167,49 +169,49 @@ struct AppState {
     }
 }
 
-struct RunningState {
+public struct RunningState {
     let startTime: Date
     var configuration: IntervalConfiguration
     var completionNotificationTime: Date? = nil
     var derived: RunningDerived
     var isDone: Bool { derived.remaining < 0 }
     
-    init(startTime: Date, configuration: IntervalConfiguration) {
+    public init(startTime: Date, configuration: IntervalConfiguration) {
         self.startTime = startTime
         self.configuration = configuration
         derived = RunningDerived(elapsed: 0, configuration: configuration)
     }
     
-    mutating func update(now: Date) {
+    public mutating func update(now: Date) {
         let elapsed = now.timeIntervalSince(startTime)
         derived = RunningDerived(elapsed: elapsed, configuration: configuration)
     }
 }
 
-struct RunningDerived {
+public struct RunningDerived {
     var elapsed: TimeInterval
     var remaining: TimeInterval
     
-    init(elapsed: TimeInterval, configuration: IntervalConfiguration) {
+    public init(elapsed: TimeInterval, configuration: IntervalConfiguration) {
         self.elapsed = elapsed
         remaining = configuration.duration - elapsed
     }
 }
 
-enum WorkKind: String, Equatable {
+public enum WorkKind: String, Equatable {
     case deep = "deep"
     case shallow = "shallow"
 }
 
-enum IntervalKindError: Error {
+public enum IntervalKindError: Error {
     case invalidIntervalKind
 }
 
-enum IntervalKind: RawRepresentable, Equatable, Codable {
+public enum IntervalKind: RawRepresentable, Equatable, Codable {
     case work(WorkKind)
     case rest
     
-    init?(rawValue: String) {
+    public init?(rawValue: String) {
         if rawValue == "rest" {
             self = .rest
         } else if rawValue.hasPrefix("work:"), let work = WorkKind(rawValue: String(rawValue.dropFirst(5))) {
@@ -219,9 +221,9 @@ enum IntervalKind: RawRepresentable, Equatable, Codable {
         }
     }
     
-    var isRest: Bool { self == .rest }
+    public var isRest: Bool { self == .rest }
 
-    var rawValue: String {
+    public var rawValue: String {
         switch self {
         case .work(let work):
             return "work:" + work.rawValue
@@ -230,7 +232,7 @@ enum IntervalKind: RawRepresentable, Equatable, Codable {
         }
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         if let kind = IntervalKind(rawValue: try decoder.singleValueContainer().decode(String.self)) {
             self = kind
         } else {
@@ -238,12 +240,12 @@ enum IntervalKind: RawRepresentable, Equatable, Codable {
         }
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(rawValue)
     }
     
-    var localizedDescription: String {
+    public var localizedDescription: String {
         switch self {
         case .work(.deep):
             return NSLocalizedString("Deep Work", comment: "")
@@ -254,7 +256,7 @@ enum IntervalKind: RawRepresentable, Equatable, Codable {
         }
     }
 
-    var endLabel: String {
+    public var endLabel: String {
         switch self {
         case .work:
             return NSLocalizedString("BREAK", comment: "")
@@ -264,16 +266,16 @@ enum IntervalKind: RawRepresentable, Equatable, Codable {
     }
 }
 
-enum IntervalStartMode {
+public enum IntervalStartMode {
     case restart
     case continuation
 }
 
-struct IntervalConfiguration: Equatable, Codable {
-    var kind: IntervalKind
-    var duration: TimeInterval
+public struct IntervalConfiguration: Equatable, Codable {
+    public var kind: IntervalKind
+    public var duration: TimeInterval
     
-    static let deep: [IntervalConfiguration] = [
+    public static let deep: [IntervalConfiguration] = [
         IntervalConfiguration(kind: .work(.deep), duration: 50 * 60),
         IntervalConfiguration(kind: .work(.deep), duration: 25 * 60),
         IntervalConfiguration(kind: .work(.deep), duration: 15 * 60),
@@ -281,7 +283,7 @@ struct IntervalConfiguration: Equatable, Codable {
         IntervalConfiguration(kind: .work(.deep), duration: 15),
     ] : [])
     
-    static let shallow: [IntervalConfiguration] = [
+    public static let shallow: [IntervalConfiguration] = [
         IntervalConfiguration(kind: .work(.shallow), duration: 50 * 60),
         IntervalConfiguration(kind: .work(.shallow), duration: 25 * 60),
         IntervalConfiguration(kind: .work(.shallow), duration: 15 * 60),
@@ -292,7 +294,7 @@ struct IntervalConfiguration: Equatable, Codable {
         IntervalConfiguration(kind: .work(.shallow), duration: 15),
     ] : [])
 
-    static let rest: [IntervalConfiguration] = [
+    public static let rest: [IntervalConfiguration] = [
         IntervalConfiguration(kind: .rest, duration: 5 * 60),
         IntervalConfiguration(kind: .rest, duration: 10 * 60),
         IntervalConfiguration(kind: .rest, duration: 15 * 60),
@@ -302,7 +304,7 @@ struct IntervalConfiguration: Equatable, Codable {
         IntervalConfiguration(kind: .rest, duration: 15),
     ] : [])
 
-    static let all: [IntervalConfiguration] = deep + shallow + rest
+    public static let all: [IntervalConfiguration] = deep + shallow + rest
 }
 
 //enum TimePresentation {

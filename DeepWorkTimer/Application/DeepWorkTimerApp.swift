@@ -44,7 +44,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var globalUserActivity: NSObjectProtocol?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        if isSwiftUIPreview {
+        if isRunningTests {
             return
         }
         
