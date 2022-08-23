@@ -6,3 +6,5 @@ let debugIncludeTinyIntervals = UserDefaults.standard.bool(forKey: "com.tarantso
 let debugDisplayIdleTime = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.idle.show")
 let debugDisplayStretchingTime = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.stretching.show")
 let debugFastIdleTimer = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.idle.fast")
+
+let debugOnLaunchStretching = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.onlaunch.stretching")

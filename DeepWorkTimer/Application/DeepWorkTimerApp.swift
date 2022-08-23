@@ -98,7 +98,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         model.objectWillChange.sink { [weak self] _ in self?.updateSoon() }.store(in: &subscriptions)
         update()
         
-        model.startStretching()
+        if debugOnLaunchStretching {
+            model.startStretching()
+        }
     }
         
     @objc func startTimer(_ sender: NSMenuItem) {

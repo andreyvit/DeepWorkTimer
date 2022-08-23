@@ -67,6 +67,10 @@
             argument = "-com.tarantsov.deepwork.debug.stretching.show YES"
             isEnabled = "NO">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.tarantsov.deepwork.debug.onlaunch.stretching YES"
+            isEnabled = "NO">
+         </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
