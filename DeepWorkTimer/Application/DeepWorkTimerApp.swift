@@ -41,10 +41,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     var subscriptions: Set<AnyCancellable> = []
     
+    var globalUserActivity: NSObjectProtocol?
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         if isSwiftUIPreview {
             return
         }
+        
+        globalUserActivity = ProcessInfo.processInfo.beginActivity(options: [.userInitiatedAllowingIdleSystemSleep], reason: "Deep Work Timer Menubar Updates")
 
         let menu = NSMenu()
         menu.delegate = self
@@ -101,6 +105,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if debugOnLaunchStretching {
             model.startStretching()
         }
+    }
+    
+    func applicationWillTerminate(_ notification: Notification) {
+        globalUserActivity = nil
     }
         
     @objc func startTimer(_ sender: NSMenuItem) {
