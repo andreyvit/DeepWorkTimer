@@ -23,6 +23,7 @@
 		43F897E128B4B23E002B3AC1 /* DeepWorkTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */; };
 		43F897E828B4B535002B3AC1 /* Date+mocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E728B4B535002B3AC1 /* Date+mocking.swift */; };
 		43F897EA28B5FCD1002B3AC1 /* Asserts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E928B5FCD1002B3AC1 /* Asserts.swift */; };
+		43F897ED28B61833002B3AC1 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897EB28B61806002B3AC1 /* Interval.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepWorkTimerTests.swift; sourceTree = "<group>"; };
 		43F897E728B4B535002B3AC1 /* Date+mocking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+mocking.swift"; sourceTree = "<group>"; };
 		43F897E928B5FCD1002B3AC1 /* Asserts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asserts.swift; sourceTree = "<group>"; };
+		43F897EB28B61806002B3AC1 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				43F897CA28B4AA08002B3AC1 /* State.swift */,
+				43F897EB28B61806002B3AC1 /* Interval.swift */,
 				43F897D228B4AB5E002B3AC1 /* Memento.swift */,
 				4356430A282EEE9D009D071A /* Muting.swift */,
 			);
@@ -268,6 +271,7 @@
 			files = (
 				43C98F5D2828804C007D45DF /* ContentView.swift in Sources */,
 				43F897CD28B4AA1F002B3AC1 /* Preferences.swift in Sources */,
+				43F897ED28B61833002B3AC1 /* Interval.swift in Sources */,
 				43F897D528B4ABAE002B3AC1 /* AppModel.swift in Sources */,
 				4356430D282EF295009D071A /* Stretching.swift in Sources */,
 				43C98F6A2829085E007D45DF /* Util.swift in Sources */,
