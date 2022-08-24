@@ -169,6 +169,38 @@ public struct AppState {
             stretchingRemainingTime = nil
         }
     }
+
+    private var statusItemCaptionDebugSuffix: String {
+        var suffix = ""
+        if debugDisplayIdleTime {
+            suffix += " i\(idleDuration, precision: 0) a\(activityDuration, precision: 0)"
+        }
+        if debugDisplayStretchingTime {
+            suffix += " s\(timeTillNextStretch, precision: 0)"
+        }
+        return suffix
+    }
+
+    public var statusItemCaptionCore: String {
+        if let running = running {
+            let remaining = running.remaining
+            if remaining > 0 {
+                return remaining.minutesColonSeconds
+            } else if remaining > -60 {
+                return running.configuration.kind.endLabel
+            } else {
+                return (-remaining).shortString + "?"
+            }
+        } else if untimedWorkDuration > preferences.untimedWorkRelevanceThreshold {
+            return untimedWorkDuration.shortString + "?"
+        } else {
+            return ""
+        }
+    }
+
+    public var statusItemCaption: String {
+        (statusItemCaptionCore + statusItemCaptionDebugSuffix).trimmingCharacters(in: .whitespaces)
+    }
 }
 
 public struct RunningState {

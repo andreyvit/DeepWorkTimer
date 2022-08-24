@@ -143,27 +143,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     private func update() {
-        var suffix = ""
-        if debugDisplayIdleTime {
-            suffix += " i\(model.state.idleDuration, precision: 0) a\(model.state.activityDuration, precision: 0)"
-        }
-        if debugDisplayStretchingTime {
-            suffix += " s\(model.state.timeTillNextStretch, precision: 0)"
-        }
-        if let running = model.state.running {
-            let remaining = running.remaining
-            if remaining > 0 {
-                statusBarItem.button!.title = remaining.minutesColonSeconds + suffix
-            } else if remaining > -60 {
-                statusBarItem.button!.title = running.configuration.kind.endLabel + suffix
-            } else {
-                statusBarItem.button!.title = (-remaining).shortString + "?" + suffix
-            }
-        } else if model.state.untimedWorkDuration > model.state.preferences.untimedWorkRelevanceThreshold {
-            statusBarItem.button!.title = model.state.untimedWorkDuration.shortString + "?" + suffix
-        } else {
-            statusBarItem.button!.title = suffix.trimmingCharacters(in: .whitespaces)
-        }
+        statusBarItem.button!.title = model.state.statusItemCaption
         
         let isRunning = model.state.isRunning
         for (item, configuration, _) in startItems {
