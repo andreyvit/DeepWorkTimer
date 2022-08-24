@@ -4,6 +4,8 @@ public class Preferences {
     public let idleThreshold: TimeInterval = (debugFastIdleTimer ? 10 : 60)
     public let finishedTimerReminderInterval: TimeInterval = 60
     public let idleTimerPausingThreshold: TimeInterval = (debugFastIdleTimer ? 15 : 3 * 60)
+    public let cancelOverdueIntervalAfter: TimeInterval = (debugFastIdleTimer ? 60 : 2 * 60 * 60)
+
     public let untimedWorkRelevanceThreshold: TimeInterval = (debugFastIdleTimer ? 5 : 2 * 60)
     public let untimedWorkEndThreshold: TimeInterval = (debugFastIdleTimer ? 15 : 3 * 60)
     public let missingTimerReminderThreshold: TimeInterval = (debugFastIdleTimer ? 15 : 2 * 60)

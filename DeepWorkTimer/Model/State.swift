@@ -86,7 +86,9 @@ public struct AppState {
         if running != nil {
             running!.update(now: now)
             if running!.isDone {
-                if running!.completionNotificationTime == nil || (now.timeIntervalSince(running!.completionNotificationTime!) > preferences.finishedTimerReminderInterval && !isIdle) {
+                if running!.remaining < -preferences.cancelOverdueIntervalAfter {
+                    stop(now: now)
+                } else if running!.completionNotificationTime == nil || (now.timeIntervalSince(running!.completionNotificationTime!) > preferences.finishedTimerReminderInterval && !isIdle) {
                     running!.completionNotificationTime = now
                     pendingIntervalCompletionNotification = running!.configuration
                 }

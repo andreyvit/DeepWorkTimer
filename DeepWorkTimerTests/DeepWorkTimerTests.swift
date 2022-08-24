@@ -38,13 +38,32 @@ class DeepWorkTimerTests: XCTestCase {
         XCTAssertNil(state.stretchingRemainingTime)
     }
     
-    func testBar() {
-        print(clock)
-        clock += .hour
+    func testTimerFlow() {
+        XCTAssertNil(state.running)
+        
+        start(.deep50)
+        XCTAssertEqual(state.running?.remaining, .minutes(50))
+
+        advance(.minutes(30))
+        XCTAssertEqual(state.running?.remaining, .minutes(20))
+
+        advance(.minutes(30))
+        XCTAssertEqual(state.running?.remaining, .minutes(-10))
     }
     
+    func testLongBreakCancelsInterval() {
+        start(.deep50)
+        advance(.hours(8))
+        XCTAssertNil(state.running)
+    }
+
     private func advance(_ interval: TimeInterval) {
         clock += interval
+        state.update(now: clock)
+    }
+    
+    private func start(_ configuration: IntervalConfiguration) {
+        state.start(configuration: configuration, mode: .restart, now: clock)
         state.update(now: clock)
     }
     
@@ -54,4 +73,8 @@ class DeepWorkTimerTests: XCTestCase {
         return state
     }
 
+}
+
+extension IntervalConfiguration {
+    static var deep50 = IntervalConfiguration(kind: .work(.deep), duration: .minutes(50))
 }
