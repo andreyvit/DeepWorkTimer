@@ -151,9 +151,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             suffix += " s\(model.state.timeTillNextStretch, precision: 0)"
         }
         if let running = model.state.running {
-            let remaining = running.derived.remaining
+            let remaining = running.remaining
             if remaining > 0 {
-                statusBarItem.button!.title = running.derived.remaining.minutesColonSeconds + suffix
+                statusBarItem.button!.title = remaining.minutesColonSeconds + suffix
             } else if remaining > -60 {
                 statusBarItem.button!.title = running.configuration.kind.endLabel + suffix
             } else {

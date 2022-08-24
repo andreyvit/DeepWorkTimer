@@ -52,10 +52,10 @@ public struct AppState {
         switch mode {
         case .continuation:
             if let running = running {
-                if running.derived.remaining >= 0 {
+                if running.remaining >= 0 {
                     self.running!.configuration = configuration
                 } else {
-                    let extraWorked = -running.derived.remaining
+                    let extraWorked = -running.remaining
                     self.running = RunningState(startTime: now.addingTimeInterval(-extraWorked), configuration: configuration)
                 }
             } else if let untimedWorkStart = untimedWorkStart {
@@ -170,12 +170,16 @@ public struct AppState {
 }
 
 public struct RunningState {
-    let startTime: Date
-    var configuration: IntervalConfiguration
-    var completionNotificationTime: Date? = nil
-    var derived: RunningDerived
-    var isDone: Bool { derived.remaining < 0 }
+    public let startTime: Date
+    public var configuration: IntervalConfiguration
+    public var completionNotificationTime: Date? = nil
+    public var isDone: Bool { derived.remaining < 0 }
     
+    public var elapsed: TimeInterval { derived.elapsed }
+    public var remaining: TimeInterval { derived.remaining }
+
+    private var derived: RunningDerived
+
     public init(startTime: Date, configuration: IntervalConfiguration) {
         self.startTime = startTime
         self.configuration = configuration
