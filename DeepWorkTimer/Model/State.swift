@@ -185,11 +185,11 @@ public struct AppState {
         if let running = running {
             let remaining = running.remaining
             if remaining > 0 {
-                return remaining.minutesColonSeconds
+                return remaining.minutesColonSeconds + " " + running.configuration.kind.symbol
             } else if remaining > -60 {
                 return running.configuration.kind.endLabel
             } else {
-                return (-remaining).shortString + "?"
+                return running.configuration.kind.symbol + "? " + (-remaining).shortString + "?"
             }
         } else if untimedWorkDuration > preferences.untimedWorkRelevanceThreshold {
             return untimedWorkDuration.shortString + "?"

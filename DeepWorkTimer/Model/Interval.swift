@@ -4,6 +4,17 @@ public enum WorkKind: String, Equatable {
     case leveragedDeep = "leveraged"
     case deep = "deep"
     case shallow = "shallow"
+
+    public var symbol: String {
+        switch self {
+        case .leveragedDeep:
+            return NSLocalizedString("🎉", comment: "interval type symbol")  // ⏫💗🔥🍾🎉
+        case .deep:
+            return NSLocalizedString("🧑🏼‍💻", comment: "interval type symbol")
+        case .shallow:
+            return NSLocalizedString("💬", comment: "interval type symbol")
+        }
+    }
 }
 
 public enum IntervalKindError: Error {
@@ -58,6 +69,15 @@ public enum IntervalKind: RawRepresentable, Equatable, Codable {
             return NSLocalizedString("Shallow Work", comment: "")
         case .rest:
             return NSLocalizedString("Rest", comment: "")
+        }
+    }
+
+    public var symbol: String {
+        switch self {
+        case .work(let kind):
+            return kind.symbol
+        case .rest:
+            return NSLocalizedString("🌴", comment: "interval type symbol")
         }
     }
 
