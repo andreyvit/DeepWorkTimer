@@ -1,6 +1,7 @@
 import Foundation
 
 public enum WorkKind: String, Equatable {
+    case leveragedDeep = "leveraged"
     case deep = "deep"
     case shallow = "shallow"
 }
@@ -49,6 +50,8 @@ public enum IntervalKind: RawRepresentable, Equatable, Codable {
     
     public var localizedDescription: String {
         switch self {
+        case .work(.leveragedDeep):
+            return NSLocalizedString("Leveraged Work", comment: "")
         case .work(.deep):
             return NSLocalizedString("Deep Work", comment: "")
         case .work(.shallow):
@@ -72,6 +75,14 @@ public struct IntervalConfiguration: Equatable, Codable {
     public var kind: IntervalKind
     public var duration: TimeInterval
     
+    public static let leveraged: [IntervalConfiguration] = [
+        IntervalConfiguration(kind: .work(.leveragedDeep), duration: 50 * 60),
+        IntervalConfiguration(kind: .work(.leveragedDeep), duration: 25 * 60),
+        IntervalConfiguration(kind: .work(.leveragedDeep), duration: 15 * 60),
+    ] + (debugIncludeTinyIntervals ? [
+        IntervalConfiguration(kind: .work(.leveragedDeep), duration: 15),
+    ] : [])
+
     public static let deep: [IntervalConfiguration] = [
         IntervalConfiguration(kind: .work(.deep), duration: 50 * 60),
         IntervalConfiguration(kind: .work(.deep), duration: 25 * 60),
@@ -101,5 +112,5 @@ public struct IntervalConfiguration: Equatable, Codable {
         IntervalConfiguration(kind: .rest, duration: 15),
     ] : [])
 
-    public static let all: [IntervalConfiguration] = deep + shallow + rest
+    public static let all: [IntervalConfiguration] = leveraged + deep + shallow + rest
 }
