@@ -8,7 +8,7 @@ public enum WorkKind: String, Equatable {
     public var symbol: String {
         switch self {
         case .leveragedDeep:
-            return NSLocalizedString("🎉", comment: "interval type symbol")  // ⏫💗🔥🍾🎉
+            return NSLocalizedString("🔥", comment: "interval type symbol")  // ⏫💗🔥🍾🎉
         case .deep:
             return NSLocalizedString("🧑🏼‍💻", comment: "interval type symbol")
         case .shallow:

@@ -189,7 +189,7 @@ public struct AppState {
             } else if remaining > -60 {
                 return running.configuration.kind.endLabel
             } else {
-                return running.configuration.kind.symbol + "? " + (-remaining).shortString + "?"
+                return (-remaining).shortString + "?"
             }
         } else if untimedWorkDuration > preferences.untimedWorkRelevanceThreshold {
             return untimedWorkDuration.shortString + "?"
