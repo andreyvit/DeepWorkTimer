@@ -1,27 +1,21 @@
 import Foundation
 
-public enum WorkKind: String, Equatable {
+public enum WorkKind: String, Equatable, Hashable {
     case leveragedDeep = "leveraged"
     case deep = "deep"
     case shallow = "shallow"
-
-    public var symbol: String {
-        switch self {
-        case .leveragedDeep:
-            return NSLocalizedString("🔥", comment: "interval type symbol")  // ⏫💗🔥🍾🎉
-        case .deep:
-            return NSLocalizedString("🧑🏼‍💻", comment: "interval type symbol")
-        case .shallow:
-            return NSLocalizedString("💬", comment: "interval type symbol")
-        }
-    }
 }
 
 public enum IntervalKindError: Error {
     case invalidIntervalKind
 }
 
-public enum IntervalKind: RawRepresentable, Equatable, Codable {
+public enum IntervalPurpose: Hashable {
+    case work
+    case rest
+}
+
+public enum IntervalKind: RawRepresentable, Equatable, Codable, Hashable {
     case work(WorkKind)
     case rest
     
@@ -59,6 +53,15 @@ public enum IntervalKind: RawRepresentable, Equatable, Codable {
         try container.encode(rawValue)
     }
     
+    public var purpose: IntervalPurpose {
+        switch self {
+        case .work:
+            return .work
+        case .rest:
+            return .rest
+        }
+    }
+
     public var localizedDescription: String {
         switch self {
         case .work(.leveragedDeep):
@@ -69,24 +72,6 @@ public enum IntervalKind: RawRepresentable, Equatable, Codable {
             return NSLocalizedString("Shallow Work", comment: "")
         case .rest:
             return NSLocalizedString("Rest", comment: "")
-        }
-    }
-
-    public var symbol: String {
-        switch self {
-        case .work(let kind):
-            return kind.symbol
-        case .rest:
-            return NSLocalizedString("🌴", comment: "interval type symbol")
-        }
-    }
-
-    public var endLabel: String {
-        switch self {
-        case .work:
-            return NSLocalizedString("BREAK", comment: "")
-        case .rest:
-            return NSLocalizedString("WORK", comment: "")
         }
     }
 }

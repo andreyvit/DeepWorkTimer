@@ -62,8 +62,7 @@ class AppModel: ObservableObject {
         state.update(now: now)
         save()
         reconsiderUpdateTimer()
-        if let configuration = state.pendingIntervalCompletionNotification {
-            state.pendingIntervalCompletionNotification = nil
+        if let configuration = state.popIntervalCompletionNotification() {
             signalIntervalCompletion(configuration: configuration)
         }
         if state.pendingMissingTimerWarning {

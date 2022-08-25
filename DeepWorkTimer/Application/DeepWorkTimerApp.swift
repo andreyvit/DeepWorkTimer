@@ -143,7 +143,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     private func update() {
-        statusBarItem.button!.title = model.state.statusItemCaption
+        statusBarItem.button!.title = model.state.statusItemText
         
         let isRunning = model.state.isRunning
         for (item, configuration, _) in startItems {

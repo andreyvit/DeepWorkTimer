@@ -10,7 +10,7 @@ public struct AppState {
     public private(set) var timeTillNextStretch: TimeInterval = .greatestFiniteMagnitude
     public private(set) var stretchingRemainingTime: TimeInterval? = nil
     
-    public var pendingIntervalCompletionNotification: IntervalConfiguration?
+    public private(set) var pendingIntervalCompletionNotification: IntervalConfiguration?
     public var pendingMissingTimerWarning = false
 
     public var isRunning: Bool { running != nil }
@@ -88,7 +88,7 @@ public struct AppState {
             if running!.isDone {
                 if running!.remaining < -preferences.cancelOverdueIntervalAfter {
                     stop(now: now)
-                } else if running!.completionNotificationTime == nil || (now.timeIntervalSince(running!.completionNotificationTime!) > preferences.finishedTimerReminderInterval && !isIdle) {
+                } else if running!.completionNotificationTime == nil || (now.timeIntervalSince(running!.completionNotificationTime!).isGreaterThanOrEqualTo(preferences.finishedTimerReminderInterval, ε: timerEps) && !isIdle) {
                     running!.completionNotificationTime = now
                     pendingIntervalCompletionNotification = running!.configuration
                 }
@@ -169,8 +169,12 @@ public struct AppState {
             stretchingRemainingTime = nil
         }
     }
+    
+    public mutating func popIntervalCompletionNotification() -> IntervalConfiguration? {
+        return pendingIntervalCompletionNotification.pop()
+    }
 
-    private var statusItemCaptionDebugSuffix: String {
+    private var debugTitleSuffix: String {
         var suffix = ""
         if debugDisplayIdleTime {
             suffix += " i\(idleDuration, precision: 0) a\(activityDuration, precision: 0)"
@@ -181,25 +185,28 @@ public struct AppState {
         return suffix
     }
 
-    public var statusItemCaptionCore: String {
+    public func coreStatusText(using scheme: TitleScheme) -> String {
         if let running = running {
             let remaining = running.remaining
-            if remaining > 0 {
-                return remaining.minutesColonSeconds + " " + running.configuration.kind.symbol
-            } else if remaining > -60 {
-                return running.configuration.kind.endLabel
+            if remaining.isGreaterThanZero(ε: timerEps) {
+                let symbol = scheme.intervalKindSymbols[running.configuration.kind]!
+                return remaining.minutesColonSeconds + " " + symbol
+            } else if remaining.isGreaterThan(-60, ε: timerEps) {
+                return scheme.endPrompt[running.configuration.kind.purpose]!
             } else {
                 return (-remaining).shortString + "?"
             }
-        } else if untimedWorkDuration > preferences.untimedWorkRelevanceThreshold {
+        } else if untimedWorkDuration.isGreaterThanOrEqualTo(preferences.untimedWorkRelevanceThreshold, ε: timerEps) {
             return untimedWorkDuration.shortString + "?"
         } else {
             return ""
         }
     }
 
-    public var statusItemCaption: String {
-        (statusItemCaptionCore + statusItemCaptionDebugSuffix).trimmingCharacters(in: .whitespaces)
+    public var testStatusText: String { coreStatusText(using: .test) }
+
+    public var statusItemText: String {
+        (coreStatusText(using: .live) + debugTitleSuffix).trimmingCharacters(in: .whitespaces)
     }
 }
 
@@ -207,7 +214,7 @@ public struct RunningState {
     public let startTime: Date
     public var configuration: IntervalConfiguration
     public var completionNotificationTime: Date? = nil
-    public var isDone: Bool { derived.remaining < 0 }
+    public var isDone: Bool { derived.remaining.isLessThanOrEqualToZero(ε: timerEps) }
     
     public var elapsed: TimeInterval { derived.elapsed }
     public var remaining: TimeInterval { derived.remaining }
@@ -247,3 +254,13 @@ public enum IntervalStartMode {
 //    case untimedWork(TimeInterval)
 //    case none
 //}
+
+fileprivate extension Optional {
+    mutating func pop() -> Self {
+        let value = self
+        if value != nil {
+            self = nil
+        }
+        return value
+    }
+}
