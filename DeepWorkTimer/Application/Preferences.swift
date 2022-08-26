@@ -13,6 +13,8 @@ public class Preferences {
     
     public let stretchingDuration: TimeInterval = (debugFastIdleTimer ? 5 : 30)
     public let stretchingPeriod: TimeInterval = (debugFastIdleTimer ? 15 : 20 * 60)
+    
+    public let dayBoundaryHour = 4  // 4 am
 
     public let timeToRestMessages = [
         "Ready for a break?",

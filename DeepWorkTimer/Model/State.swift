@@ -1,17 +1,23 @@
 import Foundation
 
 public struct AppState {
+    public let calendar: Calendar
     public let preferences: Preferences
     public private(set) var lastConfiguration: IntervalConfiguration = .all.first!
     public private(set) var running: RunningState?
     public private(set) var idleDuration: TimeInterval = 0
     public private(set) var activityDuration: TimeInterval = 0
     public private(set) var untimedWorkDuration: TimeInterval = 0
-    public private(set) var timeTillNextStretch: TimeInterval = .greatestFiniteMagnitude
+    public private(set) var timeTillNextStretch: TimeInterval?
     public private(set) var stretchingRemainingTime: TimeInterval? = nil
     
     public private(set) var pendingIntervalCompletionNotification: IntervalConfiguration?
-    public var pendingMissingTimerWarning = false
+    public private(set) var pendingMissingTimerWarning = false
+
+    public private(set) var totalMuting: Muting? = nil
+    public private(set) var stretchMuting: Muting? = nil
+    private var lastTotalMutingDeactivation: Date = .distantPast
+    private var lastStretchMutingDeactivation: Date = .distantPast
 
     public var isRunning: Bool { running != nil }
 
@@ -25,12 +31,18 @@ public struct AppState {
     private var lastStretchTime: Date
     private var nextStretchTime: Date = .distantFuture
     private var stretchingStartTime: Date? = nil
+    
+    public var isTotalMutingActive: Bool { totalMuting != nil }
+    public var isStretchingMutingActive: Bool { isTotalMutingActive || stretchMuting != nil }
 
-    public init(memento: AppMemento, preferences: Preferences, now: Date) {
+    public init(memento: AppMemento, preferences: Preferences, now: Date, calendar: Calendar = .autoupdatingCurrent) {
+        self.calendar = calendar
         self.preferences = preferences
         self.lastStopTime = now
         lastConfiguration = memento.configuration
         lastStretchTime = memento.lastStretchTime
+        totalMuting = memento.totalMuting
+        stretchMuting = memento.stretchMuting
         if let startTime = memento.startTime {
             running = RunningState(startTime: startTime, configuration: memento.configuration)
         }
@@ -43,7 +55,9 @@ public struct AppState {
         AppMemento(
             startTime: running?.startTime,
             configuration: lastConfiguration,
-            lastStretchTime: lastStretchTime
+            lastStretchTime: lastStretchTime,
+            totalMuting: totalMuting,
+            stretchMuting: stretchMuting
         )
     }
         
@@ -74,6 +88,14 @@ public struct AppState {
     }
 
     public mutating func update(now: Date) {
+        if let endTime = totalMuting?.endTime, endTime <= now {
+            setTotalMutingMode(nil, now: now)
+        }
+        if let endTime = stretchMuting?.endTime, endTime <= now {
+            stretchMuting = nil
+            lastStretchMutingDeactivation = now
+        }
+
         if let idleStartTime = idleStartTime {
             idleDuration = now.timeIntervalSince(idleStartTime)
         }
@@ -88,7 +110,10 @@ public struct AppState {
             if running!.isDone {
                 if running!.remaining < -preferences.cancelOverdueIntervalAfter {
                     stop(now: now)
-                } else if running!.completionNotificationTime == nil || (now.timeIntervalSince(running!.completionNotificationTime!).isGreaterThanOrEqualTo(preferences.finishedTimerReminderInterval, ε: timerEps) && !isIdle) {
+                } else if !isTotalMutingActive && (
+                        running!.completionNotificationTime == nil ||
+                        (now.timeIntervalSince(running!.completionNotificationTime!).isGreaterThanOrEqualTo(preferences.finishedTimerReminderInterval, ε: timerEps) && !isIdle)
+                ) {
                     running!.completionNotificationTime = now
                     pendingIntervalCompletionNotification = running!.configuration
                 }
@@ -106,11 +131,23 @@ public struct AppState {
         } else {
             lastStretchTime = self.lastStretchTime
         }
-        let latestStretchingBoundary = [lastStretchTime, lastStopTime, untimedWorkStart ?? .distantPast, running?.startTime ?? .distantPast].max()!
-        nextStretchTime = latestStretchingBoundary.addingTimeInterval(preferences.stretchingPeriod)
-        timeTillNextStretch = nextStretchTime.timeIntervalSince(now)
-        if timeTillNextStretch < 0 && !isStretching {
-            startStretching(now: now)
+        let latestStretchingBoundary = [
+            lastStretchTime,
+            lastStopTime,
+            untimedWorkStart ?? .distantPast,
+            running?.startTime ?? .distantPast,
+            lastStretchMutingDeactivation,
+        ].max()!
+        if isStretchingMutingActive {
+            nextStretchTime = .distantFuture
+            timeTillNextStretch = nil
+        } else {
+            nextStretchTime = latestStretchingBoundary.addingTimeInterval(preferences.stretchingPeriod)
+            let timeTillNextStretch = nextStretchTime.timeIntervalSince(now)
+            self.timeTillNextStretch = timeTillNextStretch
+            if timeTillNextStretch < 0 && !isStretching {
+                startStretching(now: now)
+            }
         }
     }
     
@@ -139,7 +176,7 @@ public struct AppState {
 
         if running != nil && idleDuration > preferences.idleTimerPausingThreshold {
             // TODO: pause
-        } else if running == nil && min(activityDuration, now.timeIntervalSince(lastStopTime)) > preferences.missingTimerReminderThreshold {
+        } else if running == nil && min(activityDuration, now.timeIntervalSince(lastStopTime)).isGreaterThanOrEqualTo(preferences.missingTimerReminderThreshold, ε: timerEps) && !isTotalMutingActive {
             if now.timeIntervalSince(missingTimerWarningTime) > preferences.missingTimerReminderRepeatInterval {
                 missingTimerWarningTime = now
                 pendingMissingTimerWarning = true
@@ -173,13 +210,27 @@ public struct AppState {
     public mutating func popIntervalCompletionNotification() -> IntervalConfiguration? {
         return pendingIntervalCompletionNotification.pop()
     }
+    
+    public mutating func popMissingTimerWarning() -> Bool {
+        return pendingMissingTimerWarning.pop()
+    }
+
+    public mutating func setTotalMutingMode(_ newMode: MutingMode?, now: Date) {
+        if let newMode = newMode {
+            totalMuting = Muting(mode: newMode, startingAt: now, calendar: calendar, dayBoundaryHour: preferences.dayBoundaryHour)
+        } else {
+            totalMuting = nil
+            lastTotalMutingDeactivation = now
+            lastStretchMutingDeactivation = now
+        }
+    }
 
     private var debugTitleSuffix: String {
         var suffix = ""
         if debugDisplayIdleTime {
             suffix += " i\(idleDuration, precision: 0) a\(activityDuration, precision: 0)"
         }
-        if debugDisplayStretchingTime {
+        if debugDisplayStretchingTime, let timeTillNextStretch = timeTillNextStretch {
             suffix += " s\(timeTillNextStretch, precision: 0)"
         }
         return suffix
@@ -260,6 +311,16 @@ fileprivate extension Optional {
         let value = self
         if value != nil {
             self = nil
+        }
+        return value
+    }
+}
+
+fileprivate extension Bool {
+    mutating func pop() -> Self {
+        let value = self
+        if value {
+            self = false
         }
         return value
     }

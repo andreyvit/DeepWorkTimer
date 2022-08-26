@@ -65,8 +65,7 @@ class AppModel: ObservableObject {
         if let configuration = state.popIntervalCompletionNotification() {
             signalIntervalCompletion(configuration: configuration)
         }
-        if state.pendingMissingTimerWarning {
-            state.pendingMissingTimerWarning = false
+        if state.popMissingTimerWarning() {
             let content = UNMutableNotificationContent()
             content.title = "Want to start a timer?"
             content.interruptionLevel = .timeSensitive
@@ -147,13 +146,19 @@ class AppModel: ObservableObject {
     func startStretching() {
         guard !state.isStretching else { return }
         mutate {
-            state.startStretching(now: .now)
+            state.startStretching(now: now)
         }
     }
     func endStretching() {
         guard state.isStretching else { return }
         mutate {
-            state.endStretching(now: .now)
+            state.endStretching(now: now)
+        }
+    }
+    
+    func setTotalMutingMode(_ newMode: MutingMode?) {
+        mutate {
+            state.setTotalMutingMode(newMode, now: now)
         }
     }
     

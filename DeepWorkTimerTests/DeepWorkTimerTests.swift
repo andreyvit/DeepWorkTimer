@@ -96,10 +96,41 @@ class DeepWorkTimerTests: XCTestCase {
         XCTAssertNil(state.running)
     }
 
+    func testUntimedBehavior() {
+        XCTAssertFalse(state.popMissingTimerWarning())
+        XCTAssertEqual(state.testStatusText, "")
+
+        advance(.minutes(1))
+        XCTAssertFalse(state.popMissingTimerWarning())
+        XCTAssertEqual(state.testStatusText, "")
+
+        advance(.minutes(1))
+        XCTAssertFalse(state.popMissingTimerWarning())
+        XCTAssertEqual(state.testStatusText, "2m?")
+
+        advance(.minutes(5))
+        XCTAssertTrue(state.popMissingTimerWarning())
+        XCTAssertEqual(state.testStatusText, "xx")
+    }
+
+    func testMutingSilencesStretching() {
+        mute(.forever)
+        advance(.minutes(10))
+        XCTAssertNil(state.stretchingRemainingTime)
+    }
+
+    func testMutingSilencesStartNotifications() {
+        mute(.forever)
+        advance(.minutes(10))
+        XCTAssertNil(state.stretchingRemainingTime)
+    }
+
     private func advance(_ interval: TimeInterval) {
         clock += interval
         if let idleStart = idleStart {
             state.setIdleDuration(clock.timeIntervalSince(idleStart), now: clock)
+        } else {
+            state.setIdleDuration(1, now: clock)
         }
         state.update(now: clock)
     }
@@ -123,6 +154,10 @@ class DeepWorkTimerTests: XCTestCase {
         precondition(idleStart != nil)
         idleStart = nil
         advance(0)
+    }
+
+    private func mute(_ mode: MutingMode?) {
+        state.setTotalMutingMode(mode, now: clock)
     }
 
     private func makeState(_ memento: AppMemento = .init()) -> AppState {

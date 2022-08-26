@@ -39,6 +39,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let nextStretchItem = NSMenuItem(title: "Next Stretching in ...", action: nil, keyEquivalent: "")
     let startStretchingItem = NSMenuItem(title: "Stretch Now", action: #selector(startStretching), keyEquivalent: "")
 
+    var globalMutingItems: [(NSMenuItem, MutingMode?)] = []
+    let globalMutingUntilItem = NSMenuItem(title: "", action: nil, keyEquivalent: "")
+    let globalMutingSubmenuItem = NSMenuItem(title: "Silence All Nagging", action: nil, keyEquivalent: "")
+    let globalMutingSubmenu = NSMenu()
+    let globalMutingOffItem = NSMenuItem(title: "Off", action: #selector(changeGlobalMutingMode), keyEquivalent: "")
+
     var subscriptions: Set<AnyCancellable> = []
     
     var globalUserActivity: NSObjectProtocol?
@@ -81,6 +87,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(startStretchingItem)
 
         menu.addItem(NSMenuItem.separator())
+        globalMutingSubmenuItem.submenu = globalMutingSubmenu
+        menu.addItem(globalMutingSubmenuItem)
+        menu.addItem(NSMenuItem.separator())
+        
+        globalMutingSubmenu.addItem(globalMutingUntilItem)
+        globalMutingUntilItem.isEnabled = false
+        globalMutingSubmenu.addItem(NSMenuItem.separator())
+        globalMutingSubmenu.addItem(globalMutingOffItem)
+        globalMutingItems.append((globalMutingOffItem, nil))
+        for mode in MutingMode.options {
+            let item = NSMenuItem(title: mode.localizedDescription, action: #selector(changeGlobalMutingMode), keyEquivalent: "")
+            globalMutingSubmenu.addItem(item)
+            globalMutingItems.append((item, mode))
+        }
 
 //        let contentView = ContentView()
 //        let contentController = NSHostingController(rootView: contentView)
@@ -132,6 +152,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         model.startStretching()
     }
     
+    @objc func changeGlobalMutingMode(_ sender: NSMenuItem) {
+        guard let item = globalMutingItems.first(where: { $0.0 == sender }) else {
+            fatalError("Unknown start item")
+        }
+        model.setTotalMutingMode(item.1)
+    }
+    
     private var isUpdateScheduled = false
     private func updateSoon() {
         guard !isUpdateScheduled else { return }
@@ -151,7 +178,24 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 //            item.isEnabled = !isRunning
         }
         
-        nextStretchItem.title = "Next Stretching In \(model.state.timeTillNextStretch.shortString)"
+        if let timeTillNextStretch = model.state.timeTillNextStretch {
+            nextStretchItem.title = "Next Stretching In \(timeTillNextStretch.shortString)"
+        } else {
+            nextStretchItem.title = "Stretching Paused"
+        }
+        
+        let totalMutingMode = model.state.totalMuting?.mode
+        for (item, mode) in globalMutingItems {
+            item.state = (totalMutingMode == mode ? .on : .off)
+        }
+        globalMutingSubmenuItem.state = (totalMutingMode != nil ? .on : .off)
+        if let endTime = model.state.totalMuting?.endTime {
+            globalMutingUntilItem.isHidden = false
+            globalMutingUntilItem.title = "Silenced Until \(endTime)"
+        } else {
+            globalMutingUntilItem.isHidden = true
+            globalMutingUntilItem.title = "Silenced Until..."
+        }
         
         stopItem.isHidden = !isRunning
     }
@@ -174,6 +218,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc func quit(_ sender: NSMenuItem) {
         NSApp.terminate(self)
     }
+}
+
+private struct MutingSubmenu {
+    
 }
 
 private extension NSMenuItem {
