@@ -4,6 +4,7 @@ import Combine
 import UserNotifications
 import os.log
 
+let launchAtLoginHelper = LoginItem(bundleID: "com.tarantsov.DeepWorkTimer.LaunchAtLoginHelper")
 
 @main
 struct DeepWorkTimerApp: App {
@@ -44,6 +45,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let globalMutingSubmenuItem = NSMenuItem(title: "Silence All Nagging", action: nil, keyEquivalent: "")
     let globalMutingSubmenu = NSMenu()
     let globalMutingOffItem = NSMenuItem(title: "Off", action: #selector(changeGlobalMutingMode), keyEquivalent: "")
+
+    let launchAtLoginItem = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
 
     var subscriptions: Set<AnyCancellable> = []
     
@@ -89,6 +92,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(NSMenuItem.separator())
         globalMutingSubmenuItem.submenu = globalMutingSubmenu
         menu.addItem(globalMutingSubmenuItem)
+        menu.addItem(launchAtLoginItem)
         menu.addItem(NSMenuItem.separator())
         
         globalMutingSubmenu.addItem(globalMutingUntilItem)
@@ -110,7 +114,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 //        menu.addItem(customMenuItem)
 //        menu.addItem(NSMenuItem.separator())
 
-        menu.addItem(withTitle: "About Deep Work Timer", action: #selector(about), keyEquivalent: "")
+        menu.addItem(withTitle: "About", action: #selector(about), keyEquivalent: "")
         menu.addItem(withTitle: "Quit Deep Work Timer", action: #selector(quit), keyEquivalent: "")
 
         statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
@@ -158,6 +162,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         model.setTotalMutingMode(item.1)
     }
+
+    @objc func toggleLaunchAtLogin() {
+        launchAtLoginHelper.isEnabled = !launchAtLoginHelper.isEnabled
+        update()
+    }
     
     private var isUpdateScheduled = false
     private func updateSoon() {
@@ -196,7 +205,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             globalMutingUntilItem.isHidden = true
             globalMutingUntilItem.title = "Silenced Until..."
         }
-        
+
+        launchAtLoginItem.state = (launchAtLoginHelper.isEnabled ? .on : .off)
+
         stopItem.isHidden = !isRunning
     }
     
