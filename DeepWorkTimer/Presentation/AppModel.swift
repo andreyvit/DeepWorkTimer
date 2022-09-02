@@ -15,8 +15,6 @@ class AppModel: ObservableObject {
     private init() {
         let memento = AppModel.loadMemento() ?? AppMemento()
         state = AppState(memento: memento, preferences: preferences, now: .now)
-        startIdleTimer()
-        handleIdleTimer()
         mutate {}
     }
     
@@ -33,34 +31,70 @@ class AppModel: ObservableObject {
     }
         
     deinit {
-        cancelUpdateTimer()
-        cancelIdleTimer()
+        setUpdateTimerFrequency(nil)
         save()
     }
     
-    private var updateTimer: Timer?
-    private func cancelUpdateTimer() {
-        updateTimer?.invalidate()
-        updateTimer = nil
-    }
-    private func reconsiderUpdateTimer() {
-        let wantTimer = state.isFrequentUpdatingDesired
-        let haveTimer = (updateTimer != nil)
-        guard wantTimer != haveTimer else { return }
-        cancelUpdateTimer()
-        if wantTimer {
-            updateTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(update), userInfo: nil, repeats: true)
-            updateTimer!.tolerance = 0.1
-            RunLoop.main.add(updateTimer!, forMode: .common)
-            timerLog.debug("high-frequency timer ON")
-        } else {
-            timerLog.debug("high-frequency timer OFF")
+    
+    // MARK: - Update Timer
+    
+    private enum TimerFrequency: Equatable, CustomStringConvertible {
+        case frequent
+        case idle
+        
+        public var description: String {
+            switch self {
+            case .frequent: return "FREQUENT"
+            case .idle: return "IDLE"
+            }
         }
     }
     
+    private var updateTimer: Timer?
+    private var updateTimerFrequency: TimerFrequency?
+
+    private var idleTimerInterval: TimeInterval { preferences.idleThreshold / 4 }
+
+    private func reconsiderUpdateTimer() {
+        setUpdateTimerFrequency(state.isFrequentUpdatingDesired ? .frequent : .idle)
+    }
+    private func setUpdateTimerFrequency(_ newFrequency: TimerFrequency?) {
+        guard newFrequency != updateTimerFrequency else { return }
+        updateTimerFrequency = newFrequency
+        updateTimer?.invalidate()
+        if let desiredFrequency = newFrequency {
+            let interval, tolerance: TimeInterval
+            switch desiredFrequency {
+            case .frequent:
+                (interval, tolerance) = (0.25, 0.1)
+            case .idle:
+                interval = idleTimerInterval
+                tolerance = interval / 4
+            }
+            
+            updateTimer = Timer(timeInterval: interval, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+            updateTimer!.tolerance = tolerance
+            RunLoop.main.add(updateTimer!, forMode: .common)
+            timerLog.debug("timer now in \(desiredFrequency.description, privacy: .public) mode (interval \(interval)s ± \(tolerance)s)")
+        } else {
+            updateTimer = nil
+            timerLog.debug("timer now OFF")
+        }
+    }
+
+    
+    // MARK: - Updates
+
+    private var lastIdleUpdate: Date = .distantPast
+    private var idleUpdateInterval: TimeInterval { idleTimerInterval - 2 /* ensure updates when timer fires at idleTimerInterval */ }
+
     private func mutate(_ block: () -> Void) {
         objectWillChange.send()
         now = Date.now
+        if now.timeIntervalSince(lastIdleUpdate) >= idleUpdateInterval {
+            let idleDuration = computeIdleTime()
+            state.setIdleDuration(idleDuration, now: now)
+        }
         block()
         state.update(now: now)
         save()
@@ -125,24 +159,8 @@ class AppModel: ObservableObject {
         UserDefaults.standard.set(string, forKey: "state")
     }
 
-    private var idleTimer: Timer?
-    private func cancelIdleTimer() {
-        idleTimer?.invalidate()
-        idleTimer = nil
-    }
-    private func startIdleTimer() {
-        cancelIdleTimer()
-        idleTimer = Timer(timeInterval: preferences.idleThreshold / 4, target: self, selector: #selector(handleIdleTimer), userInfo: nil, repeats: true)
-        idleTimer!.tolerance = idleTimer!.timeInterval / 5
-        RunLoop.main.add(idleTimer!, forMode: .common)
-    }
-    @objc private func handleIdleTimer() {
-        let idleDuration = computeIdleTime()
-        let now = Date.now
-        mutate {
-            state.setIdleDuration(idleDuration, now: now)
-        }
-    }
+    
+    // MARK: - Stretching
     
     private var stretchingWindow: NSWindow?
 
