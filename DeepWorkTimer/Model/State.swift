@@ -21,6 +21,8 @@ public struct AppState {
 
     public var isRunning: Bool { running != nil }
 
+    public var isFrequentUpdatingDesired: Bool { isRunning || isStretching || isStretchingSoon }
+
     private var idleStartTime: Date?
     private var activityStartTime: Date?
     private var isIdle: Bool { idleStartTime != nil }
@@ -184,8 +186,14 @@ public struct AppState {
         }
     }
     
-    public var isStretching: Bool {
-        return stretchingStartTime != nil
+    public var isStretching: Bool { stretchingStartTime != nil }
+
+    public var isStretchingSoon: Bool {
+        if let timeTillNextStretch = timeTillNextStretch {
+            return timeTillNextStretch < 60
+        } else {
+            return false
+        }
     }
 
     public mutating func startStretching(now: Date) {

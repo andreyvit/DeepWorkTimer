@@ -44,7 +44,7 @@ class AppModel: ObservableObject {
         updateTimer = nil
     }
     private func reconsiderUpdateTimer() {
-        let wantTimer = state.isRunning
+        let wantTimer = state.isFrequentUpdatingDesired
         let haveTimer = (updateTimer != nil)
         guard wantTimer != haveTimer else { return }
         cancelUpdateTimer()
@@ -52,6 +52,9 @@ class AppModel: ObservableObject {
             updateTimer = Timer(timeInterval: 0.25, target: self, selector: #selector(update), userInfo: nil, repeats: true)
             updateTimer!.tolerance = 0.1
             RunLoop.main.add(updateTimer!, forMode: .common)
+            timerLog.debug("high-frequency timer ON")
+        } else {
+            timerLog.debug("high-frequency timer OFF")
         }
     }
     
