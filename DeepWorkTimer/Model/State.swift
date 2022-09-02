@@ -32,7 +32,7 @@ public struct AppState {
 
     private var lastStretchTime: Date
     private var nextStretchTime: Date = .distantFuture
-    private var stretchingStartTime: Date? = nil
+    private var stretchingState: StretchingState? = nil
     
     public var isTotalMutingActive: Bool { totalMuting != nil }
     public var isStretchingMutingActive: Bool { isTotalMutingActive || stretchMuting != nil }
@@ -128,8 +128,8 @@ public struct AppState {
         }
         
         let lastStretchTime: Date
-        if let stretchingStartTime = stretchingStartTime {
-            lastStretchTime = stretchingStartTime.addingTimeInterval(preferences.stretchingDuration)
+        if let stretchingState = stretchingState {
+            lastStretchTime = stretchingState.startTime.addingTimeInterval(preferences.stretchingDuration)
         } else {
             lastStretchTime = self.lastStretchTime
         }
@@ -186,7 +186,7 @@ public struct AppState {
         }
     }
     
-    public var isStretching: Bool { stretchingStartTime != nil }
+    public var isStretching: Bool { stretchingState != nil }
 
     public var isStretchingSoon: Bool {
         if let timeTillNextStretch = timeTillNextStretch {
@@ -197,19 +197,26 @@ public struct AppState {
     }
 
     public mutating func startStretching(now: Date) {
-        stretchingStartTime = now
+        stretchingState = StretchingState(startTime: now, duration: preferences.stretchingDuration)
         updateRemainingStretchingTime(now: now)
     }
     
     public mutating func endStretching(now: Date) {
         lastStretchTime = now
-        stretchingStartTime = nil
+        stretchingState = nil
         updateRemainingStretchingTime(now: now)
     }
     
+    public mutating func extendStretching(now: Date) {
+        if stretchingState != nil {
+            stretchingState!.duration += 60
+        }
+        updateRemainingStretchingTime(now: now)
+    }
+
     public mutating func updateRemainingStretchingTime(now: Date) {
-        if let stretchingStartTime = stretchingStartTime {
-            stretchingRemainingTime = preferences.stretchingDuration - now.timeIntervalSince(stretchingStartTime)
+        if let stretchingState = stretchingState {
+            stretchingRemainingTime = stretchingState.endTime.timeIntervalSince(now)
         } else {
             stretchingRemainingTime = nil
         }
@@ -221,6 +228,14 @@ public struct AppState {
     
     public mutating func popMissingTimerWarning() -> Bool {
         return pendingMissingTimerWarning.pop()
+    }
+    
+    public mutating func popAppActivation(now: Date) -> Bool {
+        if let stretchingState = stretchingState, !stretchingState.appActivated, stretchingState.durationSoFar(now: now).isGreaterThanOrEqualTo(preferences.stretchingAppActivationDelay, ε: timerEps) {
+            self.stretchingState!.appActivated = true
+            return true
+        }
+        return false
     }
 
     public mutating func setTotalMutingMode(_ newMode: MutingMode?, now: Date) {
@@ -299,6 +314,17 @@ public struct RunningDerived {
     public init(elapsed: TimeInterval, configuration: IntervalConfiguration) {
         self.elapsed = elapsed
         remaining = configuration.duration - elapsed
+    }
+}
+
+public struct StretchingState {
+    public var startTime: Date
+    public var duration: TimeInterval
+    public var endTime: Date { startTime.addingTimeInterval(duration) }
+    public var appActivated: Bool = false
+    
+    public func durationSoFar(now: Date) -> TimeInterval {
+        return now.timeIntervalSince(startTime)
     }
 }
 

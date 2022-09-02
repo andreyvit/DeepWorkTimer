@@ -110,6 +110,9 @@ class AppModel: ObservableObject {
             UNUserNotificationCenter.current().add(request)
         }
         updateStretchingState()
+        if state.popAppActivation(now: now) {
+            NSApp.activate(ignoringOtherApps: true)
+        }
     }
 
     @objc private func update() {
@@ -176,7 +179,13 @@ class AppModel: ObservableObject {
             state.endStretching(now: now)
         }
     }
-    
+    func extendStretching() {
+        guard state.isStretching else { return }
+        mutate {
+            state.extendStretching(now: now)
+        }
+    }
+
     func setTotalMutingMode(_ newMode: MutingMode?) {
         mutate {
             state.setTotalMutingMode(newMode, now: now)
@@ -202,14 +211,16 @@ class AppModel: ObservableObject {
         
         window.level = .statusBar
         window.titlebarAppearsTransparent = true
-        //        window.title = "Manage collections"
+        window.title = NSLocalizedString("Still want to be healthy?", comment: "Stretching window title")
         window.center()
         window.isReleasedWhenClosed = false
         self.stretchingWindow = window
+
+        let stretchingIdeas = preferences.randomStretchingIdeas()
         
-        let view = StretchingView()
+        let view = StretchingView(stretchingIdeas: stretchingIdeas)
             .frame(
-                width: 400,
+                width: 500,
                 //                height: 350,
                 alignment: .topLeading
             )
@@ -217,8 +228,8 @@ class AppModel: ObservableObject {
         window.contentView = hosting
         hosting.autoresizingMask = [.width, .height]
         
-//        NSApp.activate(ignoringOtherApps: true)
         window.center()
+        window.makeKey()
         window.orderFront(nil)
     }
     
