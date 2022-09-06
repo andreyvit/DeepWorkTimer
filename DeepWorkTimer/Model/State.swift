@@ -124,7 +124,7 @@ public struct AppState {
         }
         
         updateRemainingStretchingTime(now: now)
-        if let stretchingRemainingTime = stretchingRemainingTime, stretchingRemainingTime < 0 {
+        if let stretchingRemainingTime = stretchingRemainingTime, stretchingRemainingTime.isLessThanOrEqualToZero(ε: timerEps) {
             endStretching(now: now)
         }
 
@@ -176,9 +176,14 @@ public struct AppState {
             timeTillNextStretch = nil
         } else {
             nextStretchTime = latestStretchingBoundary.addingTimeInterval(preferences.stretchingPeriod)
+            
+            if let running = running, running.endTime.timeIntervalSince(nextStretchTime).isBetween(-preferences.minStretchingDelayAroundEndOfInterval, preferences.maxStretchingDelayAtEndOfInterval, ε: timerEps) {
+                nextStretchTime = nextStretchTime.addingTimeInterval(preferences.maxStretchingDelayAtEndOfInterval)
+            }
+            
             let timeTillNextStretch = nextStretchTime.timeIntervalSince(now)
             self.timeTillNextStretch = timeTillNextStretch
-            if timeTillNextStretch < 0 && !isStretching {
+            if timeTillNextStretch.isLessThanOrEqualToZero(ε: timerEps) && !isStretching {
                 startStretching(now: now)
             }
         }
@@ -312,6 +317,7 @@ public struct RunningState {
     
     public var elapsed: TimeInterval { derived.elapsed }
     public var remaining: TimeInterval { derived.remaining }
+    public var endTime: Date { startTime.addingTimeInterval(configuration.duration) }
 
     private var derived: RunningDerived
 

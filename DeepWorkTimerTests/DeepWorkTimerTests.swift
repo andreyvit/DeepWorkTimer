@@ -86,10 +86,6 @@ class DeepWorkTimerTests: XCTestCase {
 
         advance(.seconds(50))
         XCTAssertEqual(state.timeTillNextStretch, .minutes(20))
-        XCTAssertEqual(state.stretchingRemainingTime, 0)
-
-        state.endStretching(now: clock)
-        XCTAssertEqual(state.timeTillNextStretch, .minutes(20))
         XCTAssertNil(state.stretchingRemainingTime)
     }
     
@@ -122,6 +118,31 @@ class DeepWorkTimerTests: XCTestCase {
         advance(.minutes(5))
         XCTAssertEqual(state.stretchingRemainingTime, .minutes(1))
         XCTAssertEqual(state.timeTillNextStretch, .minutes(21))
+    }
+    
+    func testStretchingDelayedAtEndOfInterval() throws {
+        start(.deep50)
+        
+        // finish stretching by 25m, so that next interval would be at 45m
+        advance(.minutes(24))
+        state.startStretching(now: clock)
+        advance(.minutes(1))
+        XCTAssertFalse(state.isStretching)
+
+        // 45m mark is too close to 50m, so we give an extra 8m extension
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(28))
+
+        advance(.minutes(24))
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(4))
+        advance(.minute)
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(3))
+        // interval ended, but we keep working...
+        advance(.minutes(2))
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(1))
+        // ...until we blow past the 8-minute extension, which triggers stretching immediately
+        advance(.minute)
+        XCTAssertEqual(state.timeTillNextStretch, 0)
+        XCTAssertTrue(state.isStretching)
     }
 
     func testLongBreakCancelsInterval() {
