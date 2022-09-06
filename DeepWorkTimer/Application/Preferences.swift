@@ -14,7 +14,8 @@ public class Preferences {
     public let stretchingDuration: TimeInterval = (debugFastIdleTimer ? 5 : 60)
     public let stretchingPeriod: TimeInterval = (debugFastIdleTimer ? 15 : 20 * 60)
     public let stretchingAppActivationDelay: TimeInterval = 5
-    
+    public let stretchingResetsAfterInactivityPeriod: TimeInterval = (debugFastIdleTimer ? 5 : 3 * 60)
+
     public let dayBoundaryHour = 4  // 4 am
 
     public let timeToRestMessages = [

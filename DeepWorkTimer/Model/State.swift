@@ -18,6 +18,7 @@ public struct AppState {
     public private(set) var stretchMuting: Muting? = nil
     private var lastTotalMutingDeactivation: Date = .distantPast
     private var lastStretchMutingDeactivation: Date = .distantPast
+    private var lastStretchInactivityReset: Date = .distantPast
 
     public var isRunning: Bool { running != nil }
 
@@ -152,9 +153,13 @@ public struct AppState {
             }
         }
 
+        if idleDuration.isGreaterThanOrEqualTo(preferences.stretchingResetsAfterInactivityPeriod, ε: timerEps) {
+            lastStretchInactivityReset = now
+        }
+
         let lastStretchTime: Date
         if let stretchingState = stretchingState {
-            lastStretchTime = stretchingState.startTime.addingTimeInterval(preferences.stretchingDuration)
+            lastStretchTime = stretchingState.endTime
         } else {
             lastStretchTime = self.lastStretchTime
         }
@@ -164,6 +169,7 @@ public struct AppState {
             untimedWorkStart ?? .distantPast,
             running?.startTime ?? .distantPast,
             lastStretchMutingDeactivation,
+            lastStretchInactivityReset,
         ].max()!
         if isStretchingMutingActive {
             nextStretchTime = .distantFuture

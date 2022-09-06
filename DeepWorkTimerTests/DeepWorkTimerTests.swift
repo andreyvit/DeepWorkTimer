@@ -92,6 +92,37 @@ class DeepWorkTimerTests: XCTestCase {
         XCTAssertEqual(state.timeTillNextStretch, .minutes(20))
         XCTAssertNil(state.stretchingRemainingTime)
     }
+    
+    func testIdlenessResetsStretching() throws {
+        advance(.minutes(5))
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(15))
+        
+        idle()
+        advance(.minutes(5))
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(20))
+        advance(.minutes(20))
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(20))
+        
+        noLongerIdle()
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(20))
+        advance(.minutes(5))
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(15))
+    }
+    
+    func testIdlenessDoesNotInterferWithStretchingInProgress() throws {
+        state.startStretching(now: clock)
+        state.extendStretching(now: clock)
+        state.extendStretching(now: clock)
+        state.extendStretching(now: clock)
+        state.extendStretching(now: clock)
+        state.extendStretching(now: clock)
+        XCTAssertEqual(state.stretchingRemainingTime, .minutes(6))
+
+        idle()
+        advance(.minutes(5))
+        XCTAssertEqual(state.stretchingRemainingTime, .minutes(1))
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(21))
+    }
 
     func testLongBreakCancelsInterval() {
         start(.deep50)
