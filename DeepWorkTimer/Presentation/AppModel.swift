@@ -5,14 +5,13 @@ import UserNotifications
 import os.log
 
 class AppModel: ObservableObject {
-    static let shared = AppModel()
-
     private var now: Date = .distantPast
     private(set) var state: AppState
 
-    let preferences = Preferences.initial
+    let preferences: Preferences
     
-    private init() {
+    init(preferences: Preferences) {
+        self.preferences = preferences
         let memento = AppModel.loadMemento() ?? AppMemento()
         state = AppState(memento: memento, preferences: preferences, now: .now)
         mutate {}
@@ -34,7 +33,7 @@ class AppModel: ObservableObject {
         setUpdateTimerFrequency(nil)
         save()
     }
-    
+
     
     // MARK: - Update Timer
     
@@ -115,7 +114,7 @@ class AppModel: ObservableObject {
         }
     }
 
-    @objc private func update() {
+    @objc public func update() {
         mutate {}
     }
 
@@ -185,12 +184,6 @@ class AppModel: ObservableObject {
             state.extendStretching(now: now)
         }
     }
-
-    func setTotalMutingMode(_ newMode: MutingMode?) {
-        mutate {
-            state.setTotalMutingMode(newMode, now: now)
-        }
-    }
     
     private func updateStretchingState() {
         let isVisible = (stretchingWindow != nil)
@@ -200,7 +193,7 @@ class AppModel: ObservableObject {
             hideStretchingWindow()
         }
     }
-    
+
     private func showStretchingWindow() {
         let window = NSWindow(
             contentRect: .zero,
@@ -219,6 +212,7 @@ class AppModel: ObservableObject {
         let stretchingIdeas = preferences.randomStretchingIdeas()
         
         let view = StretchingView(stretchingIdeas: stretchingIdeas)
+            .environmentObject(self)
             .frame(
                 width: 500,
                 //                height: 350,
@@ -237,4 +231,24 @@ class AppModel: ObservableObject {
         stretchingWindow?.orderOut(nil)
         stretchingWindow = nil
     }
+
+    
+    // MARK: - Options
+    
+    func setTotalMutingMode(_ newMode: MutingMode?) {
+        mutate {
+            state.setTotalMutingMode(newMode, now: now)
+        }
+    }
+
+    func toggleDisableStretching() {
+        mutate {
+            if state.stretchMuting != nil {
+                state.setStretchingMutingMode(nil, now: now)
+            } else {
+                state.setStretchingMutingMode(.forever, now: now)
+            }
+        }
+    }
+
 }

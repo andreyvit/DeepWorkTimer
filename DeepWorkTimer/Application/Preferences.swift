@@ -14,7 +14,7 @@ public class Preferences {
     public let stretchingDuration: TimeInterval = (debugFastIdleTimer ? 5 : 60)
     public let stretchingPeriod: TimeInterval = (debugFastIdleTimer ? 15 : 20 * 60)
     public let stretchingAppActivationDelay: TimeInterval = 5
-
+    
     public let dayBoundaryHour = 4  // 4 am
 
     public let timeToRestMessages = [
@@ -71,5 +71,76 @@ public class Preferences {
         return ideas
     }
 
-    public static let initial = Preferences()
+    public let defaults: UserDefaultsProtocol
+    
+    public init(defaults: UserDefaultsProtocol) {
+        self.defaults = defaults
+    }
+
+    public static let current = Preferences(defaults: UserDefaults.standard)
+    public static let initial = Preferences(defaults: MockDefaults())
+
+    public var isUntimedNaggingDisabled: Bool {
+        get { defaults.bool(forKey: "isUntimedNaggingDisabled") }
+        set { defaults.set(newValue, forKey: "isUntimedNaggingDisabled") }
+    }
+    public var isUntimedStatusItemCounterDisabled: Bool {
+        get { defaults.bool(forKey: "isUntimedStatusItemCounterDisabled") }
+        set { defaults.set(newValue, forKey: "isUntimedStatusItemCounterDisabled") }
+    }
+}
+
+public extension UserDefaults {
+    private static let testingSuiteName = "com.tarantsov.DeepWorkTimer.testing"
+    static var testing = UserDefaults(suiteName: testingSuiteName)!
+    static func resetTestingDefaults() {
+        testing.removePersistentDomain(forName: testingSuiteName)
+    }
+}
+
+public protocol UserDefaultsProtocol {
+    func object(forKey defaultName: String) -> Any?
+    func string(forKey defaultName: String) -> String?
+    func url(forKey defaultName: String) -> URL?
+    func array(forKey defaultName: String) -> [Any]?
+    func dictionary(forKey defaultName: String) -> [String : Any]?
+    func data(forKey defaultName: String) -> Data?
+    func stringArray(forKey defaultName: String) -> [String]?
+    func bool(forKey defaultName: String) -> Bool
+    func integer(forKey defaultName: String) -> Int
+    func double(forKey defaultName: String) -> Double
+
+    func set(_ value: Any?, forKey defaultName: String)
+    func set(_ value: Int, forKey defaultName: String)
+    func set(_ value: Double, forKey defaultName: String)
+    func set(_ value: Bool, forKey defaultName: String)
+    func set(_ value: URL?, forKey defaultName: String)
+}
+
+extension UserDefaults: UserDefaultsProtocol {}
+
+public class MockDefaults: UserDefaultsProtocol {
+    public var values: [String: Any]
+    
+    public init(_ values: [String: Any] = [:]) {
+        self.values = values
+    }
+
+    public func object(forKey key: String) -> Any?         { values[key] }
+    public func string(forKey key: String) -> String?      { values[key] as? String }
+    public func url(forKey key: String) -> URL?            { values[key] as? URL }
+    public func bool(forKey key: String) -> Bool           { (values[key] as? Bool) ?? false }
+    public func integer(forKey key: String) -> Int         { (values[key] as? Int) ?? 0 }
+    public func double(forKey key: String) -> Double       { (values[key] as? Double) ?? 0 }
+    public func array(forKey key: String) -> [Any]?        { values[key] as? [Any] }
+    public func data(forKey key: String) -> Data?          { values[key] as? Data }
+    public func dictionary(forKey key: String) -> [String : Any]?  { values[key] as? [String: Any] }
+    public func stringArray(forKey key: String) -> [String]?       { values[key] as? [String] }
+
+    public func removeObject(forKey key: String)           { values[key] = nil }
+    public func set(_ value: Any?, forKey key: String)     { values[key] = value }
+    public func set(_ value: Int, forKey key: String)      { set(value as Any?, forKey: key) }
+    public func set(_ value: Double, forKey key: String)   { set(value as Any?, forKey: key) }
+    public func set(_ value: Bool, forKey key: String)     { set(value as Any?, forKey: key) }
+    public func set(_ value: URL?, forKey key: String)     { set(value as Any?, forKey: key) }
 }

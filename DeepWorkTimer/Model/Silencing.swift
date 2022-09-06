@@ -10,6 +10,8 @@ public enum MutingMode: Codable, Hashable {
         .duration(.minute),
     ] : []) + [
         .duration(.hour * 1),
+        .duration(.hour * 2),
+        .duration(.hour * 3),
         .duration(.hour * 4),
         .duration(.hour * 12),
         .untilTomorrow,
@@ -33,6 +35,10 @@ public enum MutingMode: Codable, Hashable {
             switch interval {
             case .hour:
                 return NSLocalizedString("Silence for 1 Hour", comment: "Muting option title")
+            case .hour * 2:
+                return NSLocalizedString("Silence for 2 Hours", comment: "Muting option title")
+            case .hour * 3:
+                return NSLocalizedString("Silence for 3 Hours", comment: "Muting option title")
             case .hour * 4:
                 return NSLocalizedString("Silence for 4 Hours", comment: "Muting option title")
             case .hour * 12:

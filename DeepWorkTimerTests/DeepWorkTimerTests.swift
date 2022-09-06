@@ -8,7 +8,7 @@ class DeepWorkTimerTests: XCTestCase {
     var idleStart: Date?
 
     override func setUpWithError() throws {
-        state.update(now: clock)
+        advance(0)
     }
 
     override func tearDownWithError() throws {
@@ -44,6 +44,9 @@ class DeepWorkTimerTests: XCTestCase {
         stop()
         XCTAssertNil(state.running)
         XCTAssertEqual(state.testStatusText, "")
+
+        advance(.minutes(2))
+        XCTAssertEqual(state.testStatusText, "2m?")
     }
 
     func testIntervalCompletionNotification() {
@@ -75,13 +78,13 @@ class DeepWorkTimerTests: XCTestCase {
 
         state.startStretching(now: clock)
         XCTAssertEqual(state.timeTillNextStretch, .minutes(15))
-        XCTAssertEqual(state.stretchingRemainingTime, .seconds(30))
+        XCTAssertEqual(state.stretchingRemainingTime, .seconds(60))
 
         advance(.seconds(10))
-        XCTAssertEqual(state.timeTillNextStretch, .minutes(20) + .seconds(20))
-        XCTAssertEqual(state.stretchingRemainingTime, .seconds(20))
+        XCTAssertEqual(state.timeTillNextStretch, .minutes(20) + .seconds(50))
+        XCTAssertEqual(state.stretchingRemainingTime, .seconds(50))
 
-        advance(.seconds(20))
+        advance(.seconds(50))
         XCTAssertEqual(state.timeTillNextStretch, .minutes(20))
         XCTAssertEqual(state.stretchingRemainingTime, 0)
 
@@ -89,7 +92,7 @@ class DeepWorkTimerTests: XCTestCase {
         XCTAssertEqual(state.timeTillNextStretch, .minutes(20))
         XCTAssertNil(state.stretchingRemainingTime)
     }
-    
+
     func testLongBreakCancelsInterval() {
         start(.deep50)
         advance(.hours(8))
@@ -105,13 +108,20 @@ class DeepWorkTimerTests: XCTestCase {
         XCTAssertEqual(state.testStatusText, "")
 
         advance(.minutes(1))
-        XCTAssertFalse(state.popMissingTimerWarning())
+        XCTAssertTrue(state.popMissingTimerWarning())
         XCTAssertEqual(state.testStatusText, "2m?")
 
         advance(.minutes(5))
         XCTAssertTrue(state.popMissingTimerWarning())
-        XCTAssertEqual(state.testStatusText, "xx")
-    }
+        XCTAssertEqual(state.testStatusText, "7m?")
+        
+        start(.deep50)
+        stop()
+        XCTAssertEqual(state.testStatusText, "")
+
+        advance(.minutes(5))
+        XCTAssertEqual(state.testStatusText, "5m?")
+}
 
     func testMutingSilencesStretching() {
         mute(.forever)

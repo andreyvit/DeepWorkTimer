@@ -126,7 +126,32 @@ public struct AppState {
         if let stretchingRemainingTime = stretchingRemainingTime, stretchingRemainingTime < 0 {
             endStretching(now: now)
         }
-        
+
+        if running == nil {
+            if untimedWorkStart == nil, let activityStartTime = activityStartTime {
+                untimedWorkStart = activityStartTime
+            } else if untimedWorkStart != nil, let idleStartTime = idleStartTime, now.timeIntervalSince(idleStartTime) > preferences.untimedWorkEndThreshold {
+                untimedWorkStart = nil
+            }
+            if let untimedWorkStart = untimedWorkStart {
+                untimedWorkDuration = now.timeIntervalSince(untimedWorkStart)
+            } else {
+                untimedWorkDuration = 0
+            }
+        } else {
+            untimedWorkStart = nil
+            untimedWorkDuration = 0
+        }
+
+        if running != nil && idleDuration > preferences.idleTimerPausingThreshold {
+            // TODO: pause
+        } else if running == nil && !preferences.isUntimedNaggingDisabled && min(activityDuration, now.timeIntervalSince(lastStopTime)).isGreaterThanOrEqualTo(preferences.missingTimerReminderThreshold, ε: timerEps) && !isTotalMutingActive {
+            if now.timeIntervalSince(missingTimerWarningTime).isGreaterThanOrEqualTo(preferences.missingTimerReminderRepeatInterval, ε: timerEps) {
+                missingTimerWarningTime = now
+                pendingMissingTimerWarning = true
+            }
+        }
+
         let lastStretchTime: Date
         if let stretchingState = stretchingState {
             lastStretchTime = stretchingState.startTime.addingTimeInterval(preferences.stretchingDuration)
@@ -163,26 +188,6 @@ public struct AppState {
         } else if activityStartTime == nil && !isIdle {
             idleStartTime = nil
             activityStartTime = now
-        }
-        
-        if untimedWorkStart == nil, let activityStartTime = activityStartTime {
-            untimedWorkStart = activityStartTime
-        } else if untimedWorkStart != nil, let idleStartTime = idleStartTime, now.timeIntervalSince(idleStartTime) > preferences.untimedWorkEndThreshold {
-            untimedWorkStart = nil
-        }
-        if let untimedWorkStart = untimedWorkStart {
-            untimedWorkDuration = now.timeIntervalSince(untimedWorkStart)
-        } else {
-            untimedWorkDuration = 0
-        }
-
-        if running != nil && idleDuration > preferences.idleTimerPausingThreshold {
-            // TODO: pause
-        } else if running == nil && min(activityDuration, now.timeIntervalSince(lastStopTime)).isGreaterThanOrEqualTo(preferences.missingTimerReminderThreshold, ε: timerEps) && !isTotalMutingActive {
-            if now.timeIntervalSince(missingTimerWarningTime) > preferences.missingTimerReminderRepeatInterval {
-                missingTimerWarningTime = now
-                pendingMissingTimerWarning = true
-            }
         }
     }
     
@@ -238,6 +243,15 @@ public struct AppState {
         return false
     }
 
+    public mutating func setStretchingMutingMode(_ newMode: MutingMode?, now: Date) {
+        if let newMode = newMode {
+            stretchMuting = Muting(mode: newMode, startingAt: now, calendar: calendar, dayBoundaryHour: preferences.dayBoundaryHour)
+        } else {
+            stretchMuting = nil
+            lastStretchMutingDeactivation = now
+        }
+    }
+
     public mutating func setTotalMutingMode(_ newMode: MutingMode?, now: Date) {
         if let newMode = newMode {
             totalMuting = Muting(mode: newMode, startingAt: now, calendar: calendar, dayBoundaryHour: preferences.dayBoundaryHour)
@@ -270,7 +284,7 @@ public struct AppState {
             } else {
                 return (-remaining).shortString + "?"
             }
-        } else if untimedWorkDuration.isGreaterThanOrEqualTo(preferences.untimedWorkRelevanceThreshold, ε: timerEps) {
+        } else if !preferences.isUntimedStatusItemCounterDisabled && untimedWorkDuration.isGreaterThanOrEqualTo(preferences.untimedWorkRelevanceThreshold, ε: timerEps) {
             return untimedWorkDuration.shortString + "?"
         } else {
             return ""

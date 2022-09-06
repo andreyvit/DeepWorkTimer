@@ -32,6 +32,7 @@
 		43F8981928BDE360002B3AC1 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */; };
 		43F8981D28BDE365002B3AC1 /* LaunchAtLoginHelperAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43F8981C28BDE365002B3AC1 /* LaunchAtLoginHelperAssets.xcassets */; };
 		43F8982528BDE6EA002B3AC1 /* Deep Work Timer Launch At Login Helper.app in Embed Login Items */ = {isa = PBXBuildFile; fileRef = 43F8981628BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		43F8982A28C5D011002B3AC1 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F8982928C5D011002B3AC1 /* Analytics.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		43F8981C28BDE365002B3AC1 /* LaunchAtLoginHelperAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = LaunchAtLoginHelperAssets.xcassets; sourceTree = "<group>"; };
 		43F8982128BDE365002B3AC1 /* LaunchAtLoginHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LaunchAtLoginHelper.entitlements; sourceTree = "<group>"; };
 		43F8982828BDE8D9002B3AC1 /* LaunchAtLoginHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LaunchAtLoginHelper-Info.plist"; sourceTree = "<group>"; };
+		43F8982928C5D011002B3AC1 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +174,7 @@
 			children = (
 				43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */,
 				43F897D028B4AB13002B3AC1 /* Logging.swift */,
+				43F8982928C5D011002B3AC1 /* Analytics.swift */,
 				43F897CC28B4AA1F002B3AC1 /* Preferences.swift */,
 				43F897CE28B4AA4D002B3AC1 /* DebugFlags.swift */,
 			);
@@ -372,6 +375,7 @@
 				43F897F728B75790002B3AC1 /* TimeInterval+shorthands.swift in Sources */,
 				43F897FB28BC9BAC002B3AC1 /* LoginItem.swift in Sources */,
 				43F897F028B74C1B002B3AC1 /* TitleScheme.swift in Sources */,
+				43F8982A28C5D011002B3AC1 /* Analytics.swift in Sources */,
 				4356430D282EF295009D071A /* Stretching.swift in Sources */,
 				43C98F6A2829085E007D45DF /* Util.swift in Sources */,
 				43C98F5B2828804C007D45DF /* DeepWorkTimerApp.swift in Sources */,

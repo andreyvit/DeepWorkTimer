@@ -8,8 +8,7 @@ let launchAtLoginHelper = LoginItem(bundleID: "com.tarantsov.DeepWorkTimer.Launc
 
 @main
 struct DeepWorkTimerApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject var state = AppModel.shared
+    @NSApplicationDelegateAdaptor var appDelegate: AppDelegate
     @State var alertPresented: Bool = false
 
     var body: some Scene {
@@ -25,9 +24,9 @@ struct DeepWorkTimerApp: App {
     }
 }
 
-class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableObject {
     
-    let model = AppModel.shared
+    let model = AppModel(preferences: .current)
 
     var popover: NSPopover!
     
@@ -46,7 +45,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let globalMutingSubmenu = NSMenu()
     let globalMutingOffItem = NSMenuItem(title: "Off", action: #selector(changeGlobalMutingMode), keyEquivalent: "")
 
+    let optionsSubmenuItem = NSMenuItem(title: "Options", action: nil, keyEquivalent: "")
+    let optionsSubmenu = NSMenu()
     let launchAtLoginItem = NSMenuItem(title: "Launch at Login", action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+    let disableStretchingItem = NSMenuItem(title: "Disable Stretching", action: #selector(toggleDisableStretching), keyEquivalent: "")
+    let disableUntimedNaggingItem = NSMenuItem(title: "Disable Nagging To Start Timer", action: #selector(toggleDisableNaggingWhenTimerOff), keyEquivalent: "")
+    let disableUntimedStatusItemCounterItem = NSMenuItem(title: "Disable “42m?” Counter When Timer Off", action: #selector(toggleDisableStatusItemCounterWhenTimerOff), keyEquivalent: "")
 
     var subscriptions: Set<AnyCancellable> = []
     
@@ -59,6 +63,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         
         globalUserActivity = ProcessInfo.processInfo.beginActivity(options: [.userInitiatedAllowingIdleSystemSleep], reason: "Deep Work Timer Menubar Updates")
 
+        let defaults: UserDefaults = .standard
+        defaults.set(Bundle.main.infoDictionary![kCFBundleVersionKey as String], forKey: "launchStats.last.version")
+        defaults.set(defaults.integer(forKey: "launchStats.count") + 1, forKey: "launchStats.count")
+        
         let menu = NSMenu()
         menu.delegate = self
         menu.autoenablesItems = false
@@ -88,13 +96,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(nextStretchItem)
         nextStretchItem.isEnabled = false
         menu.addItem(startStretchingItem)
-
-        menu.addItem(NSMenuItem.separator())
-        globalMutingSubmenuItem.submenu = globalMutingSubmenu
-        menu.addItem(globalMutingSubmenuItem)
-        menu.addItem(launchAtLoginItem)
-        menu.addItem(NSMenuItem.separator())
         
+        globalMutingSubmenuItem.submenu = globalMutingSubmenu
         globalMutingSubmenu.addItem(globalMutingUntilItem)
         globalMutingUntilItem.isEnabled = false
         globalMutingSubmenu.addItem(NSMenuItem.separator())
@@ -105,6 +108,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             globalMutingSubmenu.addItem(item)
             globalMutingItems.append((item, mode))
         }
+
+        optionsSubmenuItem.submenu = optionsSubmenu
+        optionsSubmenu.addItem(launchAtLoginItem)
+        optionsSubmenu.addItem(NSMenuItem.separator())
+        optionsSubmenu.addItem(disableStretchingItem)
+        optionsSubmenu.addItem(disableUntimedNaggingItem)
+        optionsSubmenu.addItem(disableUntimedStatusItemCounterItem)
+
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(globalMutingSubmenuItem)
+        menu.addItem(optionsSubmenuItem)
+        menu.addItem(NSMenuItem.separator())
 
 //        let contentView = ContentView()
 //        let contentController = NSHostingController(rootView: contentView)
@@ -160,14 +175,36 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         guard let item = globalMutingItems.first(where: { $0.0 == sender }) else {
             fatalError("Unknown start item")
         }
+        recordUsage(.silencing)
         model.setTotalMutingMode(item.1)
     }
 
     @objc func toggleLaunchAtLogin() {
+        recordUsage(.launchAtLogin)
         launchAtLoginHelper.isEnabled = !launchAtLoginHelper.isEnabled
         update()
     }
     
+    @objc func toggleDisableStretching() {
+        recordUsage(.disableStretching)
+        model.toggleDisableStretching()
+        update()
+    }
+    
+    @objc func toggleDisableNaggingWhenTimerOff() {
+        recordUsage(.disableNaggingWhenTimerOff)
+        model.preferences.isUntimedNaggingDisabled = !model.preferences.isUntimedNaggingDisabled
+        model.update()
+        update()
+    }
+    
+    @objc func toggleDisableStatusItemCounterWhenTimerOff() {
+        recordUsage(.disableStatusItemCounterWhenTimerOff)
+        model.preferences.isUntimedStatusItemCounterDisabled = !model.preferences.isUntimedNaggingDisabled
+        model.update()
+        update()
+    }
+
     private var isUpdateScheduled = false
     private func updateSoon() {
         guard !isUpdateScheduled else { return }
@@ -187,10 +224,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 //            item.isEnabled = !isRunning
         }
         
-        if let timeTillNextStretch = model.state.timeTillNextStretch {
-            nextStretchItem.title = "Next Stretching In \(timeTillNextStretch.shortString)"
+        if model.state.stretchMuting?.mode == .forever {
+            nextStretchItem.isHidden = true
         } else {
-            nextStretchItem.title = "Stretching Paused"
+            nextStretchItem.isHidden = false
+            if let timeTillNextStretch = model.state.timeTillNextStretch {
+                nextStretchItem.title = "Next Stretching In \(timeTillNextStretch.shortString)"
+            } else if model.state.totalMuting != nil {
+                nextStretchItem.title = "Stretching Paused While Silenced"
+            } else {
+                nextStretchItem.title = "Stretching Paused"
+            }
         }
         
         let totalMutingMode = model.state.totalMuting?.mode
@@ -207,6 +251,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
 
         launchAtLoginItem.state = (launchAtLoginHelper.isEnabled ? .on : .off)
+        disableStretchingItem.state = (model.state.stretchMuting != nil ? .on : .off)
+        disableUntimedNaggingItem.state = (model.preferences.isUntimedNaggingDisabled ? .on : .off)
+        disableUntimedStatusItemCounterItem.state = (model.preferences.isUntimedStatusItemCounterDisabled ? .on : .off)
 
         stopItem.isHidden = !isRunning
     }
@@ -230,13 +277,3 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         NSApp.terminate(self)
     }
 }
-
-private struct MutingSubmenu {
-    
-}
-
-private extension NSMenuItem {
-    
-}
-
-

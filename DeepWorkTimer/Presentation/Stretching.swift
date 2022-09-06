@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct StretchingView: View {
-    @ObservedObject var model = AppModel.shared
+    @EnvironmentObject var model: AppModel
     let stretchingIdeas: [String]
     
     var stretchingIdeasText: String {
