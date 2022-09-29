@@ -21,6 +21,16 @@ struct DeepWorkTimerApp: App {
                     Button("OK", role: .cancel) { }
                 }
         }
+        
+//        MenuBarExtra("Test", systemImage: "A.circle") {
+//            Button("Foo") {}
+//                .keyboardShortcut("1")
+//            Button("Bar") {}
+//                .keyboardShortcut("2")
+//            Divider()
+//            Button("Quit") { NSApplication.shared.terminate(nil) }
+//                .keyboardShortcut("Q")
+//        }
     }
 }
 
