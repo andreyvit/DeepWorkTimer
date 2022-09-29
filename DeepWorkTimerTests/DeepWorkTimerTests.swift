@@ -150,6 +150,23 @@ class DeepWorkTimerTests: XCTestCase {
         advance(.hours(8))
         XCTAssertNil(state.running)
     }
+    
+    func testAdjustDurationDuringInterval() {
+        start(.deep50)
+        advance(.minutes(30))
+        XCTAssertEqual(state.running?.remaining, .minutes(20))
+        adjust(by: .minutes(5))
+        XCTAssertEqual(state.running?.remaining, .minutes(25))
+        adjust(by: .minute)
+        XCTAssertEqual(state.running?.remaining, .minutes(26))
+
+        advance(.minutes(25))
+        XCTAssertEqual(state.running?.remaining, .minutes(1))
+        XCTAssertNil(state.pendingIntervalCompletionNotification)
+
+        advance(.minute)
+        XCTAssertEqual(state.popIntervalCompletionNotification(), .deepX(56))
+    }
 
     func testUntimedBehavior() {
         XCTAssertFalse(state.popMissingTimerWarning())
@@ -205,6 +222,10 @@ class DeepWorkTimerTests: XCTestCase {
         state.stop(now: clock)
         state.update(now: clock)
     }
+    private func adjust(by delta: TimeInterval) {
+        state.adjustDuration(by: delta, now: clock)
+        state.update(now: clock)
+    }
 
     private func idle() {
         precondition(idleStart == nil)
@@ -232,4 +253,7 @@ class DeepWorkTimerTests: XCTestCase {
 
 extension IntervalConfiguration {
     static var deep50 = IntervalConfiguration(kind: .work(.deep), duration: .minutes(50))
+    static func deepX(_ minutes: Int) -> IntervalConfiguration {
+        IntervalConfiguration(kind: .work(.deep), duration: .minutes(minutes))
+    }
 }

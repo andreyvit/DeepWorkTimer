@@ -28,7 +28,13 @@ class AppModel: ObservableObject {
             state.stop(now: Date.now)
         }
     }
-        
+    
+    func adjust(by delta: TimeInterval) {
+        mutate {
+            state.adjustDuration(by: delta, now: .now)
+        }
+    }
+
     deinit {
         setUpdateTimerFrequency(nil)
         save()

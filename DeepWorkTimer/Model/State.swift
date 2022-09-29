@@ -70,7 +70,7 @@ public struct AppState {
         case .continuation:
             if let running = running {
                 if running.remaining >= 0 {
-                    self.running!.configuration = configuration
+                    self.running!.originalConfiguration = configuration
                 } else {
                     let extraWorked = -running.remaining
                     self.running = RunningState(startTime: now.addingTimeInterval(-extraWorked), configuration: configuration)
@@ -88,6 +88,10 @@ public struct AppState {
         running = nil
         untimedWorkStart = now
         lastStopTime = now
+    }
+
+    public mutating func adjustDuration(by delta: TimeInterval, now: Date) {
+        running?.adjustDuration(by: delta, now: now)
     }
 
     public mutating func update(now: Date) {
@@ -118,7 +122,7 @@ public struct AppState {
                         (now.timeIntervalSince(running!.completionNotificationTime!).isGreaterThanOrEqualTo(preferences.finishedTimerReminderInterval, ε: timerEps) && !isIdle)
                 ) {
                     running!.completionNotificationTime = now
-                    pendingIntervalCompletionNotification = running!.configuration
+                    pendingIntervalCompletionNotification = running!.currentConfiguration
                 }
             }
         }
@@ -288,10 +292,10 @@ public struct AppState {
         if let running = running {
             let remaining = running.remaining
             if remaining.isGreaterThanZero(ε: timerEps) {
-                let symbol = scheme.intervalKindSymbols[running.configuration.kind]!
+                let symbol = scheme.intervalKindSymbols[running.originalConfiguration.kind]!
                 return remaining.minutesColonSeconds + " " + symbol
             } else if remaining.isGreaterThan(-60, ε: timerEps) {
-                return scheme.endPrompt[running.configuration.kind.purpose]!
+                return scheme.endPrompt[running.originalConfiguration.kind.purpose]!
             } else {
                 return (-remaining).shortString + "?"
             }
@@ -311,35 +315,72 @@ public struct AppState {
 
 public struct RunningState {
     public let startTime: Date
-    public var configuration: IntervalConfiguration
+    public var originalConfiguration: IntervalConfiguration
+    public var duration: TimeInterval
     public var completionNotificationTime: Date? = nil
     public var isDone: Bool { derived.remaining.isLessThanOrEqualToZero(ε: timerEps) }
     
     public var elapsed: TimeInterval { derived.elapsed }
     public var remaining: TimeInterval { derived.remaining }
-    public var endTime: Date { startTime.addingTimeInterval(configuration.duration) }
+    public var endTime: Date { startTime.addingTimeInterval(duration) }
+    
+    public var currentConfiguration: IntervalConfiguration {
+        IntervalConfiguration(kind: originalConfiguration.kind, duration: duration)
+    }
 
     private var derived: RunningDerived
 
     public init(startTime: Date, configuration: IntervalConfiguration) {
         self.startTime = startTime
-        self.configuration = configuration
-        derived = RunningDerived(elapsed: 0, configuration: configuration)
+        self.originalConfiguration = configuration
+        self.duration = configuration.duration
+        derived = RunningDerived(elapsed: 0, duration: duration)
     }
     
+    public mutating func adjustDuration(by delta: TimeInterval, now: Date) {
+        update(now: now)
+        if delta.isGreaterThanZero(ε: timerEps) {
+            duration += derived.extraWorked + delta
+        } else {
+            duration += delta
+        }
+    }
+    
+    public mutating func continueWithConfiguration(_ newConfiguration: IntervalConfiguration, now: Date) {
+        originalConfiguration = newConfiguration
+
+        update(now: now)
+        if !derived.hasEnded && newConfiguration.duration.isGreaterThanOrEqualTo(duration, ε: timerEps) {
+            duration = newConfiguration.duration
+        } else {
+            duration += derived.extraWorked + newConfiguration.duration
+        }
+    }
+
     public mutating func update(now: Date) {
         let elapsed = now.timeIntervalSince(startTime)
-        derived = RunningDerived(elapsed: elapsed, configuration: configuration)
+        derived = RunningDerived(elapsed: elapsed, duration: duration)
     }
 }
 
 public struct RunningDerived {
     var elapsed: TimeInterval
     var remaining: TimeInterval
+    var extraWorked: TimeInterval {
+        if hasEnded {
+            return -remaining
+        } else {
+            return 0
+        }
+    }
     
-    public init(elapsed: TimeInterval, configuration: IntervalConfiguration) {
+    public init(elapsed: TimeInterval, duration: TimeInterval) {
         self.elapsed = elapsed
-        remaining = configuration.duration - elapsed
+        remaining = duration - elapsed
+    }
+
+    public var hasEnded: Bool {
+        remaining.isLessThanZero(ε: timerEps)
     }
 }
 

@@ -52,6 +52,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
     let disableUntimedNaggingItem = NSMenuItem(title: "Disable Nagging To Start Timer", action: #selector(toggleDisableNaggingWhenTimerOff), keyEquivalent: "")
     let disableUntimedStatusItemCounterItem = NSMenuItem(title: "Disable “42m?” Counter When Timer Off", action: #selector(toggleDisableStatusItemCounterWhenTimerOff), keyEquivalent: "")
 
+    private lazy var adjustDurationView = AdjustDurationView(adjuster: model.adjust(by:))
+    private lazy var adjustDurationHost = NSHostingView(rootView: adjustDurationView)
+    private lazy var adjustDurationItem: NSMenuItem = {
+        adjustDurationHost.frame.size = adjustDurationHost.intrinsicContentSize
+
+        let item = NSMenuItem()
+        item.view = adjustDurationHost
+        return item
+    }()
+
     var subscriptions: Set<AnyCancellable> = []
     
     var globalUserActivity: NSObjectProtocol?
@@ -72,6 +82,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
         menu.autoenablesItems = false
         
         menu.addItem(stopItem)
+        menu.addItem(adjustDurationItem)
         menu.addItem(NSMenuItem.separator())
 
         var lastKind: IntervalKind?
@@ -120,14 +131,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
         menu.addItem(globalMutingSubmenuItem)
         menu.addItem(optionsSubmenuItem)
         menu.addItem(NSMenuItem.separator())
-
-//        let contentView = ContentView()
-//        let contentController = NSHostingController(rootView: contentView)
-//        contentController.view.frame.size = CGSize(width: 200, height: 50)
-//        let customMenuItem = NSMenuItem()
-//        customMenuItem.view = contentController.view
-//        menu.addItem(customMenuItem)
-//        menu.addItem(NSMenuItem.separator())
 
         menu.addItem(withTitle: "About", action: #selector(about), keyEquivalent: "")
         menu.addItem(withTitle: "Quit Deep Work Timer", action: #selector(quit), keyEquivalent: "")
@@ -220,7 +223,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
         
         let isRunning = model.state.isRunning
         for (item, configuration, _) in startItems {
-            item.state = (isRunning && model.state.running!.configuration == configuration ? .on : .off)
+            item.state = (isRunning && model.state.running!.originalConfiguration == configuration ? .on : .off)
 //            item.isEnabled = !isRunning
         }
         
@@ -256,6 +259,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
         disableUntimedStatusItemCounterItem.state = (model.preferences.isUntimedStatusItemCounterDisabled ? .on : .off)
 
         stopItem.isHidden = !isRunning
+        adjustDurationItem.isHidden = !isRunning
+        adjustDurationHost.frame.size = (adjustDurationItem.isHidden ? .zero : adjustDurationHost.intrinsicContentSize)
     }
     
 //    func menuNeedsUpdate(_ menu: NSMenu) {
