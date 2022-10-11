@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4311CC3128F5930600DBDCE3 /* Assets-AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3028F5930600DBDCE3 /* Assets-AppIcon.xcassets */; };
+		4311CC3228F5930600DBDCE3 /* Assets-AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3028F5930600DBDCE3 /* Assets-AppIcon.xcassets */; };
 		4321D48D28F41EDC00ECCF2D /* Practices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4321D48C28F41EDC00ECCF2D /* Practices.swift */; };
 		4356430D282EF295009D071A /* Stretching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356430C282EF295009D071A /* Stretching.swift */; };
 		43C98F5B2828804C007D45DF /* DeepWorkTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */; };
@@ -31,7 +33,6 @@
 		43F897F928B75A07002B3AC1 /* Calendar+dayBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897F828B75A07002B3AC1 /* Calendar+dayBoundary.swift */; };
 		43F897FB28BC9BAC002B3AC1 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897FA28BC9BAB002B3AC1 /* LoginItem.swift */; };
 		43F8981928BDE360002B3AC1 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */; };
-		43F8981D28BDE365002B3AC1 /* LaunchAtLoginHelperAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43F8981C28BDE365002B3AC1 /* LaunchAtLoginHelperAssets.xcassets */; };
 		43F8982528BDE6EA002B3AC1 /* Deep Work Timer Launch At Login Helper.app in Embed Login Items */ = {isa = PBXBuildFile; fileRef = 43F8981628BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		43F8982A28C5D011002B3AC1 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F8982928C5D011002B3AC1 /* Analytics.swift */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4311CC3028F5930600DBDCE3 /* Assets-AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets-AppIcon.xcassets"; sourceTree = "<group>"; };
 		4321D48C28F41EDC00ECCF2D /* Practices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Practices.swift; sourceTree = "<group>"; };
 		43564309282C4663009D071A /* Deep-Work-Timer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Deep-Work-Timer-Info.plist"; sourceTree = "<group>"; };
 		4356430C282EF295009D071A /* Stretching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stretching.swift; sourceTree = "<group>"; };
@@ -97,7 +99,6 @@
 		43F897FA28BC9BAB002B3AC1 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		43F8981628BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Timer Launch At Login Helper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginHelper.swift; sourceTree = "<group>"; };
-		43F8981C28BDE365002B3AC1 /* LaunchAtLoginHelperAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = LaunchAtLoginHelperAssets.xcassets; sourceTree = "<group>"; };
 		43F8982128BDE365002B3AC1 /* LaunchAtLoginHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LaunchAtLoginHelper.entitlements; sourceTree = "<group>"; };
 		43F8982828BDE8D9002B3AC1 /* LaunchAtLoginHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LaunchAtLoginHelper-Info.plist"; sourceTree = "<group>"; };
 		43F8982928C5D011002B3AC1 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
@@ -158,6 +159,7 @@
 				43F897D928B4ACD2002B3AC1 /* Util */,
 				43C98F602828804E007D45DF /* Preview Content */,
 				43C98F5E2828804E007D45DF /* Assets.xcassets */,
+				4311CC3028F5930600DBDCE3 /* Assets-AppIcon.xcassets */,
 				43C98F632828804F007D45DF /* DeepWorkTimer.entitlements */,
 			);
 			path = DeepWorkTimer;
@@ -232,7 +234,6 @@
 			isa = PBXGroup;
 			children = (
 				43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */,
-				43F8981C28BDE365002B3AC1 /* LaunchAtLoginHelperAssets.xcassets */,
 				43F8982128BDE365002B3AC1 /* LaunchAtLoginHelper.entitlements */,
 				43F8982828BDE8D9002B3AC1 /* LaunchAtLoginHelper-Info.plist */,
 			);
@@ -344,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43C98F622828804E007D45DF /* Preview Assets.xcassets in Resources */,
+				4311CC3128F5930600DBDCE3 /* Assets-AppIcon.xcassets in Resources */,
 				43C98F5F2828804E007D45DF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,7 +361,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43F8981D28BDE365002B3AC1 /* LaunchAtLoginHelperAssets.xcassets in Resources */,
+				4311CC3228F5930600DBDCE3 /* Assets-AppIcon.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
