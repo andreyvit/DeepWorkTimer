@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4321D48D28F41EDC00ECCF2D /* Practices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4321D48C28F41EDC00ECCF2D /* Practices.swift */; };
 		4356430D282EF295009D071A /* Stretching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356430C282EF295009D071A /* Stretching.swift */; };
 		43C98F5B2828804C007D45DF /* DeepWorkTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */; };
 		43C98F5D2828804C007D45DF /* AdjustDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F5C2828804C007D45DF /* AdjustDurationView.swift */; };
@@ -67,6 +68,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4321D48C28F41EDC00ECCF2D /* Practices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Practices.swift; sourceTree = "<group>"; };
 		43564309282C4663009D071A /* Deep-Work-Timer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Deep-Work-Timer-Info.plist"; sourceTree = "<group>"; };
 		4356430C282EF295009D071A /* Stretching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stretching.swift; sourceTree = "<group>"; };
 		43C98F572828804C007D45DF /* Deep Work Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -200,6 +202,7 @@
 				43F897D428B4ABAE002B3AC1 /* AppModel.swift */,
 				43C98F5C2828804C007D45DF /* AdjustDurationView.swift */,
 				4356430C282EF295009D071A /* Stretching.swift */,
+				4321D48C28F41EDC00ECCF2D /* Practices.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				43F897F728B75790002B3AC1 /* TimeInterval+shorthands.swift in Sources */,
 				43F897FB28BC9BAC002B3AC1 /* LoginItem.swift in Sources */,
 				43F897F028B74C1B002B3AC1 /* TitleScheme.swift in Sources */,
+				4321D48D28F41EDC00ECCF2D /* Practices.swift in Sources */,
 				43F8982A28C5D011002B3AC1 /* Analytics.swift in Sources */,
 				4356430D282EF295009D071A /* Stretching.swift in Sources */,
 				43C98F6A2829085E007D45DF /* Util.swift in Sources */,
