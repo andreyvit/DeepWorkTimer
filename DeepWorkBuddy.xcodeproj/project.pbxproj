@@ -7,34 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4311CC3128F5930600DBDCE3 /* Assets-AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3028F5930600DBDCE3 /* Assets-AppIcon.xcassets */; };
-		4311CC3228F5930600DBDCE3 /* Assets-AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3028F5930600DBDCE3 /* Assets-AppIcon.xcassets */; };
-		4321D48D28F41EDC00ECCF2D /* Practices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4321D48C28F41EDC00ECCF2D /* Practices.swift */; };
-		4356430D282EF295009D071A /* Stretching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356430C282EF295009D071A /* Stretching.swift */; };
-		43C98F5B2828804C007D45DF /* DeepWorkTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */; };
-		43C98F5D2828804C007D45DF /* AdjustDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F5C2828804C007D45DF /* AdjustDurationView.swift */; };
-		43C98F5F2828804E007D45DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C98F5E2828804E007D45DF /* Assets.xcassets */; };
-		43C98F622828804E007D45DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C98F612828804E007D45DF /* Preview Assets.xcassets */; };
-		43C98F6A2829085E007D45DF /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C98F692829085E007D45DF /* Util.swift */; };
-		43F897CB28B4AA08002B3AC1 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897CA28B4AA08002B3AC1 /* State.swift */; };
-		43F897CD28B4AA1F002B3AC1 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897CC28B4AA1F002B3AC1 /* Preferences.swift */; };
-		43F897CF28B4AA4D002B3AC1 /* DebugFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897CE28B4AA4D002B3AC1 /* DebugFlags.swift */; };
-		43F897D128B4AB13002B3AC1 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897D028B4AB13002B3AC1 /* Logging.swift */; };
-		43F897D328B4AB5E002B3AC1 /* Memento.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897D228B4AB5E002B3AC1 /* Memento.swift */; };
-		43F897D528B4ABAE002B3AC1 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897D428B4ABAE002B3AC1 /* AppModel.swift */; };
+		4311CC3728F595EF00DBDCE3 /* DeepWorkBuddy.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3628F595EF00DBDCE3 /* DeepWorkBuddy.xcassets */; };
+		4311CC3928F595F700DBDCE3 /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3828F595F700DBDCE3 /* Shared.xcassets */; };
+		4311CC3A28F595F700DBDCE3 /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3828F595F700DBDCE3 /* Shared.xcassets */; };
+		4311CC3C28F5960D00DBDCE3 /* Preview.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3B28F5960D00DBDCE3 /* Preview.xcassets */; };
+		4311CC5528F5961D00DBDCE3 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC3F28F5961D00DBDCE3 /* LoginItem.swift */; };
+		4311CC5628F5961D00DBDCE3 /* TimeInterval+shorthands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4028F5961D00DBDCE3 /* TimeInterval+shorthands.swift */; };
+		4311CC5728F5961D00DBDCE3 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4128F5961D00DBDCE3 /* Util.swift */; };
+		4311CC5828F5961D00DBDCE3 /* Calendar+dayBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4228F5961D00DBDCE3 /* Calendar+dayBoundary.swift */; };
+		4311CC5928F5961D00DBDCE3 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4428F5961D00DBDCE3 /* Math.swift */; };
+		4311CC5A28F5961D00DBDCE3 /* Silencing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4528F5961D00DBDCE3 /* Silencing.swift */; };
+		4311CC5B28F5961D00DBDCE3 /* Memento.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4628F5961D00DBDCE3 /* Memento.swift */; };
+		4311CC5C28F5961D00DBDCE3 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4728F5961D00DBDCE3 /* State.swift */; };
+		4311CC5D28F5961D00DBDCE3 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4828F5961D00DBDCE3 /* Interval.swift */; };
+		4311CC5E28F5961D00DBDCE3 /* TitleScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4928F5961D00DBDCE3 /* TitleScheme.swift */; };
+		4311CC5F28F5961D00DBDCE3 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4B28F5961D00DBDCE3 /* Analytics.swift */; };
+		4311CC6028F5961D00DBDCE3 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4C28F5961D00DBDCE3 /* Logging.swift */; };
+		4311CC6128F5961D00DBDCE3 /* DebugFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4D28F5961D00DBDCE3 /* DebugFlags.swift */; };
+		4311CC6228F5961D00DBDCE3 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4E28F5961D00DBDCE3 /* Preferences.swift */; };
+		4311CC6328F5961D00DBDCE3 /* DeepWorkTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4F28F5961D00DBDCE3 /* DeepWorkTimerApp.swift */; };
+		4311CC6428F5961D00DBDCE3 /* Stretching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5128F5961D00DBDCE3 /* Stretching.swift */; };
+		4311CC6528F5961D00DBDCE3 /* Practices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5228F5961D00DBDCE3 /* Practices.swift */; };
+		4311CC6628F5961D00DBDCE3 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5328F5961D00DBDCE3 /* AppModel.swift */; };
+		4311CC6728F5961D00DBDCE3 /* AdjustDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5428F5961D00DBDCE3 /* AdjustDurationView.swift */; };
 		43F897E128B4B23E002B3AC1 /* DeepWorkTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */; };
 		43F897E828B4B535002B3AC1 /* Date+mocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E728B4B535002B3AC1 /* Date+mocking.swift */; };
 		43F897EA28B5FCD1002B3AC1 /* Asserts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E928B5FCD1002B3AC1 /* Asserts.swift */; };
-		43F897ED28B61833002B3AC1 /* Interval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897EB28B61806002B3AC1 /* Interval.swift */; };
-		43F897F028B74C1B002B3AC1 /* TitleScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897EE28B74B9E002B3AC1 /* TitleScheme.swift */; };
-		43F897F328B75191002B3AC1 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897F128B74FCE002B3AC1 /* Math.swift */; };
-		43F897F528B756E3002B3AC1 /* Silencing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897F428B756E2002B3AC1 /* Silencing.swift */; };
-		43F897F728B75790002B3AC1 /* TimeInterval+shorthands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897F628B75790002B3AC1 /* TimeInterval+shorthands.swift */; };
-		43F897F928B75A07002B3AC1 /* Calendar+dayBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897F828B75A07002B3AC1 /* Calendar+dayBoundary.swift */; };
-		43F897FB28BC9BAC002B3AC1 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897FA28BC9BAB002B3AC1 /* LoginItem.swift */; };
 		43F8981928BDE360002B3AC1 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */; };
-		43F8982528BDE6EA002B3AC1 /* Deep Work Timer Launch At Login Helper.app in Embed Login Items */ = {isa = PBXBuildFile; fileRef = 43F8981628BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		43F8982A28C5D011002B3AC1 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F8982928C5D011002B3AC1 /* Analytics.swift */; };
+		43F8982528BDE6EA002B3AC1 /* Deep Work Buddy Launch At Login Helper.app in Embed Login Items */ = {isa = PBXBuildFile; fileRef = 43F8981628BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +61,7 @@
 			dstPath = Contents/Library/LoginItems;
 			dstSubfolderSpec = 1;
 			files = (
-				43F8982528BDE6EA002B3AC1 /* Deep Work Timer Launch At Login Helper.app in Embed Login Items */,
+				43F8982528BDE6EA002B3AC1 /* Deep Work Buddy Launch At Login Helper.app in Embed Login Items */,
 			);
 			name = "Embed Login Items";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,39 +69,39 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4311CC3028F5930600DBDCE3 /* Assets-AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets-AppIcon.xcassets"; sourceTree = "<group>"; };
-		4321D48C28F41EDC00ECCF2D /* Practices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Practices.swift; sourceTree = "<group>"; };
-		43564309282C4663009D071A /* Deep-Work-Timer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Deep-Work-Timer-Info.plist"; sourceTree = "<group>"; };
-		4356430C282EF295009D071A /* Stretching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stretching.swift; sourceTree = "<group>"; };
-		43C98F572828804C007D45DF /* Deep Work Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepWorkTimerApp.swift; sourceTree = "<group>"; };
-		43C98F5C2828804C007D45DF /* AdjustDurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustDurationView.swift; sourceTree = "<group>"; };
-		43C98F5E2828804E007D45DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		43C98F612828804E007D45DF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		43C98F632828804F007D45DF /* DeepWorkTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DeepWorkTimer.entitlements; sourceTree = "<group>"; };
-		43C98F692829085E007D45DF /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
-		43F897CA28B4AA08002B3AC1 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
-		43F897CC28B4AA1F002B3AC1 /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
-		43F897CE28B4AA4D002B3AC1 /* DebugFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFlags.swift; sourceTree = "<group>"; };
-		43F897D028B4AB13002B3AC1 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
-		43F897D228B4AB5E002B3AC1 /* Memento.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memento.swift; sourceTree = "<group>"; };
-		43F897D428B4ABAE002B3AC1 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
-		43F897DE28B4B23E002B3AC1 /* DeepWorkTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeepWorkTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4311CC3428F5959700DBDCE3 /* DeepWorkBuddy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DeepWorkBuddy-Info.plist"; sourceTree = "<group>"; };
+		4311CC3528F5959700DBDCE3 /* DeepWorkBuddy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DeepWorkBuddy.entitlements; sourceTree = "<group>"; };
+		4311CC3628F595EF00DBDCE3 /* DeepWorkBuddy.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = DeepWorkBuddy.xcassets; sourceTree = "<group>"; };
+		4311CC3828F595F700DBDCE3 /* Shared.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Shared.xcassets; sourceTree = "<group>"; };
+		4311CC3B28F5960D00DBDCE3 /* Preview.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Preview.xcassets; sourceTree = "<group>"; };
+		4311CC3F28F5961D00DBDCE3 /* LoginItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
+		4311CC4028F5961D00DBDCE3 /* TimeInterval+shorthands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+shorthands.swift"; sourceTree = "<group>"; };
+		4311CC4128F5961D00DBDCE3 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		4311CC4228F5961D00DBDCE3 /* Calendar+dayBoundary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Calendar+dayBoundary.swift"; sourceTree = "<group>"; };
+		4311CC4428F5961D00DBDCE3 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		4311CC4528F5961D00DBDCE3 /* Silencing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Silencing.swift; sourceTree = "<group>"; };
+		4311CC4628F5961D00DBDCE3 /* Memento.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Memento.swift; sourceTree = "<group>"; };
+		4311CC4728F5961D00DBDCE3 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		4311CC4828F5961D00DBDCE3 /* Interval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
+		4311CC4928F5961D00DBDCE3 /* TitleScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleScheme.swift; sourceTree = "<group>"; };
+		4311CC4B28F5961D00DBDCE3 /* Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
+		4311CC4C28F5961D00DBDCE3 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		4311CC4D28F5961D00DBDCE3 /* DebugFlags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugFlags.swift; sourceTree = "<group>"; };
+		4311CC4E28F5961D00DBDCE3 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		4311CC4F28F5961D00DBDCE3 /* DeepWorkTimerApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepWorkTimerApp.swift; sourceTree = "<group>"; };
+		4311CC5128F5961D00DBDCE3 /* Stretching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stretching.swift; sourceTree = "<group>"; };
+		4311CC5228F5961D00DBDCE3 /* Practices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Practices.swift; sourceTree = "<group>"; };
+		4311CC5328F5961D00DBDCE3 /* AppModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		4311CC5428F5961D00DBDCE3 /* AdjustDurationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdjustDurationView.swift; sourceTree = "<group>"; };
+		43C98F572828804C007D45DF /* Deep Work Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43F897DE28B4B23E002B3AC1 /* DeepWorkBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeepWorkBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepWorkTimerTests.swift; sourceTree = "<group>"; };
 		43F897E728B4B535002B3AC1 /* Date+mocking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+mocking.swift"; sourceTree = "<group>"; };
 		43F897E928B5FCD1002B3AC1 /* Asserts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asserts.swift; sourceTree = "<group>"; };
-		43F897EB28B61806002B3AC1 /* Interval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interval.swift; sourceTree = "<group>"; };
-		43F897EE28B74B9E002B3AC1 /* TitleScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScheme.swift; sourceTree = "<group>"; };
-		43F897F128B74FCE002B3AC1 /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
-		43F897F428B756E2002B3AC1 /* Silencing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Silencing.swift; sourceTree = "<group>"; };
-		43F897F628B75790002B3AC1 /* TimeInterval+shorthands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+shorthands.swift"; sourceTree = "<group>"; };
-		43F897F828B75A07002B3AC1 /* Calendar+dayBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+dayBoundary.swift"; sourceTree = "<group>"; };
-		43F897FA28BC9BAB002B3AC1 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
-		43F8981628BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Timer Launch At Login Helper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43F8981628BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Buddy Launch At Login Helper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginHelper.swift; sourceTree = "<group>"; };
 		43F8982128BDE365002B3AC1 /* LaunchAtLoginHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LaunchAtLoginHelper.entitlements; sourceTree = "<group>"; };
 		43F8982828BDE8D9002B3AC1 /* LaunchAtLoginHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LaunchAtLoginHelper-Info.plist"; sourceTree = "<group>"; };
-		43F8982928C5D011002B3AC1 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,13 +129,85 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4311CC3D28F5961D00DBDCE3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				4311CC4A28F5961D00DBDCE3 /* Application */,
+				4311CC5028F5961D00DBDCE3 /* Presentation */,
+				4311CC4328F5961D00DBDCE3 /* Model */,
+				4311CC3E28F5961D00DBDCE3 /* Util */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		4311CC3E28F5961D00DBDCE3 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				4311CC3F28F5961D00DBDCE3 /* LoginItem.swift */,
+				4311CC4028F5961D00DBDCE3 /* TimeInterval+shorthands.swift */,
+				4311CC4128F5961D00DBDCE3 /* Util.swift */,
+				4311CC4228F5961D00DBDCE3 /* Calendar+dayBoundary.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		4311CC4328F5961D00DBDCE3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4311CC4428F5961D00DBDCE3 /* Math.swift */,
+				4311CC4528F5961D00DBDCE3 /* Silencing.swift */,
+				4311CC4628F5961D00DBDCE3 /* Memento.swift */,
+				4311CC4728F5961D00DBDCE3 /* State.swift */,
+				4311CC4828F5961D00DBDCE3 /* Interval.swift */,
+				4311CC4928F5961D00DBDCE3 /* TitleScheme.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4311CC4A28F5961D00DBDCE3 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				4311CC4F28F5961D00DBDCE3 /* DeepWorkTimerApp.swift */,
+				4311CC4B28F5961D00DBDCE3 /* Analytics.swift */,
+				4311CC4C28F5961D00DBDCE3 /* Logging.swift */,
+				4311CC4D28F5961D00DBDCE3 /* DebugFlags.swift */,
+				4311CC4E28F5961D00DBDCE3 /* Preferences.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		4311CC5028F5961D00DBDCE3 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				4311CC5128F5961D00DBDCE3 /* Stretching.swift */,
+				4311CC5228F5961D00DBDCE3 /* Practices.swift */,
+				4311CC5328F5961D00DBDCE3 /* AppModel.swift */,
+				4311CC5428F5961D00DBDCE3 /* AdjustDurationView.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		4311CC6828F5969600DBDCE3 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				4311CC3B28F5960D00DBDCE3 /* Preview.xcassets */,
+			);
+			path = Preview;
+			sourceTree = "<group>";
+		};
 		43C98F4E2828804C007D45DF = {
 			isa = PBXGroup;
 			children = (
-				43564309282C4663009D071A /* Deep-Work-Timer-Info.plist */,
-				43C98F592828804C007D45DF /* DeepWorkTimer */,
-				43F897DF28B4B23E002B3AC1 /* DeepWorkTimerTests */,
-				43F8981728BDE360002B3AC1 /* LaunchAtLoginHelper */,
+				4311CC3528F5959700DBDCE3 /* DeepWorkBuddy.entitlements */,
+				43F8982128BDE365002B3AC1 /* LaunchAtLoginHelper.entitlements */,
+				4311CC3428F5959700DBDCE3 /* DeepWorkBuddy-Info.plist */,
+				43F8982828BDE8D9002B3AC1 /* LaunchAtLoginHelper-Info.plist */,
+				4311CC3628F595EF00DBDCE3 /* DeepWorkBuddy.xcassets */,
+				4311CC3828F595F700DBDCE3 /* Shared.xcassets */,
+				4311CC3D28F5961D00DBDCE3 /* Source */,
+				4311CC6828F5969600DBDCE3 /* Preview */,
+				43F897DF28B4B23E002B3AC1 /* Tests */,
+				43F8981728BDE360002B3AC1 /* Source-LaunchAtLoginHelper */,
 				43C98F582828804C007D45DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -143,109 +215,37 @@
 		43C98F582828804C007D45DF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43C98F572828804C007D45DF /* Deep Work Timer.app */,
-				43F897DE28B4B23E002B3AC1 /* DeepWorkTimerTests.xctest */,
-				43F8981628BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper.app */,
+				43C98F572828804C007D45DF /* Deep Work Buddy.app */,
+				43F897DE28B4B23E002B3AC1 /* DeepWorkBuddyTests.xctest */,
+				43F8981628BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		43C98F592828804C007D45DF /* DeepWorkTimer */ = {
-			isa = PBXGroup;
-			children = (
-				43F897D628B4ACAD002B3AC1 /* Application */,
-				43F897D828B4ACBA002B3AC1 /* Presentation */,
-				43F897D728B4ACB4002B3AC1 /* Model */,
-				43F897D928B4ACD2002B3AC1 /* Util */,
-				43C98F602828804E007D45DF /* Preview Content */,
-				43C98F5E2828804E007D45DF /* Assets.xcassets */,
-				4311CC3028F5930600DBDCE3 /* Assets-AppIcon.xcassets */,
-				43C98F632828804F007D45DF /* DeepWorkTimer.entitlements */,
-			);
-			path = DeepWorkTimer;
-			sourceTree = "<group>";
-		};
-		43C98F602828804E007D45DF /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				43C98F612828804E007D45DF /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		43F897D628B4ACAD002B3AC1 /* Application */ = {
-			isa = PBXGroup;
-			children = (
-				43C98F5A2828804C007D45DF /* DeepWorkTimerApp.swift */,
-				43F897D028B4AB13002B3AC1 /* Logging.swift */,
-				43F8982928C5D011002B3AC1 /* Analytics.swift */,
-				43F897CC28B4AA1F002B3AC1 /* Preferences.swift */,
-				43F897CE28B4AA4D002B3AC1 /* DebugFlags.swift */,
-			);
-			path = Application;
-			sourceTree = "<group>";
-		};
-		43F897D728B4ACB4002B3AC1 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				43F897CA28B4AA08002B3AC1 /* State.swift */,
-				43F897EB28B61806002B3AC1 /* Interval.swift */,
-				43F897D228B4AB5E002B3AC1 /* Memento.swift */,
-				43F897F428B756E2002B3AC1 /* Silencing.swift */,
-				43F897EE28B74B9E002B3AC1 /* TitleScheme.swift */,
-				43F897F128B74FCE002B3AC1 /* Math.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		43F897D828B4ACBA002B3AC1 /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				43F897D428B4ABAE002B3AC1 /* AppModel.swift */,
-				43C98F5C2828804C007D45DF /* AdjustDurationView.swift */,
-				4356430C282EF295009D071A /* Stretching.swift */,
-				4321D48C28F41EDC00ECCF2D /* Practices.swift */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
-		43F897D928B4ACD2002B3AC1 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				43C98F692829085E007D45DF /* Util.swift */,
-				43F897F628B75790002B3AC1 /* TimeInterval+shorthands.swift */,
-				43F897F828B75A07002B3AC1 /* Calendar+dayBoundary.swift */,
-				43F897FA28BC9BAB002B3AC1 /* LoginItem.swift */,
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
-		43F897DF28B4B23E002B3AC1 /* DeepWorkTimerTests */ = {
+		43F897DF28B4B23E002B3AC1 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */,
 				43F897E928B5FCD1002B3AC1 /* Asserts.swift */,
 				43F897E728B4B535002B3AC1 /* Date+mocking.swift */,
 			);
-			path = DeepWorkTimerTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
-		43F8981728BDE360002B3AC1 /* LaunchAtLoginHelper */ = {
+		43F8981728BDE360002B3AC1 /* Source-LaunchAtLoginHelper */ = {
 			isa = PBXGroup;
 			children = (
 				43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */,
-				43F8982128BDE365002B3AC1 /* LaunchAtLoginHelper.entitlements */,
-				43F8982828BDE8D9002B3AC1 /* LaunchAtLoginHelper-Info.plist */,
 			);
-			path = LaunchAtLoginHelper;
+			path = "Source-LaunchAtLoginHelper";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		43C98F562828804C007D45DF /* Deep Work Timer */ = {
+		43C98F562828804C007D45DF /* Deep Work Buddy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 43C98F662828804F007D45DF /* Build configuration list for PBXNativeTarget "Deep Work Timer" */;
+			buildConfigurationList = 43C98F662828804F007D45DF /* Build configuration list for PBXNativeTarget "Deep Work Buddy" */;
 			buildPhases = (
 				43C98F532828804C007D45DF /* Sources */,
 				43C98F542828804C007D45DF /* Frameworks */,
@@ -257,14 +257,14 @@
 			dependencies = (
 				43F8982728BDE6FD002B3AC1 /* PBXTargetDependency */,
 			);
-			name = "Deep Work Timer";
+			name = "Deep Work Buddy";
 			productName = DeepWorkTimer;
-			productReference = 43C98F572828804C007D45DF /* Deep Work Timer.app */;
+			productReference = 43C98F572828804C007D45DF /* Deep Work Buddy.app */;
 			productType = "com.apple.product-type.application";
 		};
-		43F897DD28B4B23E002B3AC1 /* DeepWorkTimerTests */ = {
+		43F897DD28B4B23E002B3AC1 /* DeepWorkBuddyTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 43F897E428B4B23E002B3AC1 /* Build configuration list for PBXNativeTarget "DeepWorkTimerTests" */;
+			buildConfigurationList = 43F897E428B4B23E002B3AC1 /* Build configuration list for PBXNativeTarget "DeepWorkBuddyTests" */;
 			buildPhases = (
 				43F897DA28B4B23E002B3AC1 /* Sources */,
 				43F897DB28B4B23E002B3AC1 /* Frameworks */,
@@ -275,14 +275,14 @@
 			dependencies = (
 				43F897E328B4B23E002B3AC1 /* PBXTargetDependency */,
 			);
-			name = DeepWorkTimerTests;
+			name = DeepWorkBuddyTests;
 			productName = DeepWorkTimerTests;
-			productReference = 43F897DE28B4B23E002B3AC1 /* DeepWorkTimerTests.xctest */;
+			productReference = 43F897DE28B4B23E002B3AC1 /* DeepWorkBuddyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		43F8981528BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper */ = {
+		43F8981528BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 43F8982228BDE365002B3AC1 /* Build configuration list for PBXNativeTarget "Deep Work Timer Launch At Login Helper" */;
+			buildConfigurationList = 43F8982228BDE365002B3AC1 /* Build configuration list for PBXNativeTarget "Deep Work Buddy Launch At Login Helper" */;
 			buildPhases = (
 				43F8981228BDE360002B3AC1 /* Sources */,
 				43F8981328BDE360002B3AC1 /* Frameworks */,
@@ -292,9 +292,9 @@
 			);
 			dependencies = (
 			);
-			name = "Deep Work Timer Launch At Login Helper";
+			name = "Deep Work Buddy Launch At Login Helper";
 			productName = "Deep Work Timer Launch At Login Helper";
-			productReference = 43F8981628BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper.app */;
+			productReference = 43F8981628BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -319,7 +319,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 43C98F522828804C007D45DF /* Build configuration list for PBXProject "DeepWorkTimer" */;
+			buildConfigurationList = 43C98F522828804C007D45DF /* Build configuration list for PBXProject "DeepWorkBuddy" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -332,9 +332,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				43C98F562828804C007D45DF /* Deep Work Timer */,
-				43F897DD28B4B23E002B3AC1 /* DeepWorkTimerTests */,
-				43F8981528BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper */,
+				43C98F562828804C007D45DF /* Deep Work Buddy */,
+				43F897DD28B4B23E002B3AC1 /* DeepWorkBuddyTests */,
+				43F8981528BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper */,
 			);
 		};
 /* End PBXProject section */
@@ -344,9 +344,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43C98F622828804E007D45DF /* Preview Assets.xcassets in Resources */,
-				4311CC3128F5930600DBDCE3 /* Assets-AppIcon.xcassets in Resources */,
-				43C98F5F2828804E007D45DF /* Assets.xcassets in Resources */,
+				4311CC3C28F5960D00DBDCE3 /* Preview.xcassets in Resources */,
+				4311CC3928F595F700DBDCE3 /* Shared.xcassets in Resources */,
+				4311CC3728F595EF00DBDCE3 /* DeepWorkBuddy.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +361,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4311CC3228F5930600DBDCE3 /* Assets-AppIcon.xcassets in Resources */,
+				4311CC3A28F595F700DBDCE3 /* Shared.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,25 +372,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43C98F5D2828804C007D45DF /* AdjustDurationView.swift in Sources */,
-				43F897CD28B4AA1F002B3AC1 /* Preferences.swift in Sources */,
-				43F897ED28B61833002B3AC1 /* Interval.swift in Sources */,
-				43F897F328B75191002B3AC1 /* Math.swift in Sources */,
-				43F897D528B4ABAE002B3AC1 /* AppModel.swift in Sources */,
-				43F897F728B75790002B3AC1 /* TimeInterval+shorthands.swift in Sources */,
-				43F897FB28BC9BAC002B3AC1 /* LoginItem.swift in Sources */,
-				43F897F028B74C1B002B3AC1 /* TitleScheme.swift in Sources */,
-				4321D48D28F41EDC00ECCF2D /* Practices.swift in Sources */,
-				43F8982A28C5D011002B3AC1 /* Analytics.swift in Sources */,
-				4356430D282EF295009D071A /* Stretching.swift in Sources */,
-				43C98F6A2829085E007D45DF /* Util.swift in Sources */,
-				43C98F5B2828804C007D45DF /* DeepWorkTimerApp.swift in Sources */,
-				43F897F528B756E3002B3AC1 /* Silencing.swift in Sources */,
-				43F897CB28B4AA08002B3AC1 /* State.swift in Sources */,
-				43F897F928B75A07002B3AC1 /* Calendar+dayBoundary.swift in Sources */,
-				43F897D328B4AB5E002B3AC1 /* Memento.swift in Sources */,
-				43F897D128B4AB13002B3AC1 /* Logging.swift in Sources */,
-				43F897CF28B4AA4D002B3AC1 /* DebugFlags.swift in Sources */,
+				4311CC5828F5961D00DBDCE3 /* Calendar+dayBoundary.swift in Sources */,
+				4311CC5B28F5961D00DBDCE3 /* Memento.swift in Sources */,
+				4311CC6328F5961D00DBDCE3 /* DeepWorkTimerApp.swift in Sources */,
+				4311CC5528F5961D00DBDCE3 /* LoginItem.swift in Sources */,
+				4311CC5A28F5961D00DBDCE3 /* Silencing.swift in Sources */,
+				4311CC5F28F5961D00DBDCE3 /* Analytics.swift in Sources */,
+				4311CC6428F5961D00DBDCE3 /* Stretching.swift in Sources */,
+				4311CC5728F5961D00DBDCE3 /* Util.swift in Sources */,
+				4311CC6728F5961D00DBDCE3 /* AdjustDurationView.swift in Sources */,
+				4311CC6528F5961D00DBDCE3 /* Practices.swift in Sources */,
+				4311CC5D28F5961D00DBDCE3 /* Interval.swift in Sources */,
+				4311CC6028F5961D00DBDCE3 /* Logging.swift in Sources */,
+				4311CC6228F5961D00DBDCE3 /* Preferences.swift in Sources */,
+				4311CC5628F5961D00DBDCE3 /* TimeInterval+shorthands.swift in Sources */,
+				4311CC6628F5961D00DBDCE3 /* AppModel.swift in Sources */,
+				4311CC5E28F5961D00DBDCE3 /* TitleScheme.swift in Sources */,
+				4311CC5928F5961D00DBDCE3 /* Math.swift in Sources */,
+				4311CC6128F5961D00DBDCE3 /* DebugFlags.swift in Sources */,
+				4311CC5C28F5961D00DBDCE3 /* State.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,12 +417,12 @@
 /* Begin PBXTargetDependency section */
 		43F897E328B4B23E002B3AC1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 43C98F562828804C007D45DF /* Deep Work Timer */;
+			target = 43C98F562828804C007D45DF /* Deep Work Buddy */;
 			targetProxy = 43F897E228B4B23E002B3AC1 /* PBXContainerItemProxy */;
 		};
 		43F8982728BDE6FD002B3AC1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 43F8981528BDE360002B3AC1 /* Deep Work Timer Launch At Login Helper */;
+			target = 43F8981528BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper */;
 			targetProxy = 43F8982628BDE6FD002B3AC1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -547,24 +547,25 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = DeepWorkTimer/DeepWorkTimer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DeepWorkBuddy.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"DeepWorkTimer/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = Preview;
 				DEVELOPMENT_TEAM = D963M2VVCH;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Deep-Work-Timer-Info.plist";
+				INFOPLIST_FILE = "DeepWorkBuddy-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkTimer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkBuddy;
+				PRODUCT_MODULE_NAME = DeepWorkBuddy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -578,24 +579,25 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = DeepWorkTimer/DeepWorkTimer.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DeepWorkBuddy.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"DeepWorkTimer/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = Preview;
 				DEVELOPMENT_TEAM = D963M2VVCH;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Deep-Work-Timer-Info.plist";
+				INFOPLIST_FILE = "DeepWorkBuddy-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkTimer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkBuddy;
+				PRODUCT_MODULE_NAME = DeepWorkBuddy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -605,34 +607,36 @@
 		43F897E528B4B23E002B3AC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D963M2VVCH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkTimerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkBuddyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Deep Work Timer.app/Contents/MacOS/Deep Work Timer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Deep Work Buddy.app/Contents/MacOS/Deep Work Buddy";
 			};
 			name = Debug;
 		};
 		43F897E628B4B23E002B3AC1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D963M2VVCH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkTimerTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkBuddyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Deep Work Timer.app/Contents/MacOS/Deep Work Timer";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Deep Work Buddy.app/Contents/MacOS/Deep Work Buddy";
 			};
 			name = Release;
 		};
@@ -641,7 +645,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = LaunchAtLoginHelper/LaunchAtLoginHelper.entitlements;
+				CODE_SIGN_ENTITLEMENTS = LaunchAtLoginHelper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -650,14 +654,14 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "LaunchAtLoginHelper/LaunchAtLoginHelper-Info.plist";
+				INFOPLIST_FILE = "LaunchAtLoginHelper-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkTimer.LaunchAtLoginHelper;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkBuddy.LaunchAtLoginHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -669,7 +673,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = LaunchAtLoginHelper/LaunchAtLoginHelper.entitlements;
+				CODE_SIGN_ENTITLEMENTS = LaunchAtLoginHelper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -678,14 +682,14 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "LaunchAtLoginHelper/LaunchAtLoginHelper-Info.plist";
+				INFOPLIST_FILE = "LaunchAtLoginHelper-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkTimer.LaunchAtLoginHelper;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tarantsov.DeepWorkBuddy.LaunchAtLoginHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -695,7 +699,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		43C98F522828804C007D45DF /* Build configuration list for PBXProject "DeepWorkTimer" */ = {
+		43C98F522828804C007D45DF /* Build configuration list for PBXProject "DeepWorkBuddy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				43C98F642828804F007D45DF /* Debug */,
@@ -704,7 +708,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		43C98F662828804F007D45DF /* Build configuration list for PBXNativeTarget "Deep Work Timer" */ = {
+		43C98F662828804F007D45DF /* Build configuration list for PBXNativeTarget "Deep Work Buddy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				43C98F672828804F007D45DF /* Debug */,
@@ -713,7 +717,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		43F897E428B4B23E002B3AC1 /* Build configuration list for PBXNativeTarget "DeepWorkTimerTests" */ = {
+		43F897E428B4B23E002B3AC1 /* Build configuration list for PBXNativeTarget "DeepWorkBuddyTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				43F897E528B4B23E002B3AC1 /* Debug */,
@@ -722,7 +726,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		43F8982228BDE365002B3AC1 /* Build configuration list for PBXNativeTarget "Deep Work Timer Launch At Login Helper" */ = {
+		43F8982228BDE365002B3AC1 /* Build configuration list for PBXNativeTarget "Deep Work Buddy Launch At Login Helper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				43F8982328BDE365002B3AC1 /* Debug */,

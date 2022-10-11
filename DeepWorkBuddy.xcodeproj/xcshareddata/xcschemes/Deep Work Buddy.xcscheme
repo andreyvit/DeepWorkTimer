@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43C98F562828804C007D45DF"
-               BuildableName = "Deep Work Timer.app"
-               BlueprintName = "Deep Work Timer"
-               ReferencedContainer = "container:DeepWorkTimer.xcodeproj">
+               BuildableName = "Deep Work Buddy.app"
+               BlueprintName = "Deep Work Buddy"
+               ReferencedContainer = "container:DeepWorkBuddy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -26,7 +26,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "NO">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -34,8 +34,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43F897DD28B4B23E002B3AC1"
                BuildableName = "DeepWorkTimerTests.xctest"
-               BlueprintName = "DeepWorkTimerTests"
-               ReferencedContainer = "container:DeepWorkTimer.xcodeproj">
+               BlueprintName = "DeepWorkBuddyTests"
+               ReferencedContainer = "container:DeepWorkBuddy.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,33 +55,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43C98F562828804C007D45DF"
-            BuildableName = "Deep Work Timer.app"
-            BlueprintName = "Deep Work Timer"
-            ReferencedContainer = "container:DeepWorkTimer.xcodeproj">
+            BuildableName = "Deep Work Buddy.app"
+            BlueprintName = "Deep Work Buddy"
+            ReferencedContainer = "container:DeepWorkBuddy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-com.tarantsov.deepwork.debug.idle.show YES"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-com.tarantsov.deepwork.debug.includeTinyIntervals YES"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-com.tarantsov.deepwork.debug.idle.fast YES"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-com.tarantsov.deepwork.debug.stretching.show YES"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-com.tarantsov.deepwork.debug.onlaunch.stretching YES"
-            isEnabled = "NO">
-         </CommandLineArgument>
-      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -94,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "43C98F562828804C007D45DF"
-            BuildableName = "Deep Work Timer.app"
-            BlueprintName = "Deep Work Timer"
-            ReferencedContainer = "container:DeepWorkTimer.xcodeproj">
+            BuildableName = "Deep Work Buddy.app"
+            BlueprintName = "Deep Work Buddy"
+            ReferencedContainer = "container:DeepWorkBuddy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

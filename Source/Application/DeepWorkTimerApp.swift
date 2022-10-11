@@ -4,7 +4,7 @@ import Combine
 import UserNotifications
 import os.log
 
-let launchAtLoginHelper = LoginItem(bundleID: "com.tarantsov.DeepWorkTimer.LaunchAtLoginHelper")
+let launchAtLoginHelper = LoginItem(bundleID: "com.tarantsov.DeepWorkBuddy.LaunchAtLoginHelper")
 
 @main
 struct DeepWorkTimerApp: App {
@@ -143,7 +143,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
         menu.addItem(NSMenuItem.separator())
 
         menu.addItem(withTitle: "About", action: #selector(about), keyEquivalent: "")
-        menu.addItem(withTitle: "Quit Deep Work Timer", action: #selector(quit), keyEquivalent: "")
+        menu.addItem(withTitle: "Quit Deep Work Buddy", action: #selector(quit), keyEquivalent: "")
 
         statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
         statusBarItem.button!.image = NSImage(named: "Timer")!
