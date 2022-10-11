@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "43F897DD28B4B23E002B3AC1"
-               BuildableName = "DeepWorkTimerTests.xctest"
+               BuildableName = "DeepWorkBuddyTests.xctest"
                BlueprintName = "DeepWorkBuddyTests"
                ReferencedContainer = "container:DeepWorkBuddy.xcodeproj">
             </BuildableReference>
