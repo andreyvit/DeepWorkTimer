@@ -1,5 +1,5 @@
 import XCTest
-@testable import Deep_Work_Timer
+@testable import DeepWorkBuddy
 
 class DeepWorkTimerTests: XCTestCase {
     
