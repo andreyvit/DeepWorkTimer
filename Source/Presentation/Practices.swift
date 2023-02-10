@@ -54,7 +54,7 @@ struct PracticesView: View {
             PracticeView("Prompt when time to rest", isOn: $isStretchingOn) {
                 VStack {
                     Picker("Alert persistence:", selection: $restAlertObnoxiousness) {
-                        ForEach(0 ..< obnoxiousnessValues.count) { i in
+                        ForEach(0 ..< 3) { i in
                             Text(obnoxiousnessValues[i])
                                 .frame(maxWidth: .infinity)
                                 .layoutPriority(-1)
