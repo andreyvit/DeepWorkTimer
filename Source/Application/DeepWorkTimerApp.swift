@@ -33,7 +33,7 @@ struct DeepWorkTimerApp: App {
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableObject {
     
-    let model = AppModel(preferences: .current)
+    let model = AppModel(preferences: .current, isTesting: false)
 
     var popover: NSPopover!
     

@@ -32,6 +32,7 @@
 		4311CC6728F5961D00DBDCE3 /* AdjustDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5428F5961D00DBDCE3 /* AdjustDurationView.swift */; };
 		435981672996491B00BB887D /* ComboBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435981662996491B00BB887D /* ComboBox.swift */; };
 		435981692996782800BB887D /* Interruption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435981682996782800BB887D /* Interruption.swift */; };
+		4359816B2996A0D500BB887D /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4359816A2996A0D500BB887D /* Store.swift */; };
 		43E49D712995EE9C007CAFA2 /* Blackbird in Frameworks */ = {isa = PBXBuildFile; productRef = 43E49D702995EE9C007CAFA2 /* Blackbird */; };
 		43E49D732995F979007CAFA2 /* InterruptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E49D722995F979007CAFA2 /* InterruptionView.swift */; };
 		43F897E128B4B23E002B3AC1 /* DeepWorkTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */; };
@@ -99,6 +100,7 @@
 		4311CC5428F5961D00DBDCE3 /* AdjustDurationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdjustDurationView.swift; sourceTree = "<group>"; };
 		435981662996491B00BB887D /* ComboBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComboBox.swift; sourceTree = "<group>"; };
 		435981682996782800BB887D /* Interruption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interruption.swift; sourceTree = "<group>"; };
+		4359816A2996A0D500BB887D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		43C98F572828804C007D45DF /* Deep Work Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43E49D722995F979007CAFA2 /* InterruptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterruptionView.swift; sourceTree = "<group>"; };
 		43F897DE28B4B23E002B3AC1 /* DeepWorkBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeepWorkBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +172,7 @@
 				435981682996782800BB887D /* Interruption.swift */,
 				4311CC4828F5961D00DBDCE3 /* Interval.swift */,
 				4311CC4928F5961D00DBDCE3 /* TitleScheme.swift */,
+				4359816A2996A0D500BB887D /* Store.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -394,6 +397,7 @@
 				4311CC6328F5961D00DBDCE3 /* DeepWorkTimerApp.swift in Sources */,
 				4311CC5528F5961D00DBDCE3 /* LoginItem.swift in Sources */,
 				4311CC5A28F5961D00DBDCE3 /* Silencing.swift in Sources */,
+				4359816B2996A0D500BB887D /* Store.swift in Sources */,
 				435981672996491B00BB887D /* ComboBox.swift in Sources */,
 				4311CC5F28F5961D00DBDCE3 /* Analytics.swift in Sources */,
 				4311CC6428F5961D00DBDCE3 /* Stretching.swift in Sources */,

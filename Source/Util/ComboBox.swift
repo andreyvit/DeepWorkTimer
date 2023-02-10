@@ -59,11 +59,15 @@ struct ComboBox: NSViewRepresentable
                 text.wrappedValue = newStringValue
             }
         }
+        
+        func controlTextDidChange(_ obj: Notification) {
+            guard let textField = obj.object as? NSTextField else { return }
+            text.wrappedValue = textField.stringValue
+        }
 
         func controlTextDidEndEditing(_ obj: Notification) {
-            if let textField = obj.object as? NSTextField {
-                text.wrappedValue = textField.stringValue
-            }
+            guard let textField = obj.object as? NSTextField else { return }
+            text.wrappedValue = textField.stringValue
         }
     }
 }

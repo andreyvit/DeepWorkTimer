@@ -140,12 +140,27 @@ struct InterruptionView: View {
 
     func cancel() {
         model.endInterruption(action: .continueIncludingInterruption)
+        record()
     }
     func subtract() {
         model.endInterruption(action: .continueExcludingInterruption)
+        record()
     }
     func stop() {
         model.endInterruption(action: .stop)
+        record()
+    }
+    
+    private func record() {
+        let cause = self.cause
+        guard !cause.isEmpty else { return }
+        Task.detached(priority: .background) {
+            do {
+                try await model.store.recordInterruption(reason: cause)
+            } catch {
+                eventLog.error("database op failed: \(String(reflecting: error))")
+            }
+        }
     }
 }
 

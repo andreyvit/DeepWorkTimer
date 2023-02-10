@@ -12,11 +12,13 @@ class AppModel: ObservableObject {
     private lazy var interruption = InterruptionController(appModel: self)
 
     let preferences: Preferences
+    let store: Store
     
-    static func testing() -> AppModel { .init(preferences: .initial) }
+    static func testing() -> AppModel { .init(preferences: .initial, isTesting: true) }
     
-    init(preferences: Preferences) {
+    init(preferences: Preferences, isTesting: Bool) {
         self.preferences = preferences
+        self.store = try! Store(isTesting: isTesting)
         let memento = AppModel.loadMemento() ?? AppMemento()
         state = AppState(memento: memento, preferences: preferences, now: .now)
         mutate {}
