@@ -29,7 +29,7 @@ public struct AppMemento: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        startTime = try container.decode(Date?.self, forKey: .startTime)
+        startTime = try container.decodeIfPresent(Date?.self, forKey: .startTime) ?? nil
         configuration = try container.decode(IntervalConfiguration.self, forKey: .configuration)
         lastStretchTime = try container.decodeIfPresent(Date.self, forKey: .lastStretchTime) ?? .distantPast
         totalMuting = try container.decodeIfPresent(Muting?.self, forKey: .totalMuting) ?? nil
