@@ -30,6 +30,7 @@
 		4311CC6528F5961D00DBDCE3 /* Practices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5228F5961D00DBDCE3 /* Practices.swift */; };
 		4311CC6628F5961D00DBDCE3 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5328F5961D00DBDCE3 /* AppModel.swift */; };
 		4311CC6728F5961D00DBDCE3 /* AdjustDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5428F5961D00DBDCE3 /* AdjustDurationView.swift */; };
+		43E49D712995EE9C007CAFA2 /* Blackbird in Frameworks */ = {isa = PBXBuildFile; productRef = 43E49D702995EE9C007CAFA2 /* Blackbird */; };
 		43F897E128B4B23E002B3AC1 /* DeepWorkTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */; };
 		43F897E828B4B535002B3AC1 /* Date+mocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E728B4B535002B3AC1 /* Date+mocking.swift */; };
 		43F897EA28B5FCD1002B3AC1 /* Asserts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E928B5FCD1002B3AC1 /* Asserts.swift */; };
@@ -109,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43E49D712995EE9C007CAFA2 /* Blackbird in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +260,9 @@
 				43F8982728BDE6FD002B3AC1 /* PBXTargetDependency */,
 			);
 			name = "Deep Work Buddy";
+			packageProductDependencies = (
+				43E49D702995EE9C007CAFA2 /* Blackbird */,
+			);
 			productName = DeepWorkTimer;
 			productReference = 43C98F572828804C007D45DF /* Deep Work Buddy.app */;
 			productType = "com.apple.product-type.application";
@@ -328,6 +333,9 @@
 				Base,
 			);
 			mainGroup = 43C98F4E2828804C007D45DF;
+			packageReferences = (
+				43E49D6F2995EE9C007CAFA2 /* XCRemoteSwiftPackageReference "Blackbird" */,
+			);
 			productRefGroup = 43C98F582828804C007D45DF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -742,6 +750,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		43E49D6F2995EE9C007CAFA2 /* XCRemoteSwiftPackageReference "Blackbird" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marcoarment/Blackbird";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		43E49D702995EE9C007CAFA2 /* Blackbird */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 43E49D6F2995EE9C007CAFA2 /* XCRemoteSwiftPackageReference "Blackbird" */;
+			productName = Blackbird;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 43C98F4F2828804C007D45DF /* Project object */;
 }
