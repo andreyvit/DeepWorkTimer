@@ -42,6 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
     var startItems: [(NSMenuItem, IntervalConfiguration, IntervalStartMode)] = []
 
     let stopItem = NSMenuItem(title: "Stop", action: #selector(stopTimer), keyEquivalent: "")
+    let interruptionItem = NSMenuItem(title: "Interruption...", action: #selector(reportInterruption), keyEquivalent: "")
 
     let nextStretchItem = NSMenuItem(title: "Next Stretching in ...", action: nil, keyEquivalent: "")
     let startStretchingItem = NSMenuItem(title: "Stretch Now", action: #selector(startStretching), keyEquivalent: "")
@@ -88,6 +89,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
         menu.delegate = self
         menu.autoenablesItems = false
         
+        menu.addItem(interruptionItem)
         menu.addItem(stopItem)
         menu.addItem(adjustDurationItem)
         menu.addItem(NSMenuItem.separator())
@@ -294,5 +296,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
     
     @objc func quit(_ sender: NSMenuItem) {
         NSApp.terminate(self)
+    }
+    
+    @objc func reportInterruption() {
+        model.startInterruption(reason: .manual)
     }
 }

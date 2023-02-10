@@ -9,8 +9,11 @@ class AppModel: ObservableObject {
     private(set) var state: AppState
     
     private lazy var stretching = StretchingController(appModel: self)
+    private lazy var interruption = InterruptionController(appModel: self)
 
     let preferences: Preferences
+    
+    static func testing() -> AppModel { .init(preferences: .initial) }
     
     init(preferences: Preferences) {
         self.preferences = preferences
@@ -117,6 +120,7 @@ class AppModel: ObservableObject {
             UNUserNotificationCenter.current().add(request)
         }
         stretching.setVisible(state.isStretching)
+        interruption.setVisible(state.isInterrupted)
         if state.popAppActivation(now: now) {
             NSApp.activate(ignoringOtherApps: true)
         }
@@ -188,6 +192,20 @@ class AppModel: ObservableObject {
         guard state.isStretching else { return }
         mutate {
             state.extendStretching(now: now)
+        }
+    }
+
+    
+    // MARK: - Interruptions
+
+    func startInterruption(reason: InterruptionStartReason) {
+        mutate {
+            state.startInterruption(reason: reason, now: now)
+        }
+    }
+    func endInterruption(action: InterruptionEndAction) {
+        mutate {
+            state.endInterruption(action: action, now: now)
         }
     }
 

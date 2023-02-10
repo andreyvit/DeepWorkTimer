@@ -30,7 +30,10 @@
 		4311CC6528F5961D00DBDCE3 /* Practices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5228F5961D00DBDCE3 /* Practices.swift */; };
 		4311CC6628F5961D00DBDCE3 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5328F5961D00DBDCE3 /* AppModel.swift */; };
 		4311CC6728F5961D00DBDCE3 /* AdjustDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC5428F5961D00DBDCE3 /* AdjustDurationView.swift */; };
+		435981672996491B00BB887D /* ComboBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435981662996491B00BB887D /* ComboBox.swift */; };
+		435981692996782800BB887D /* Interruption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435981682996782800BB887D /* Interruption.swift */; };
 		43E49D712995EE9C007CAFA2 /* Blackbird in Frameworks */ = {isa = PBXBuildFile; productRef = 43E49D702995EE9C007CAFA2 /* Blackbird */; };
+		43E49D732995F979007CAFA2 /* InterruptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E49D722995F979007CAFA2 /* InterruptionView.swift */; };
 		43F897E128B4B23E002B3AC1 /* DeepWorkTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */; };
 		43F897E828B4B535002B3AC1 /* Date+mocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E728B4B535002B3AC1 /* Date+mocking.swift */; };
 		43F897EA28B5FCD1002B3AC1 /* Asserts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E928B5FCD1002B3AC1 /* Asserts.swift */; };
@@ -94,7 +97,10 @@
 		4311CC5228F5961D00DBDCE3 /* Practices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Practices.swift; sourceTree = "<group>"; };
 		4311CC5328F5961D00DBDCE3 /* AppModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		4311CC5428F5961D00DBDCE3 /* AdjustDurationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdjustDurationView.swift; sourceTree = "<group>"; };
+		435981662996491B00BB887D /* ComboBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComboBox.swift; sourceTree = "<group>"; };
+		435981682996782800BB887D /* Interruption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interruption.swift; sourceTree = "<group>"; };
 		43C98F572828804C007D45DF /* Deep Work Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43E49D722995F979007CAFA2 /* InterruptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterruptionView.swift; sourceTree = "<group>"; };
 		43F897DE28B4B23E002B3AC1 /* DeepWorkBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeepWorkBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepWorkTimerTests.swift; sourceTree = "<group>"; };
 		43F897E728B4B535002B3AC1 /* Date+mocking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+mocking.swift"; sourceTree = "<group>"; };
@@ -149,6 +155,7 @@
 				4311CC4028F5961D00DBDCE3 /* TimeInterval+shorthands.swift */,
 				4311CC4128F5961D00DBDCE3 /* Util.swift */,
 				4311CC4228F5961D00DBDCE3 /* Calendar+dayBoundary.swift */,
+				435981662996491B00BB887D /* ComboBox.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -160,6 +167,7 @@
 				4311CC4528F5961D00DBDCE3 /* Silencing.swift */,
 				4311CC4628F5961D00DBDCE3 /* Memento.swift */,
 				4311CC4728F5961D00DBDCE3 /* State.swift */,
+				435981682996782800BB887D /* Interruption.swift */,
 				4311CC4828F5961D00DBDCE3 /* Interval.swift */,
 				4311CC4928F5961D00DBDCE3 /* TitleScheme.swift */,
 			);
@@ -185,6 +193,7 @@
 				4311CC5228F5961D00DBDCE3 /* Practices.swift */,
 				4311CC5328F5961D00DBDCE3 /* AppModel.swift */,
 				4311CC5428F5961D00DBDCE3 /* AdjustDurationView.swift */,
+				43E49D722995F979007CAFA2 /* InterruptionView.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -385,9 +394,12 @@
 				4311CC6328F5961D00DBDCE3 /* DeepWorkTimerApp.swift in Sources */,
 				4311CC5528F5961D00DBDCE3 /* LoginItem.swift in Sources */,
 				4311CC5A28F5961D00DBDCE3 /* Silencing.swift in Sources */,
+				435981672996491B00BB887D /* ComboBox.swift in Sources */,
 				4311CC5F28F5961D00DBDCE3 /* Analytics.swift in Sources */,
 				4311CC6428F5961D00DBDCE3 /* Stretching.swift in Sources */,
+				435981692996782800BB887D /* Interruption.swift in Sources */,
 				4311CC5728F5961D00DBDCE3 /* Util.swift in Sources */,
+				43E49D732995F979007CAFA2 /* InterruptionView.swift in Sources */,
 				4311CC6728F5961D00DBDCE3 /* AdjustDurationView.swift in Sources */,
 				4311CC6528F5961D00DBDCE3 /* Practices.swift in Sources */,
 				4311CC5D28F5961D00DBDCE3 /* Interval.swift in Sources */,

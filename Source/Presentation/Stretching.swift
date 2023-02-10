@@ -9,46 +9,53 @@ class StretchingController {
         self.appModel = appModel
     }
 
-    private lazy var window: NSWindow = {
+    private var window: NSWindow?
+    public var isVisible: Bool { window != nil }
+
+    func setVisible(_ visible: Bool) {
+        if visible {
+            show()
+        } else {
+            hide()
+        }
+    }
+    
+    private func show() {
+        guard window == nil else { return }
         let window = NSWindow(
             contentRect: .zero,
             styleMask: [.titled, .closable],
             backing: .buffered,
             defer: false
         )
+        self.window = window
         window.level = .statusBar
         window.titlebarAppearsTransparent = true
         window.isReleasedWhenClosed = false
         window.title = NSLocalizedString("Still want to be healthy?", comment: "Stretching window title")
-        return window
-    }()
-    
-    public private(set) var isVisible: Bool = false
+        window.center()
 
-    func setVisible(_ visible: Bool) {
-        guard visible != isVisible else { return }
-        if visible {
-            window.center()
+        let stretchingIdeas = preferences.randomStretchingIdeas()
+        
+        let view = StretchingView(stretchingIdeas: stretchingIdeas)
+            .environmentObject(appModel)
+            .frame(
+                width: 500,
+                //                height: 350,
+                alignment: .topLeading
+            )
+        let hosting = NSHostingView(rootView: view)
+        window.contentView = hosting
+        hosting.autoresizingMask = [.width, .height]
+        
+        window.center()
+        window.makeKey()
+        window.orderFront(nil)
+    }
 
-            let stretchingIdeas = preferences.randomStretchingIdeas()
-            
-            let view = StretchingView(stretchingIdeas: stretchingIdeas)
-                .environmentObject(appModel)
-                .frame(
-                    width: 500,
-                    //                height: 350,
-                    alignment: .topLeading
-                )
-            let hosting = NSHostingView(rootView: view)
-            window.contentView = hosting
-            hosting.autoresizingMask = [.width, .height]
-            
-            window.center()
-            window.makeKey()
-            window.orderFront(nil)
-        } else {
-            window.orderOut(nil)
-        }
+    private func hide() {
+        window?.orderOut(nil)
+        window = nil
     }
 }
 
