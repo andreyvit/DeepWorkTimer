@@ -65,6 +65,10 @@
             argument = "-com.tarantsov.deepwork.debug.onlaunch.welcome YES"
             isEnabled = "YES">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-com.tarantsov.deepwork.debug.idle.fast YES"
+            isEnabled = "NO">
+         </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
