@@ -200,7 +200,7 @@ class AppModel: ObservableObject {
 
     func startInterruption(reason: InterruptionStartReason) {
         mutate {
-            state.startInterruption(reason: reason, now: now)
+            state.startInterruption(reason: reason, at: now)
         }
     }
     func endInterruption(action: InterruptionEndAction) {

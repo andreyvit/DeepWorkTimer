@@ -150,8 +150,10 @@ public struct AppState {
             untimedWorkDuration = 0
         }
         
-        if running != nil && idleDuration > preferences.idleTimerPausingThreshold {
-            // TODO: pause
+        if running != nil && idleDuration > preferences.idleInterruptionThreshold {
+            if !isInterrupted, let idleStartTime = idleStartTime {
+                startInterruption(reason: .idleness, at: idleStartTime)
+            }
         } else if running == nil && !preferences.isUntimedNaggingDisabled && min(activityDuration, now.timeIntervalSince(lastStopTime)).isGreaterThanOrEqualTo(preferences.missingTimerReminderThreshold, ε: timerEps) && !isTotalMutingActive {
             if now.timeIntervalSince(missingTimerWarningTime).isGreaterThanOrEqualTo(preferences.missingTimerReminderRepeatInterval, ε: timerEps) {
                 missingTimerWarningTime = now
@@ -336,14 +338,14 @@ public struct AppState {
     public var isRecommendedToContinue: Bool { isRunning }
     public var interruptionDuration: TimeInterval { interruption?.derived.duration ?? 0 }
     
-    mutating func startInterruption(reason: InterruptionStartReason, now: Date) {
+    mutating func startInterruption(reason: InterruptionStartReason, at startTime: Date) {
         if let interruption = interruption {
             if reason.overrides(interruption.reason) {
                 self.interruption!.reason = reason
             }
             return
         }
-        interruption = Interruption(startTime: now, reason: reason)
+        interruption = Interruption(startTime: startTime, reason: reason)
     }
     
     mutating func endInterruption(action: InterruptionEndAction, now: Date) {
