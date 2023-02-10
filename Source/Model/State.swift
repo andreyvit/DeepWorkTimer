@@ -152,7 +152,7 @@ public struct AppState {
         }
         
         if running != nil && idleDuration > preferences.idleInterruptionThreshold {
-            if !isInterrupted, let idleStartTime = idleStartTime {
+            if !isInterrupted, !isStretching, let idleStartTime = idleStartTime {
                 startInterruption(reason: .idleness, at: idleStartTime)
             }
         } else if running == nil && !preferences.isUntimedNaggingDisabled && min(activityDuration, now.timeIntervalSince(lastStopTime)).isGreaterThanOrEqualTo(preferences.missingTimerReminderThreshold, ε: timerEps) && !isTotalMutingActive {
