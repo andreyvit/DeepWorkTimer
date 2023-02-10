@@ -19,7 +19,8 @@ public struct AppState {
     private var lastTotalMutingDeactivation: Date = .distantPast
     private var lastStretchMutingDeactivation: Date = .distantPast
     private var lastStretchInactivityReset: Date = .distantPast
-    
+    private var lastInterruptionEnd: Date = .distantPast
+
     public var isRunning: Bool { running != nil }
     
     public var isFrequentUpdatingDesired: Bool { isRunning || isStretching || isStretchingSoon || isInterrupted }
@@ -180,8 +181,9 @@ public struct AppState {
             running?.startTime ?? .distantPast,
             lastStretchMutingDeactivation,
             lastStretchInactivityReset,
+            lastInterruptionEnd,
         ].max()!
-        if isStretchingMutingActive {
+        if isStretchingMutingActive || isInterrupted {
             nextStretchTime = .distantFuture
             timeTillNextStretch = nil
         } else {
@@ -352,6 +354,7 @@ public struct AppState {
         guard let interruption = interruption else {
             return
         }
+
         var elapsed = now.timeIntervalSince(interruption.startTime)
         if elapsed < 0 {
             eventLog.error("negative interruption duration")
@@ -359,6 +362,7 @@ public struct AppState {
         }
         
         self.interruption = nil
+        self.lastInterruptionEnd = now
 
         switch action {
         case .continueIncludingInterruption:
