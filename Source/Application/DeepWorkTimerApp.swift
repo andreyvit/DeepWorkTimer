@@ -12,9 +12,6 @@ struct DeepWorkTimerApp: App {
     @State var alertPresented: Bool = false
 
     var body: some Scene {
-//        WindowGroup {
-//            ContentView()
-//        }
         Settings {
             EmptyView()
                 .alert("Test", isPresented: $alertPresented) {
@@ -154,6 +151,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
         model.objectWillChange.sink { [weak self] _ in self?.updateSoon() }.store(in: &subscriptions)
         update()
         
+        if !model.preferences.isWelcomeDone || debugOnLaunchWelcome {
+            showWelcome()
+        }
         if debugOnLaunchStretching {
             model.startStretching()
         }
@@ -161,6 +161,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
     
     func applicationWillTerminate(_ notification: Notification) {
         globalUserActivity = nil
+    }
+
+    func showWelcome() {
+        
     }
         
     @objc func startTimer(_ sender: NSMenuItem) {

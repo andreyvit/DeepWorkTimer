@@ -9,3 +9,4 @@ let debugDisplayStretchingTime = UserDefaults.standard.bool(forKey: "com.tarants
 let debugFastIdleTimer = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.idle.fast")
 
 let debugOnLaunchStretching = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.onlaunch.stretching")
+let debugOnLaunchWelcome = UserDefaults.standard.bool(forKey: "com.tarantsov.deepwork.debug.onlaunch.welcome")

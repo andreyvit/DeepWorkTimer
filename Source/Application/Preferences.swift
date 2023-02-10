@@ -91,6 +91,11 @@ public class Preferences {
         get { defaults.bool(forKey: "isUntimedStatusItemCounterDisabled") }
         set { defaults.set(newValue, forKey: "isUntimedStatusItemCounterDisabled") }
     }
+
+    public var isWelcomeDone: Bool {
+        get { defaults.bool(forKey: "discovery.welcome.done") }
+        set { defaults.set(newValue, forKey: "discovery.welcome.done") }
+    }
 }
 
 public extension UserDefaults {
