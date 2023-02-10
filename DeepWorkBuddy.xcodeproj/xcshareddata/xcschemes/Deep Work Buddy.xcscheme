@@ -67,7 +67,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-com.tarantsov.deepwork.debug.idle.fast YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
