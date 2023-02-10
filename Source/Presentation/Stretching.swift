@@ -1,4 +1,56 @@
 import SwiftUI
+import Cocoa
+
+class StretchingController {
+    let appModel: AppModel
+    var preferences: Preferences { appModel.preferences }
+    
+    init(appModel: AppModel) {
+        self.appModel = appModel
+    }
+
+    private lazy var window: NSWindow = {
+        let window = NSWindow(
+            contentRect: .zero,
+            styleMask: [.titled, .closable],
+            backing: .buffered,
+            defer: false
+        )
+        window.level = .statusBar
+        window.titlebarAppearsTransparent = true
+        window.isReleasedWhenClosed = false
+        window.title = NSLocalizedString("Still want to be healthy?", comment: "Stretching window title")
+        return window
+    }()
+    
+    public private(set) var isVisible: Bool = false
+
+    func setVisible(_ visible: Bool) {
+        guard visible != isVisible else { return }
+        if visible {
+            window.center()
+
+            let stretchingIdeas = preferences.randomStretchingIdeas()
+            
+            let view = StretchingView(stretchingIdeas: stretchingIdeas)
+                .environmentObject(appModel)
+                .frame(
+                    width: 500,
+                    //                height: 350,
+                    alignment: .topLeading
+                )
+            let hosting = NSHostingView(rootView: view)
+            window.contentView = hosting
+            hosting.autoresizingMask = [.width, .height]
+            
+            window.center()
+            window.makeKey()
+            window.orderFront(nil)
+        } else {
+            window.orderOut(nil)
+        }
+    }
+}
 
 struct StretchingView: View {
     @EnvironmentObject var model: AppModel

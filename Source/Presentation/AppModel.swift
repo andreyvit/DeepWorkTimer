@@ -7,6 +7,8 @@ import os.log
 class AppModel: ObservableObject {
     private var now: Date = .distantPast
     private(set) var state: AppState
+    
+    private lazy var stretching = StretchingController(appModel: self)
 
     let preferences: Preferences
     
@@ -114,7 +116,7 @@ class AppModel: ObservableObject {
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
             UNUserNotificationCenter.current().add(request)
         }
-        updateStretchingState()
+        stretching.setVisible(state.isStretching)
         if state.popAppActivation(now: now) {
             NSApp.activate(ignoringOtherApps: true)
         }
@@ -170,8 +172,6 @@ class AppModel: ObservableObject {
     
     // MARK: - Stretching
     
-    private var stretchingWindow: NSWindow?
-
     func startStretching() {
         guard !state.isStretching else { return }
         mutate {
@@ -189,53 +189,6 @@ class AppModel: ObservableObject {
         mutate {
             state.extendStretching(now: now)
         }
-    }
-    
-    private func updateStretchingState() {
-        let isVisible = (stretchingWindow != nil)
-        if !isVisible && state.isStretching {
-            showStretchingWindow()
-        } else if isVisible && !state.isStretching {
-            hideStretchingWindow()
-        }
-    }
-
-    private func showStretchingWindow() {
-        let window = NSWindow(
-            contentRect: .zero,
-            styleMask: [.titled, .closable],
-            backing: .buffered,
-            defer: false
-        )
-        
-        window.level = .statusBar
-        window.titlebarAppearsTransparent = true
-        window.title = NSLocalizedString("Still want to be healthy?", comment: "Stretching window title")
-        window.center()
-        window.isReleasedWhenClosed = false
-        self.stretchingWindow = window
-
-        let stretchingIdeas = preferences.randomStretchingIdeas()
-        
-        let view = StretchingView(stretchingIdeas: stretchingIdeas)
-            .environmentObject(self)
-            .frame(
-                width: 500,
-                //                height: 350,
-                alignment: .topLeading
-            )
-        let hosting = NSHostingView(rootView: view)
-        window.contentView = hosting
-        hosting.autoresizingMask = [.width, .height]
-        
-        window.center()
-        window.makeKey()
-        window.orderFront(nil)
-    }
-    
-    private func hideStretchingWindow() {
-        stretchingWindow?.orderOut(nil)
-        stretchingWindow = nil
     }
 
     
