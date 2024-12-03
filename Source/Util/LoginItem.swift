@@ -11,9 +11,11 @@ func toggleOpenAtLogin() throws {
     case .requiresApproval:
         throw OpenAtLoginError.approvalDenied
     case .notFound:
-        throw OpenAtLoginError.notFound
+        try SMAppService.mainApp.register() // just in case
+//        throw OpenAtLoginError.notFound
     @unknown default:
-        throw OpenAtLoginError.failed
+        try SMAppService.mainApp.register() // just in case
+//      throw OpenAtLoginError.failed
     }
 }
 

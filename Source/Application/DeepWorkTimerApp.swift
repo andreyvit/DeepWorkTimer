@@ -76,7 +76,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
         if isRunningTests {
             return
         }
-        
+
+        let event = NSAppleEventManager.shared().currentAppleEvent
+        let isLaunchedAsLogInItem =
+            (event?.eventID == kAEOpenApplication) &&
+            (event?.paramDescriptor(forKeyword: keyAEPropData)?.enumCodeValue == keyAELaunchedAsLogInItem)
+        _ = isLaunchedAsLogInItem
+
         globalUserActivity = ProcessInfo.processInfo.beginActivity(options: [.userInitiatedAllowingIdleSystemSleep], reason: "Deep Work Timer Menubar Updates")
 
         let defaults: UserDefaults = .standard
