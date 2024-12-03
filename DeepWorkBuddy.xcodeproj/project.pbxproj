@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4311CC3728F595EF00DBDCE3 /* DeepWorkBuddy.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3628F595EF00DBDCE3 /* DeepWorkBuddy.xcassets */; };
 		4311CC3928F595F700DBDCE3 /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3828F595F700DBDCE3 /* Shared.xcassets */; };
-		4311CC3A28F595F700DBDCE3 /* Shared.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3828F595F700DBDCE3 /* Shared.xcassets */; };
 		4311CC3C28F5960D00DBDCE3 /* Preview.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4311CC3B28F5960D00DBDCE3 /* Preview.xcassets */; };
 		4311CC5528F5961D00DBDCE3 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC3F28F5961D00DBDCE3 /* LoginItem.swift */; };
 		4311CC5628F5961D00DBDCE3 /* TimeInterval+shorthands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4311CC4028F5961D00DBDCE3 /* TimeInterval+shorthands.swift */; };
@@ -40,8 +39,6 @@
 		43F897E128B4B23E002B3AC1 /* DeepWorkTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */; };
 		43F897E828B4B535002B3AC1 /* Date+mocking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E728B4B535002B3AC1 /* Date+mocking.swift */; };
 		43F897EA28B5FCD1002B3AC1 /* Asserts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F897E928B5FCD1002B3AC1 /* Asserts.swift */; };
-		43F8981928BDE360002B3AC1 /* LaunchAtLoginHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */; };
-		43F8982528BDE6EA002B3AC1 /* Deep Work Buddy Launch At Login Helper.app in Embed Login Items */ = {isa = PBXBuildFile; fileRef = 43F8981628BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,28 +49,7 @@
 			remoteGlobalIDString = 43C98F562828804C007D45DF;
 			remoteInfo = "Deep Work Timer";
 		};
-		43F8982628BDE6FD002B3AC1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 43C98F4F2828804C007D45DF /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 43F8981528BDE360002B3AC1;
-			remoteInfo = "Deep Work Timer Launch At Login Helper";
-		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		43F8980F28BCA1C4002B3AC1 /* Embed Login Items */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Contents/Library/LoginItems;
-			dstSubfolderSpec = 1;
-			files = (
-				43F8982528BDE6EA002B3AC1 /* Deep Work Buddy Launch At Login Helper.app in Embed Login Items */,
-			);
-			name = "Embed Login Items";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4311CC3428F5959700DBDCE3 /* DeepWorkBuddy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DeepWorkBuddy-Info.plist"; sourceTree = "<group>"; };
@@ -111,10 +87,6 @@
 		43F897E028B4B23E002B3AC1 /* DeepWorkTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepWorkTimerTests.swift; sourceTree = "<group>"; };
 		43F897E728B4B535002B3AC1 /* Date+mocking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+mocking.swift"; sourceTree = "<group>"; };
 		43F897E928B5FCD1002B3AC1 /* Asserts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asserts.swift; sourceTree = "<group>"; };
-		43F8981628BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Deep Work Buddy Launch At Login Helper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginHelper.swift; sourceTree = "<group>"; };
-		43F8982128BDE365002B3AC1 /* LaunchAtLoginHelper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LaunchAtLoginHelper.entitlements; sourceTree = "<group>"; };
-		43F8982828BDE8D9002B3AC1 /* LaunchAtLoginHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LaunchAtLoginHelper-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,13 +99,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		43F897DB28B4B23E002B3AC1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		43F8981328BDE360002B3AC1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -219,15 +184,12 @@
 			isa = PBXGroup;
 			children = (
 				4311CC3528F5959700DBDCE3 /* DeepWorkBuddy.entitlements */,
-				43F8982128BDE365002B3AC1 /* LaunchAtLoginHelper.entitlements */,
 				4311CC3428F5959700DBDCE3 /* DeepWorkBuddy-Info.plist */,
-				43F8982828BDE8D9002B3AC1 /* LaunchAtLoginHelper-Info.plist */,
 				4311CC3628F595EF00DBDCE3 /* DeepWorkBuddy.xcassets */,
 				4311CC3828F595F700DBDCE3 /* Shared.xcassets */,
 				4311CC3D28F5961D00DBDCE3 /* Source */,
 				4311CC6828F5969600DBDCE3 /* Preview */,
 				43F897DF28B4B23E002B3AC1 /* Tests */,
-				43F8981728BDE360002B3AC1 /* Source-LaunchAtLoginHelper */,
 				43C98F582828804C007D45DF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -237,7 +199,6 @@
 			children = (
 				43C98F572828804C007D45DF /* Deep Work Buddy.app */,
 				43F897DE28B4B23E002B3AC1 /* DeepWorkBuddyTests.xctest */,
-				43F8981628BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -252,14 +213,6 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		43F8981728BDE360002B3AC1 /* Source-LaunchAtLoginHelper */ = {
-			isa = PBXGroup;
-			children = (
-				43F8981828BDE360002B3AC1 /* LaunchAtLoginHelper.swift */,
-			);
-			path = "Source-LaunchAtLoginHelper";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -270,12 +223,10 @@
 				43C98F532828804C007D45DF /* Sources */,
 				43C98F542828804C007D45DF /* Frameworks */,
 				43C98F552828804C007D45DF /* Resources */,
-				43F8980F28BCA1C4002B3AC1 /* Embed Login Items */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				43F8982728BDE6FD002B3AC1 /* PBXTargetDependency */,
 			);
 			name = "Deep Work Buddy";
 			packageProductDependencies = (
@@ -303,23 +254,6 @@
 			productReference = 43F897DE28B4B23E002B3AC1 /* DeepWorkBuddyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		43F8981528BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 43F8982228BDE365002B3AC1 /* Build configuration list for PBXNativeTarget "Deep Work Buddy Launch At Login Helper" */;
-			buildPhases = (
-				43F8981228BDE360002B3AC1 /* Sources */,
-				43F8981328BDE360002B3AC1 /* Frameworks */,
-				43F8981428BDE360002B3AC1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Deep Work Buddy Launch At Login Helper";
-			productName = "Deep Work Timer Launch At Login Helper";
-			productReference = 43F8981628BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -336,9 +270,6 @@
 					43F897DD28B4B23E002B3AC1 = {
 						CreatedOnToolsVersion = 13.4.1;
 						TestTargetID = 43C98F562828804C007D45DF;
-					};
-					43F8981528BDE360002B3AC1 = {
-						CreatedOnToolsVersion = 13.4.1;
 					};
 				};
 			};
@@ -360,7 +291,6 @@
 			targets = (
 				43C98F562828804C007D45DF /* Deep Work Buddy */,
 				43F897DD28B4B23E002B3AC1 /* DeepWorkBuddyTests */,
-				43F8981528BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper */,
 			);
 		};
 /* End PBXProject section */
@@ -380,14 +310,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		43F8981428BDE360002B3AC1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4311CC3A28F595F700DBDCE3 /* Shared.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,14 +358,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		43F8981228BDE360002B3AC1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				43F8981928BDE360002B3AC1 /* LaunchAtLoginHelper.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -451,11 +365,6 @@
 			isa = PBXTargetDependency;
 			target = 43C98F562828804C007D45DF /* Deep Work Buddy */;
 			targetProxy = 43F897E228B4B23E002B3AC1 /* PBXContainerItemProxy */;
-		};
-		43F8982728BDE6FD002B3AC1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 43F8981528BDE360002B3AC1 /* Deep Work Buddy Launch At Login Helper */;
-			targetProxy = 43F8982628BDE6FD002B3AC1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -595,6 +504,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "DeepWorkBuddy-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -629,6 +539,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "DeepWorkBuddy-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -680,68 +591,6 @@
 			};
 			name = Release;
 		};
-		43F8982328BDE365002B3AC1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = LaunchAtLoginHelper.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
-				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = D963M2VVCH;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "LaunchAtLoginHelper-Info.plist";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.deepworkbuddy.app.LaunchAtLoginHelper;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		43F8982428BDE365002B3AC1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = LaunchAtLoginHelper.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
-				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = D963M2VVCH;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "LaunchAtLoginHelper-Info.plist";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.deepworkbuddy.app.LaunchAtLoginHelper;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -768,15 +617,6 @@
 			buildConfigurations = (
 				43F897E528B4B23E002B3AC1 /* Debug */,
 				43F897E628B4B23E002B3AC1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		43F8982228BDE365002B3AC1 /* Build configuration list for PBXNativeTarget "Deep Work Buddy Launch At Login Helper" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				43F8982328BDE365002B3AC1 /* Debug */,
-				43F8982428BDE365002B3AC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
