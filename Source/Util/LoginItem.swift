@@ -2,46 +2,51 @@ import Foundation
 import ServiceManagement
 import Combine
 
-class LoginItem: ObservableObject {
-    let bundleID: String
-    
-    private let publisherImpl: CurrentValueSubject<Bool, Never>
-    let publisher: AnyPublisher<Bool, Never>
-    
-    init(bundleID: String) {
-        self.bundleID = bundleID
-        isEnabled = (Self.self as SilenceDeprecationWarningOnSMCopyAllJobDictionaries.Type).checkJobEnabled(bundleID: bundleID)
-        publisherImpl = CurrentValueSubject<Bool, Never>(isEnabled)
-        publisher = publisherImpl.eraseToAnyPublisher()
-    }
-
-    var isEnabled: Bool {
-        willSet {
-            guard isEnabled != newValue else { return }
-            objectWillChange.send()
-        }
-        didSet {
-            guard isEnabled != oldValue else { return }
-            SMLoginItemSetEnabled(bundleID as CFString, isEnabled)
-        }
+func toggleOpenAtLogin() throws {
+    switch SMAppService.mainApp.status {
+    case .notRegistered:
+        try SMAppService.mainApp.register()
+    case .enabled:
+        try SMAppService.mainApp.register() // just in case
+    case .requiresApproval:
+        throw OpenAtLoginError.approvalDenied
+    case .notFound:
+        throw OpenAtLoginError.notFound
+    @unknown default:
+        throw OpenAtLoginError.failed
     }
 }
 
-private protocol SilenceDeprecationWarningOnSMCopyAllJobDictionaries {
-    static func checkJobEnabled(bundleID: String) -> Bool
-}
-extension LoginItem: SilenceDeprecationWarningOnSMCopyAllJobDictionaries {
-    // SMCopyAllJobDictionaries is deprecated, but the docs say:
-    // "For the specific use of testing the state of a login item that may have been
-    // enabled with SMLoginItemSetEnabled() in order to show that state to the
-    // user, this function remains the recommended API. A replacement API for this
-    // specific use will be provided before this function is removed."
-    @available(*, deprecated)
-    fileprivate static func checkJobEnabled(bundleID: String) -> Bool {
-        let jobs: [[String: AnyObject]] = SMCopyAllJobDictionaries(kSMDomainUserLaunchd)?.takeRetainedValue() as? [[String: AnyObject]] ?? []
-        guard let job = jobs.first(where: { ($0["Label"] as? String) == bundleID }) else {
-            return false
-        }
-        return job["OnDemand"] as? Bool ?? false
+func launchAtLoginStatus() -> Bool {
+    let status = SMAppService.mainApp.status
+    switch status {
+    case .notRegistered:
+        return false
+    case .enabled:
+        return true
+    case .requiresApproval:
+        return false
+    case .notFound:
+        return false
+    default:
+        return false
     }
+}
+
+enum OpenAtLoginError: Error, LocalizedError {
+    case approvalDenied
+    case notFound
+    case failed
+    
+    var errorDescription: String? {
+        switch self {
+        case .approvalDenied: return "Open System Settings to grant the permission."
+        case .notFound: return "Registration failed (the login item was unavailable)."
+        case .failed: return "Registration failed."
+        }
+    }
+
+    var failureReason: String? { nil }
+    var recoverySuggestion: String? { nil }
+    var helpAnchor: String? { nil }
 }

@@ -4,8 +4,6 @@ import Combine
 import UserNotifications
 import os.log
 
-let launchAtLoginHelper = LoginItem(bundleID: "com.tarantsov.DeepWorkBuddy.LaunchAtLoginHelper")
-
 @main
 struct DeepWorkTimerApp: App {
     @NSApplicationDelegateAdaptor var appDelegate: AppDelegate
@@ -200,7 +198,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
 
     @objc func toggleLaunchAtLogin() {
         recordUsage(.launchAtLogin)
-        launchAtLoginHelper.isEnabled = !launchAtLoginHelper.isEnabled
+        do {
+            try toggleOpenAtLogin()
+        } catch {
+            appLog.error("Failed to toggle launch at login: \(String(describing: error))")
+            
+            let alert = NSAlert(error: error)
+            alert.alertStyle = .warning
+//            alert.informativeText = "Failed to toggle launch at login: \(error.localizedDescription)"
+            alert.addButton(withTitle: "OK")
+            alert.runModal()
+        }
         update()
     }
     
@@ -269,7 +277,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, ObservableOb
             globalMutingUntilItem.title = "Silenced Until..."
         }
 
-        launchAtLoginItem.state = (launchAtLoginHelper.isEnabled ? .on : .off)
+        launchAtLoginItem.state = (launchAtLoginStatus() ? .on : .off)
         disableStretchingItem.state = (model.state.stretchMuting != nil ? .on : .off)
         disableUntimedNaggingItem.state = (model.preferences.isUntimedNaggingDisabled ? .on : .off)
         disableUntimedStatusItemCounterItem.state = (model.preferences.isUntimedStatusItemCounterDisabled ? .on : .off)
