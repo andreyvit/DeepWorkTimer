@@ -63,3 +63,8 @@ public struct InterruptionDerived: Codable {
         duration = now.timeIntervalSince(interruption.startTime)
     }
 }
+
+// MARK: -
+internal struct InterruptionStats {
+    var countToday: Int = 0
+}

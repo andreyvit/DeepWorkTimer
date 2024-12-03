@@ -110,21 +110,8 @@ struct StretchingView: View {
 struct StretchingView_Previews: PreviewProvider {
     static var previews: some View {
         let stretchingIdeas = Preferences.initial.randomStretchingIdeas()
-        let view = StretchingView(stretchingIdeas: stretchingIdeas)
-        Group {
-            view
-                .preferredColorScheme(.light)
-            view
-                .preferredColorScheme(.light)
-                .frame(width: 300)
-            view
-                .preferredColorScheme(.light)
-                .frame(width: 400)
-            view
-                .preferredColorScheme(.light)
-                .frame(width: 500)
-            view
-                .preferredColorScheme(.dark)
-        }
+        StretchingView(stretchingIdeas: stretchingIdeas)
+            .environmentObject(AppModel.testing())
+            .frame(width: 500)
     }
 }

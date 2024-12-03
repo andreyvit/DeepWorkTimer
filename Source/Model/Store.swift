@@ -32,4 +32,9 @@ class Store {
     func recordInterruption(reason: String) async throws {
         try await database.query("INSERT INTO interruptions(timestamp, reason) VALUES (?, ?)", Date(), reason)
     }
+    
+    func countInterruptions(within range: Range<Date>) async throws -> Int {
+        let row = (try await database.query("SELECT COUNT(*) AS count FROM interruptions")).first!
+        return row["count"]!.intValue ?? 0
+    }
 }

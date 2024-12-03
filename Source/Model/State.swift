@@ -331,6 +331,7 @@ public struct AppState {
         (coreStatusText(using: .live) + debugTitleSuffix).trimmingCharacters(in: .whitespaces)
     }
     
+
     // MARK: - Interruptions
     
     public private(set) var interruption: Interruption?
@@ -373,6 +374,17 @@ public struct AppState {
             running?.exclude(from: interruption.startTime, now: now)
             stop(now: now)
         }
+    }
+
+
+    // MARK: - Database-derived
+    
+    internal private(set) var isUpdatingInterruptionStats: Bool = false
+    internal private(set) var interruptionStatsUpdate: Date = .distantPast
+    internal private(set) var interruptionStats: InterruptionStats?
+    
+    mutating func updateStats(using store: Store) {
+        
     }
 }
 

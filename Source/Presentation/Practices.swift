@@ -156,6 +156,7 @@ struct WelcomeStep: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
+//            Spacer()
             Button(action: advance) {
                 Text("Start my journey")
             }
